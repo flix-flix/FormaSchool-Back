@@ -1,6 +1,6 @@
 package com.formaschool.back.models;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -9,24 +9,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Message {
+public class Member {
 
 	@Id
 	private String id;
+	
+	private String pseudo;
 
 	@DBRef
-	private Member sender;
+	private User user;
 	@DBRef
-	private Salon salon;
-	@NonNull
-	private String content;
-	private String file;
-	private LocalDate send = LocalDate.now();
-	private LocalDate edit;
+	private Team team;
+	@DBRef
+	private List<Role> roles;
 }

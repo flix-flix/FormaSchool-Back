@@ -9,24 +9,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Message {
+public class Role {
 
 	@Id
 	private String id;
-
+	
+	private String nom;
+	private String color;
 	@DBRef
-	private Member sender;
-	@DBRef
-	private Salon salon;
-	@NonNull
-	private String content;
-	private String file;
-	private LocalDate send = LocalDate.now();
-	private LocalDate edit;
+	private TeamSalonRights commonRights;
+	private Boolean manageSalon;
+	private Boolean manageEmoji;
+	private Boolean teamManage;
+	private Boolean seeLogs;
+	//Change your pseudo
+	private Boolean changePseudo;
+	//Change every Pseudo
+	private Boolean managePseudo;
 }
