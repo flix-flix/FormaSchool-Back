@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.emoji.EmojiNamePict;
+import com.formaschool.back.dto.emoji.EmojiNamePictUser;
 import com.formaschool.back.models.Emoji;
 import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.services.EmojiService;
@@ -18,13 +19,19 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		this.repo = repo;
 	}
 	
-	public List<Emoji> findCreatedEmojiByTeamId(String teamId){
-		return this.repo.findByUserNotNullAndTeamId(teamId);
+	public List<EmojiNamePictUser> findCreatedEmojiByTeamId(String teamId){
+		List<Emoji>emojis = this.repo.findByUserNotNullAndTeamId(teamId);
+		return emojis.stream().map(emoji -> {
+			return this.mapper.convertValue(emoji, EmojiNamePictUser.class);
+		}).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Emoji> findAllCreatedEmojiOrga() {
-		return this.repo.findByUserNotNullAndTeamNull();
+	public List<EmojiNamePictUser> findAllCreatedEmojiOrga() {
+		List<Emoji>emojis = this.repo.findByUserNotNullAndTeamNull();
+		return emojis.stream().map(emoji -> {
+			return this.mapper.convertValue(emoji, EmojiNamePictUser.class);
+		}).collect(Collectors.toList());
 	}
 
 	@Override
