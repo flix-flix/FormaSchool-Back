@@ -7,25 +7,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
-public class Salon {
+public class Reaction {
 
 	@Id
 	private String id;
-	@NonNull
-	private String name;
-	private String desc;
-	@DBRef
-	private Team team;
 
-	public Salon(@NonNull String name, String desc, Team team) {
-		this.name = name;
-		this.desc = desc;
-		this.team = team;
+	@DBRef
+	private Emoji emoji;
+	@DBRef
+	private Member member;
+
+	public Reaction(Member member, Emoji emoji) {
+		this.emoji = emoji;
+		this.member = member;
 	}
 }
