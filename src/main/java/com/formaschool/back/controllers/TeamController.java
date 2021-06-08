@@ -3,11 +3,14 @@ package com.formaschool.back.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back.dto.team.TeamNameDescPicDTO;
+import com.formaschool.back.dto.team.UpdateTeamNameDescPicDTO;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.TeamService;
@@ -29,4 +32,10 @@ public class TeamController implements CRUDController<Team> {
 	public TeamNameDescPicDTO findById(@PathVariable String id) {
 		return this.service.findTeamNameDescPicDtoById(id);
 	}
+	
+	@PatchMapping("teamDesc/{id}")
+	public TeamNameDescPicDTO updateTeamNameDescPic(@RequestBody UpdateTeamNameDescPicDTO dto) {
+		return this.service.updateTeamNameDescPicDto(dto);
+	}
+	
 }

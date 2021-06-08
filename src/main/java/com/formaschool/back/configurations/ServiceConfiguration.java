@@ -28,6 +28,7 @@ import com.formaschool.back.services.impl.UserServiceImpl;
 
 @Configuration
 public class ServiceConfiguration {
+	
 
 	@Bean
 	public UserService userService(UserRepository repo, ObjectMapper mapper) {
