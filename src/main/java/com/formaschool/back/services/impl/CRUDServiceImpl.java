@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.formaschool.back.models.User;
 import com.formaschool.back.services.CRUDService;
 
 public class CRUDServiceImpl<T> implements CRUDService<T> {
@@ -48,7 +47,11 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 	// ====================================================================================================
 
 	/** Throw NOT_FOUND if the Optional is empty */
-	protected User get(Optional<User> opt) {
+	protected T get(Optional<T> opt) {
 		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	}
+
+	protected <DTO> DTO map(Optional<T> opt, Class<DTO> cl) {
+		return mapper.convertValue(get(opt), cl);
 	}
 }
