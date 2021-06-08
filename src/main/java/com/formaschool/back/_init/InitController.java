@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -28,6 +27,7 @@ import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
+import com.formaschool.back.repositories.ReactionRepository;
 import com.formaschool.back.repositories.SalonRepository;
 import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.repositories.UserRepository;
@@ -84,55 +84,9 @@ public class InitController {
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
-	private Reaction[] reactions = new Reaction[] { //
-			react(members[0], "bagel"), //
-			react(members[0], "beer_mug"), //
-			react(members[0], "beverage_box"), //
-			react(members[1], "bagel"), //
-
-			react(members[0], "grinning_face_with_sweat"), //
-			react(members[2], "grinning_face_with_sweat"), //
-			react(members[3], "grinning_face_with_sweat"), //
-
-			react(members[2], "OK_hand"), //
-
-			react(members[0], "stop_sign"), //
-			react(members[1], "microbe"), //
-			react(members[1], "stop_sign"), //
-
-			react(members[0], "fire"), //
-			react(members[2], "fire"), //
-			react(members[3], "fire"), //
-			react(members[0], "flexed_biceps"), //
-			react(members[2], "flexed_biceps"), //
-			react(members[3], "flexed_biceps"), //
-
-			// Nourriture
-			react(members[2], "clinking_beer_mugs"), //
-			react(members[1], "beverage_box"), //
-			react(members[3], "beverage_box"), //
-
-			react(members[0], "hamburger"), //
-			react(members[0], "hamburger"), //
-
-			react(members[0], "beer_mug"), //
-	};
-
-	private Log[] logs = new Log[] {
-			new Log(null, users[2], teams[1], 0, LocalDateTime.of(2019, 1, 16, 17, 18, 19), "a crée l'emoji Kama"),
-			new Log(null, users[1], teams[1], 6, LocalDateTime.of(2021, 5, 4, 13, 17, 19),
-					"a épinglé un message de Bouchaib dans Géneral"),
-			new Log(null, users[1], teams[1], 3, LocalDateTime.of(2021, 5, 4, 15, 17, 19), "a crée un salon"),
-			new Log(null, users[1], teams[1], 5, LocalDateTime.of(2021, 5, 4, 9, 53, 19), "a supprimé un salon"),
-			new Log(null, users[2], teams[1], 4, LocalDateTime.of(2021, 2, 4, 6, 53, 29), "a modifie un salon"),
-			new Log(null, users[2], null, 8, LocalDateTime.of(2021, 6, 5, 9, 53, 29),
-					"a créer l'utilisateur Benoit Routier"),
-			new Log(null, users[2], teams[1], 1, LocalDateTime.of(2019, 1, 16, 9, 53, 29), "a Modifier l'emoji Kama"),
-			new Log(null, users[2], null, 11, LocalDateTime.of(2019, 1, 16, 7, 53, 29), "a crée l'equipe Dofus") };
-
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
-					LocalDateTime.of(2021, 4, 1, 17, 37, 31), reacts(0, 1, 2, 3)),
+					LocalDateTime.of(2021, 4, 1, 17, 37, 31)),
 			new Message(members[3], salons[0], "trkl", null, LocalDateTime.of(2021, 4, 1, 17, 43, 7),
 					LocalDateTime.of(2021, 4, 1, 17, 43, 7)),
 			new Message(members[3], salons[0], "Guys ?", null, LocalDateTime.of(2021, 4, 2, 9, 7, 44),
@@ -228,23 +182,71 @@ public class InitController {
 			new Message(members[2], salons[7], "**routerLink**=\"/404\"", null, LocalDateTime.of(2021, 4, 5, 12, 2, 36),
 					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
 
+	private Reaction[] reactions = new Reaction[] { //
+			react(msgs[0], members[0], "bagel"), //
+			react(msgs[0], members[0], "beer_mug"), //
+			react(msgs[0], members[0], "beverage_box"), //
+			react(msgs[0], members[1], "bagel"), //
+
+			react(msgs[11], members[0], "grinning_face_with_sweat"), //
+			react(msgs[11], members[2], "grinning_face_with_sweat"), //
+			react(msgs[11], members[3], "grinning_face_with_sweat"), //
+
+			react(msgs[13], members[2], "OK_hand"), //
+
+			react(msgs[14], members[0], "stop_sign"), //
+			react(msgs[14], members[1], "microbe"), //
+			react(msgs[14], members[1], "stop_sign"), //
+
+			react(msgs[15], members[0], "fire"), //
+			react(msgs[15], members[2], "fire"), //
+			react(msgs[15], members[3], "fire"), //
+			react(msgs[15], members[0], "flexed_biceps"), //
+			react(msgs[15], members[2], "flexed_biceps"), //
+			react(msgs[15], members[3], "flexed_biceps"), //
+
+			// Nourriture
+			react(msgs[19], members[2], "clinking_beer_mugs"), //
+			react(msgs[19], members[1], "beverage_box"), //
+			react(msgs[19], members[3], "beverage_box"), //
+
+			react(msgs[20], members[0], "hamburger"), //
+			react(msgs[21], members[0], "hamburger"), //
+
+			react(msgs[2], members[0], "beer_mug"), //
+	};
+
+	private Log[] logs = new Log[] {
+			new Log(null, users[2], teams[1], 0, LocalDateTime.of(2019, 1, 16, 17, 18, 19), "a crée l'emoji Kama"),
+			new Log(null, users[1], teams[1], 6, LocalDateTime.of(2021, 5, 4, 13, 17, 19),
+					"a épinglé un message de Bouchaib dans Géneral"),
+			new Log(null, users[1], teams[1], 3, LocalDateTime.of(2021, 5, 4, 15, 17, 19), "a crée un salon"),
+			new Log(null, users[1], teams[1], 5, LocalDateTime.of(2021, 5, 4, 9, 53, 19), "a supprimé un salon"),
+			new Log(null, users[2], teams[1], 4, LocalDateTime.of(2021, 2, 4, 6, 53, 29), "a modifie un salon"),
+			new Log(null, users[2], null, 8, LocalDateTime.of(2021, 6, 5, 9, 53, 29),
+					"a créer l'utilisateur Benoit Routier"),
+			new Log(null, users[2], teams[1], 1, LocalDateTime.of(2019, 1, 16, 9, 53, 29), "a Modifier l'emoji Kama"),
+			new Log(null, users[2], null, 11, LocalDateTime.of(2019, 1, 16, 7, 53, 29), "a crée l'equipe Dofus") };
+
 	// ====================================================================================================
 
 	@Autowired
 	private MongoDatabaseFactory mongo;
 
 	@Autowired
-	private TeamRepository teamRepo;
-	@Autowired
 	private UserRepository userRepo;
 	@Autowired
-	private SalonRepository salonRepo;
+	private TeamRepository teamRepo;
 	@Autowired
-	private MessageRepository msgRepo;
+	private SalonRepository salonRepo;
 	@Autowired
 	private MemberRepository memberRepo;
 	@Autowired
 	private EmojiRepository emojiRepo;
+	@Autowired
+	private ReactionRepository reactRepo;
+	@Autowired
+	private MessageRepository msgRepo;
 	@Autowired
 	private LogRepository logRepo;
 
@@ -269,14 +271,17 @@ public class InitController {
 			teamRepo.save(team);
 		for (Salon salon : salons)
 			salonRepo.save(salon);
+		for (Member member : members)
+			memberRepo.save(member);
 
 		for (Emoji emoji : emojis.values())
 			emojiRepo.save(emoji);
+		for (Reaction react : reactions)
+			reactRepo.save(react);
 
-		for (Member member : members)
-			memberRepo.save(member);
 		for (Message msg : msgs)
 			msgRepo.save(msg);
+
 		for (Log log : logs)
 			logRepo.save(log);
 
@@ -289,15 +294,7 @@ public class InitController {
 
 	// ====================================================================================================
 
-	private Reaction react(Member member, String name) {
-		return new Reaction(member, emojis.get(name));
-	}
-
-	private List<Reaction> reacts(int... ids) {
-		List<Reaction> reacts = new ArrayList<>();
-		for (int id : ids) {
-			reacts.add(reactions[id]);
-		}
-		return reacts;
+	private Reaction react(Message msg, Member member, String name) {
+		return new Reaction(msg, member, emojis.get(name));
 	}
 }
