@@ -18,8 +18,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserName getUserNameById(String id) {
-		User entity = get(repo.findById(id));
-		return mapper.convertValue(entity, UserName.class);
+		return map(repo.findById(id), UserName.class);
 	}
 
 	@Override
