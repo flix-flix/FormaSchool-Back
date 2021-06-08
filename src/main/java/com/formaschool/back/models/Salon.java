@@ -14,8 +14,10 @@ public class Salon {
 	private String id;
 	@NonNull
 	private String name;
+	private String desc;
+
 
 	private Integer teamId;
 
-	// TODO Message[]
+	private Integer[] Message;
 }
