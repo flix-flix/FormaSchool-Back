@@ -20,6 +20,7 @@ public class Salon {
 	@NonNull
 	private String name;
 	private String desc;
+
 	@DBRef
 	private Team team;
 
@@ -28,4 +29,11 @@ public class Salon {
 		this.desc = desc;
 		this.team = team;
 	}
+
+
+
+	private Integer teamId;
+
+	private Integer[] Message;
+
 }

@@ -28,6 +28,7 @@ import com.formaschool.back.services.impl.UserServiceImpl;
 
 @Configuration
 public class ServiceConfiguration {
+	
 
 	@Bean
 	public UserService userService(UserRepository repo, ObjectMapper mapper) {
@@ -35,13 +36,14 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper) {
+	public TeamService teamService(TeamRepository repo , ObjectMapper mapper) {
 		return new TeamServiceImpl(repo, mapper);
 	}
-
+    
 	@Bean
 	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
 		return new SalonServiceImpl(repo, mapper);
+
 	}
 
 	@Bean
