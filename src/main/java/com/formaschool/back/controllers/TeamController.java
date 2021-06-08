@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formaschool.back.dto.TeamNameDescPicDTO;
+import com.formaschool.back.dto.team.TeamNameDescPicDTO;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.TeamService;

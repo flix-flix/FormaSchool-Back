@@ -2,7 +2,7 @@ package com.formaschool.back.services;
 
 import java.util.Collection;
 
-import com.formaschool.back.dto.TeamNameDescPicDTO;
+import com.formaschool.back.dto.team.TeamNameDescPicDTO;
 
 public interface CRUDService<T> {
 	public Collection<T> findAll();

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formaschool.back.dto.SalonNameDescDTO;
+import com.formaschool.back.dto.salon.SalonNameDescDTO;
 import com.formaschool.back.models.Salon;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.SalonService;

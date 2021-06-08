@@ -39,14 +39,6 @@ public class ServiceConfiguration {
 		return new TeamServiceImpl(repo, mapper);
 	}
     
-    @Bean
-	public SalonService salonService(SalonRepository repo , ObjectMapper mapper) {
-		return new SalonServiceImpl(repo, mapper);
-
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper) {
-		return new TeamServiceImpl(repo, mapper);
-	}
-
 	@Bean
 	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
 		return new SalonServiceImpl(repo, mapper);

@@ -1,4 +1,4 @@
-package com.formaschool.back.dto;
+package com.formaschool.back.dto.salon;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.formaschool.back.services;
 
-import com.formaschool.back.dto.SalonNameDescDTO;
+import com.formaschool.back.dto.salon.SalonNameDescDTO;
 import com.formaschool.back.models.Salon;
 
 
