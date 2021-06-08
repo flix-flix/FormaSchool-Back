@@ -23,6 +23,7 @@ import com.formaschool.back.models.Reaction;
 import com.formaschool.back.models.Salon;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.models.User;
+import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
 import com.formaschool.back.repositories.SalonRepository;
@@ -78,6 +79,42 @@ public class InitController {
 			new Member(null, users[1], teams[3], new ArrayList<>()),
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
+
+	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
+
+	private Reaction[] reactions = new Reaction[] { //
+			react(members[0], "bagel"), //
+			react(members[0], "beer_mug"), //
+			react(members[0], "beverage_box"), //
+			react(members[1], "bagel"), //
+
+			react(members[0], "grinning_face_with_sweat"), //
+			react(members[2], "grinning_face_with_sweat"), //
+			react(members[3], "grinning_face_with_sweat"), //
+
+			react(members[2], "OK_hand"), //
+
+			react(members[0], "stop_sign"), //
+			react(members[1], "microbe"), //
+			react(members[1], "stop_sign"), //
+
+			react(members[0], "fire"), //
+			react(members[2], "fire"), //
+			react(members[3], "fire"), //
+			react(members[0], "flexed_biceps"), //
+			react(members[2], "flexed_biceps"), //
+			react(members[3], "flexed_biceps"), //
+
+			// Nourriture
+			react(members[2], "clinking_beer_mugs"), //
+			react(members[1], "beverage_box"), //
+			react(members[3], "beverage_box"), //
+
+			react(members[0], "hamburger"), //
+			react(members[0], "hamburger"), //
+
+			react(members[0], "beer_mug"), //
+	};
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
@@ -177,42 +214,6 @@ public class InitController {
 			new Message(members[2], salons[7], "**routerLink**=\"/404\"", null, LocalDateTime.of(2021, 4, 5, 12, 2, 36),
 					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
 
-	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
-
-	private Reaction[] reactions = new Reaction[] { //
-			react(members[0], "bagel"), //
-			react(members[0], "beer_mug"), //
-			react(members[0], "beverage_box"), //
-			react(members[1], "bagel"), //
-
-			react(members[0], "grinning_face_with_sweat"), //
-			react(members[2], "grinning_face_with_sweat"), //
-			react(members[3], "grinning_face_with_sweat"), //
-
-			react(members[2], "OK_hand"), //
-
-			react(members[0], "stop_sign"), //
-			react(members[1], "microbe"), //
-			react(members[1], "stop_sign"), //
-
-			react(members[0], "fire"), //
-			react(members[2], "fire"), //
-			react(members[3], "fire"), //
-			react(members[0], "flexed_biceps"), //
-			react(members[2], "flexed_biceps"), //
-			react(members[3], "flexed_biceps"), //
-
-			// Nourriture
-			react(members[2], "clinking_beer_mugs"), //
-			react(members[1], "beverage_box"), //
-			react(members[3], "beverage_box"), //
-
-			react(members[0], "hamburger"), //
-			react(members[0], "hamburger"), //
-
-			react(members[0], "beer_mug"), //
-	};
-
 	// ====================================================================================================
 
 	@Autowired
@@ -228,8 +229,8 @@ public class InitController {
 	private MessageRepository msgRepo;
 	@Autowired
 	private MemberRepository memberRepo;
-//	@Autowired
-//	private EmojiRepository emojiRepo;
+	@Autowired
+	private EmojiRepository emojiRepo;
 
 	// ====================================================================================================
 

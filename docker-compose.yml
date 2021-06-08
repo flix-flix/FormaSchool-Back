@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
     mongo:
-        build: .
+        image: mongo
         ports:
             - 27017:27017
     
