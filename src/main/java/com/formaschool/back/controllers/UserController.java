@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
+import com.formaschool.back.dto.user.UserSettings;
 import com.formaschool.back.models.User;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.UserService;
@@ -34,4 +35,11 @@ public class UserController implements CRUDController<User> {
 	public UserNamePict getNamePict(@PathVariable String id) {
 		return service.getUserNamePictById(id);
 	}
+	
+//	ajout get pour userSettings
+	@GetMapping("userSettings/{id}")
+	public UserSettings getuserSettings(@PathVariable String id) {
+		return service.getUserSettingsById(id);
+	}
+	
 }

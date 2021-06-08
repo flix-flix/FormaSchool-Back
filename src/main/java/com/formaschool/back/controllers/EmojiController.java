@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formaschool.back.dto.emoji.EmojiNamePict;
 import com.formaschool.back.models.Emoji;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.EmojiService;
@@ -36,5 +37,9 @@ public class EmojiController implements CRUDController<Emoji>{
 		return this.service.findAllCreatedEmojiOrga();
 	}
 	
+	@GetMapping("emojisOrga")
+	public List<EmojiNamePict> findAllEmojiOrga(){
+		return this.service.findAllEmojiOrga();
+	}
 
 }
