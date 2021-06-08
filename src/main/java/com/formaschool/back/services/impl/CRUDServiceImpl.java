@@ -3,7 +3,6 @@ package com.formaschool.back.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,11 +12,13 @@ import com.formaschool.back.services.CRUDService;
 
 public class CRUDServiceImpl<T> implements CRUDService<T> {
 
-	@Autowired
+	private MongoRepository<T, String> repo;
 	protected ObjectMapper mapper;
 
-	@Autowired
-	private MongoRepository<T, String> repo;
+	public CRUDServiceImpl(MongoRepository<T, String> repo, ObjectMapper mapper) {
+		this.repo = repo;
+		this.mapper = mapper;
+	}
 
 	@Override
 	public List<T> findAll() {

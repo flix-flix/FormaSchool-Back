@@ -3,6 +3,13 @@ package com.formaschool.back.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.repositories.EmojiRepository;
+import com.formaschool.back.repositories.MemberRepository;
+import com.formaschool.back.repositories.MessageRepository;
+import com.formaschool.back.repositories.SalonRepository;
+import com.formaschool.back.repositories.TeamRepository;
+import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.EmojiService;
 import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.MessageService;
@@ -20,32 +27,32 @@ import com.formaschool.back.services.impl.UserServiceImpl;
 public class ServiceConfiguration {
 
 	@Bean
-	public UserService userService() {
-		return new UserServiceImpl();
+	public UserService userService(UserRepository repo, ObjectMapper mapper) {
+		return new UserServiceImpl(repo, mapper);
 	}
 
 	@Bean
-	public TeamService teamService() {
-		return new TeamServiceImpl();
+	public TeamService teamService(TeamRepository repo, ObjectMapper mapper) {
+		return new TeamServiceImpl(repo, mapper);
 	}
 
 	@Bean
-	public SalonService salonService() {
-		return new SalonServiceImpl();
+	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
+		return new SalonServiceImpl(repo, mapper);
 	}
 
 	@Bean
-	public MessageService msgService() {
-		return new MessageServiceImpl();
+	public MessageService msgService(MessageRepository repo, ObjectMapper mapper) {
+		return new MessageServiceImpl(repo, mapper);
 	}
 
 	@Bean
-	public MemberService memberService() {
-		return new MemberServiceImpl();
+	public MemberService memberService(MemberRepository repo, ObjectMapper mapper) {
+		return new MemberServiceImpl(repo, mapper);
 	}
 
 	@Bean
-	public EmojiService emojiService() {
-		return new EmojiServiceImpl();
+	public EmojiService emojiService(EmojiRepository repo, ObjectMapper mapper) {
+		return new EmojiServiceImpl(repo, mapper);
 	}
 }
