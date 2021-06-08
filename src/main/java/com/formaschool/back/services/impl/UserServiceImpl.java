@@ -3,6 +3,7 @@ package com.formaschool.back.services.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
+import com.formaschool.back.dto.user.UserSettings;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.UserService;
@@ -24,5 +25,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	@Override
 	public UserNamePict getUserNamePictById(String id) {
 		return map(repo.findById(id), UserNamePict.class);
+	}
+	
+	// ajout pour userSettings
+	@Override
+	public UserSettings getUserSettingsById(String id) {
+		return map(repo.findById(id), UserSettings.class);
 	}
 }
