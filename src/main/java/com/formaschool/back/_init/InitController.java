@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.formaschool.back.models.Emoji;
+import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
 import com.formaschool.back.models.Reaction;
@@ -24,6 +25,7 @@ import com.formaschool.back.models.Salon;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.EmojiRepository;
+import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
 import com.formaschool.back.repositories.SalonRepository;
@@ -115,6 +117,18 @@ public class InitController {
 
 			react(members[0], "beer_mug"), //
 	};
+
+	private Log[] logs = new Log[] {
+			new Log(null, users[2], teams[1], 0, LocalDateTime.of(2019, 1, 16, 17, 18, 19), "a crée l'emoji Kama"),
+			new Log(null, users[1], teams[1], 6, LocalDateTime.of(2021, 5, 4, 13, 17, 19),
+					"a épinglé un message de Bouchaib dans Géneral"),
+			new Log(null, users[1], teams[1], 3, LocalDateTime.of(2021, 5, 4, 15, 17, 19), "a crée un salon"),
+			new Log(null, users[1], teams[1], 5, LocalDateTime.of(2021, 5, 4, 9, 53, 19), "a supprimé un salon"),
+			new Log(null, users[2], teams[1], 4, LocalDateTime.of(2021, 2, 4, 6, 53, 29), "a modifie un salon"),
+			new Log(null, users[2], null, 8, LocalDateTime.of(2021, 6, 5, 9, 53, 29),
+					"a créer l'utilisateur Benoit Routier"),
+			new Log(null, users[2], teams[1], 1, LocalDateTime.of(2019, 1, 16, 9, 53, 29), "a Modifier l'emoji Kama"),
+			new Log(null, users[2], null, 11, LocalDateTime.of(2019, 1, 16, 7, 53, 29), "a crée l'equipe Dofus") };
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
@@ -231,6 +245,8 @@ public class InitController {
 	private MemberRepository memberRepo;
 	@Autowired
 	private EmojiRepository emojiRepo;
+	@Autowired
+	private LogRepository logRepo;
 
 	// ====================================================================================================
 
@@ -261,6 +277,8 @@ public class InitController {
 			memberRepo.save(member);
 		for (Message msg : msgs)
 			msgRepo.save(msg);
+		for (Log log : logs)
+			logRepo.save(log);
 
 		try {
 			file.createNewFile();

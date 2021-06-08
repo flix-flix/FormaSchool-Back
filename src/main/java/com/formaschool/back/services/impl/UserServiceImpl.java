@@ -1,7 +1,6 @@
 package com.formaschool.back.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.models.User;
@@ -10,8 +9,12 @@ import com.formaschool.back.services.UserService;
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
-	@Autowired
 	private UserRepository repo;
+
+	public UserServiceImpl(UserRepository repo, ObjectMapper mapper) {
+		super(repo, mapper);
+		this.repo = repo;
+	}
 
 	@Override
 	public UserName getUserNameById(String id) {
