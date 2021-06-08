@@ -59,10 +59,10 @@ public class InitController {
 					teams[3]), };
 
 	private User[] users = new User[] {
-			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.png", LocalDate.of(2021, 2, 20)),
-			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.png", LocalDate.of(2021, 2, 25)),
-			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.png", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "@gmail.com", "4.png", LocalDate.of(2021, 3, 12)), };
+			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
+			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
+			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
+			new User("Bouchaib", "Faham", "mdp", "@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
 
 	private Member[] members = new Member[] { //
 			new Member(null, users[0], teams[0], new ArrayList<>()),
