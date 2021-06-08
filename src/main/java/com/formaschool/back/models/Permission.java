@@ -2,6 +2,7 @@ package com.formaschool.back.models;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,16 @@ public class Permission {
 
 	@Id
 	private String id;
-	//TODO boolean propre au salon
+	
+	@DBRef
+	private Salon salon;
+	
+	/**A Permission is linked to a member XOR a role */
+	@DBRef
+	private Member member;
+	
+	@DBRef
+	private Role role;
 
+	private TeamSalonRights commonRights;
 }

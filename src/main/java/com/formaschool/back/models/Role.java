@@ -1,6 +1,5 @@
 package com.formaschool.back.models;
 
-import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -23,12 +22,19 @@ public class Role {
 	private String color;
 	@DBRef
 	private TeamSalonRights commonRights;
-	private Boolean manageSalon;
+	
+	/** Change team's name and desc*/
+	private Boolean manageTeam;
+		
+	private Boolean createDeleteSalon;
+	
+	/** Create, delete , update emoji*/
 	private Boolean manageEmoji;
-	private Boolean teamManage;
+	
+	/** See logs */
 	private Boolean seeLogs;
-	//Change your pseudo
+	/** Change your pseudo */
 	private Boolean changePseudo;
-	//Change every Pseudo
+	/** Change every pseudo */
 	private Boolean managePseudo;
 }
