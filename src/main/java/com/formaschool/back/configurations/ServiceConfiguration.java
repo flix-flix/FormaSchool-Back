@@ -3,6 +3,9 @@ package com.formaschool.back.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.repositories.SalonRepository;
+import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.services.EmojiService;
 import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.MessageService;
@@ -25,13 +28,13 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService() {
-		return new TeamServiceImpl();
+	public TeamService teamService(TeamRepository repository , ObjectMapper mapper) {
+		return new TeamServiceImpl(repository, mapper);
 	}
-
-	@Bean
-	public SalonService salonService() {
-		return new SalonServiceImpl();
+    
+    @Bean
+	public SalonService salonService(SalonRepository repository , ObjectMapper mapper) {
+		return new SalonServiceImpl(repository, mapper);
 	}
 
 	@Bean

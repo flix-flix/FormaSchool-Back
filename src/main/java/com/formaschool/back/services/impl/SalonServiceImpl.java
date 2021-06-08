@@ -12,7 +12,6 @@ import com.formaschool.back.services.SalonService;
 public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonService {
 	
     private ObjectMapper mapper;
-	
 	private SalonRepository repository;
 	
 	public SalonServiceImpl(SalonRepository repository, ObjectMapper mapperParam) {
@@ -22,7 +21,6 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 
 	@Override
 	public SalonNameDescDTO findById(String id) {
-		
 		Salon salon = this.repository.findById(id)
 				.orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return mapper.convertValue(salon, SalonNameDescDTO.class);
