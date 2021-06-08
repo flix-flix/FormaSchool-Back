@@ -26,10 +26,10 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	public UserNamePict getUserNamePictById(String id) {
 		return map(repo.findById(id), UserNamePict.class);
 	}
-
+	
+	// ajout pour userSettings
 	@Override
 	public UserSettings getUserSettingsById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return map(repo.findById(id), UserSettings.class);
 	}
 }
