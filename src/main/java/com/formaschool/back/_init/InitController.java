@@ -285,15 +285,16 @@ public class InitController {
 		for (Member member : members)
 			memberRepo.save(member);
 
-		initCreatedEmojis();
-
-		for (Emoji emoji : emojis.values())
-			emojiRepo.save(emoji);
-		for (Reaction react : reactions)
-			reactRepo.save(react);
 
 		for (Message msg : msgs)
 			msgRepo.save(msg);
+
+		for (Emoji emoji : emojis.values())
+			emojiRepo.save(emoji);
+		initCreatedEmojis();
+
+		for (Reaction react : reactions)
+			reactRepo.save(react);
 
 		for (Log log : logs)
 			logRepo.save(log);
