@@ -58,7 +58,7 @@ public class InitEmojis {
 		map.put("watermelon", new Emoji(null, null, "watermelon", "emojis/watermelon.png"));
 		map.put("wine_glass", new Emoji(null, null, "wine_glass", "emojis/wine_glass.png"));
 		map.put("zipper-mouth_face", new Emoji(null, null, "zipper-mouth_face", "emojis/zipper-mouth_face.png"));
-
+	
 		return map;
 	}
 }

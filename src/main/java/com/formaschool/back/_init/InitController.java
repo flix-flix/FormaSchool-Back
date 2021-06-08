@@ -83,6 +83,17 @@ public class InitController {
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
+	
+	public void initCreatedEmojis() {
+		this.emojis.put("bmw",new Emoji(users[2], teams[1], "bmw", "0.png"));
+		this.emojis.put("nike",new Emoji(users[2], teams[1], "nike", "1.png"));
+		this.emojis.put("insta",new Emoji(users[2], teams[2], "insta", "2.png"));
+		this.emojis.put("rocket",new Emoji(users[2], null, "rocket", "3.png"));
+		this.emojis.put("bob",new Emoji(users[2], teams[1], "bob", "4.png"));
+		this.emojis.put("boby",new Emoji(users[2], teams[1], "boby", "4.png"));
+		this.emojis.put("bobu",new Emoji(users[2], teams[1], "bobu", "4.png"));
+	}
+	
 
 	private Reaction[] reactions = new Reaction[] { //
 			react(members[0], "bagel"), //
@@ -269,7 +280,7 @@ public class InitController {
 			teamRepo.save(team);
 		for (Salon salon : salons)
 			salonRepo.save(salon);
-
+		initCreatedEmojis();
 		for (Emoji emoji : emojis.values())
 			emojiRepo.save(emoji);
 
