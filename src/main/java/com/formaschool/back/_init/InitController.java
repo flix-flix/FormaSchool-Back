@@ -323,9 +323,9 @@ public class InitController {
 		for (Message msg : msgs)
 			msgRepo.save(msg);
 
+		initCreatedEmojis();
 		for (Emoji emoji : emojis.values())
 			emojiRepo.save(emoji);
-		initCreatedEmojis();
 
 		for (Reaction react : reactions)
 			reactRepo.save(react);
