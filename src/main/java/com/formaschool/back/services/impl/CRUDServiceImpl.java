@@ -47,14 +47,14 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	// ====================================================================================================
 
-	/** Throw NOT_FOUND if the Optional is empty */
-	protected T get(Optional<T> opt) {
-		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+	/** Throw BAD_REQUEST if the Optional is empty */
+	protected T opt(Optional<T> opt) {
+		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 	}
 
 	/** Map the entity into the DTO */
-	protected <DTO> DTO map(Optional<T> opt, Class<DTO> cl) {
-		return mapper.convertValue(get(opt), cl);
+	protected <DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
+		return mapper.convertValue(opt(opt), cl);
 	}
 
 	/** Map the entity into the DTO */

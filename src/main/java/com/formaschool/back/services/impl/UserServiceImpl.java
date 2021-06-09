@@ -19,17 +19,17 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserName getUserNameById(String id) {
-		return map(repo.findById(id), UserName.class);
+		return dtoOpt(repo.findById(id), UserName.class);
 	}
 
 	@Override
 	public UserNamePict getUserNamePictById(String id) {
-		return map(repo.findById(id), UserNamePict.class);
+		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
 	
 	// ajout pour userSettings
 	@Override
 	public UserSettings getUserSettingsById(String id) {
-		return map(repo.findById(id), UserSettings.class);
+		return dtoOpt(repo.findById(id), UserSettings.class);
 	}
 }

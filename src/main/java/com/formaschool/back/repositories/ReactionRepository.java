@@ -8,5 +8,5 @@ import com.formaschool.back.models.Reaction;
 
 public interface ReactionRepository extends MongoRepository<Reaction, String> {
 
-	public List<Reaction> findAllByMessageId(String id);
+	public List<Reaction> findAllByMessageId(String msgId);
 }
