@@ -2,6 +2,7 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
+import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.dto.team.TeamNameDescPicDTO;
 import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.dto.team.UpdateTeamNameDescPicDTO;
@@ -13,4 +14,11 @@ public interface TeamService extends CRUDService<Team> {
 	public TeamNameDescPicDTO updateTeamNameDescPicDto(UpdateTeamNameDescPicDTO dto);
 
 	public List<TeamNamePict> getAllTeamOfUser(String id);
+	
+	/**
+	 * Return all role which are inside the team without their rights
+	 * @param teamId the id of the team
+	 * @return a list of RoleWithoutRights
+	 */
+	public List<RoleWithoutRights> findRoleWithoutRightsByTeamId(String teamId);
 }
