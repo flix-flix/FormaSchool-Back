@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.dto.team.TeamNameDescPicDTO;
 import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.dto.team.UpdateTeamNameDescPicDTO;
@@ -55,5 +56,12 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	@Override
 	public TeamNamePict findTeamNamePictById(String id) {
 		return dtoOpt(repo.findById(id), TeamNamePict.class);
+	}
+	// =============================================================================================
+
+	@Override
+	public List<RoleWithoutRights> findRoleWithoutRightsByTeamId(String teamId) {
+		Team team = this.repo.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		return team.getRoles().stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
 	}
 }

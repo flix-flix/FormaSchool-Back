@@ -48,7 +48,7 @@ public class InitController {
 			 new TeamSalonRights(true, true, true, true, true, true, true),
 			 new TeamSalonRights(true, true, true, true, true, true, true),
 			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true)
+			 new TeamSalonRights(true, true, true, true, true, false, true)
 	};
 	
 	private Role[] roles = new Role[] {
