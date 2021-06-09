@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -20,27 +21,52 @@ import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
 import com.formaschool.back.models.Reaction;
+import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Salon;
 import com.formaschool.back.models.Team;
+import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
 import com.formaschool.back.repositories.ReactionRepository;
+import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
 import com.formaschool.back.repositories.TeamRepository;
+import com.formaschool.back.repositories.TeamSalonRightsRepository;
 import com.formaschool.back.repositories.UserRepository;
 
 @RestController
 @RequestMapping("init")
 public class InitController {
+	
+	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true),
+			 new TeamSalonRights(true, true, true, true, true, true, true)
+	};
+	
+	private Role[] roles = new Role[] {
+			new Role("@everyone", "#A2D0EA", teamSalonRights[0], true, true, true, true, true, true),
+			new Role("@everyone", "#A2D0EA", teamSalonRights[1], true, true, true, true, true, true),
+			new Role("@everyone", "#A2D0EA", teamSalonRights[2], true, true, true, true, true, true),
+			new Role("@everyone", "#A2D0EA", teamSalonRights[3], true, true, true, true, true, true),	
+			new Role("Super_Role", "#fcba03",teamSalonRights[4], true, true, true, true, true, true),
+			new Role("Cant_see_logs", "#dbff29",teamSalonRights[5], true, true, true, false, true, true),
+			new Role("Cant_send_msg", "#ffD02A", teamSalonRights[6], true, true, true, true, true, true)
+	};
+
 
 	private Team[] teams = new Team[] {
-			new Team("IBM", "International Business Machines Corporation", "1.png", new ArrayList<>()),
-			new Team("Pole emploi", "Invest in Digital People", "2.jpg", new ArrayList<>()),
-			new Team("M2i", "M2i formations, Hauts-de-France", "3.png", new ArrayList<>()),
-			new Team("Semifir", "Ceci est la description de l'équipe Semifir", "4.png", new ArrayList<>()), };
+			new Team("IBM", "International Business Machines Corporation", "1.png", List.of(roles[0],roles[4], roles[5])),
+			new Team("Pole emploi", "Invest in Digital People", "2.jpg", List.of(roles[1], roles[6])),
+			new Team("M2i", "M2i formations, Hauts-de-France", "3.png", List.of(roles[2])),
+			new Team("Semifir", "Ceci est la description de l'équipe Semifir", "4.png", List.of(roles[3])), };
 
 	private Salon[] salons = new Salon[] { new Salon("Général", "Messages en tout genre", teams[0]),
 			new Salon("Nourriture:pizza:", "Comment se péter le bide", teams[0]),
@@ -81,6 +107,7 @@ public class InitController {
 			new Member(null, users[1], teams[3], new ArrayList<>()),
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
+	
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
@@ -259,6 +286,10 @@ public class InitController {
 	private MessageRepository msgRepo;
 	@Autowired
 	private LogRepository logRepo;
+	@Autowired
+	private RoleRepository roleRepo;
+	@Autowired
+	private TeamSalonRightsRepository teamSalonRightsRepo;
 
 	// ====================================================================================================
 
@@ -276,7 +307,10 @@ public class InitController {
 
 		for (User user : users)
 			userRepo.save(user);
-
+		for (TeamSalonRights teamSalonRight : teamSalonRights)
+			teamSalonRightsRepo.save(teamSalonRight);
+		for (Role role : roles)
+			roleRepo.save(role);
 		for (Team team : teams)
 			teamRepo.save(team);
 		for (Salon salon : salons)

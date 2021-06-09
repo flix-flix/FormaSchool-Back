@@ -26,4 +26,15 @@ public class TeamSalonRights {
 	/** Allow to add reaction under a msg*/
 	private Boolean addReaction;
 	
+	public TeamSalonRights(Boolean managePermissions, Boolean updateSalon, Boolean deleteMsg, Boolean tagSomeone,
+			Boolean seeSalon, Boolean sendMsg, Boolean addReaction) {
+		super();
+		this.managePermissions = managePermissions;
+		this.updateSalon = updateSalon;
+		this.deleteMsg = deleteMsg;
+		this.tagSomeone = tagSomeone;
+		this.seeSalon = seeSalon;
+		this.sendMsg = sendMsg;
+		this.addReaction = addReaction;
+	}
 }
