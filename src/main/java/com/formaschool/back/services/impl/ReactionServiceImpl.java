@@ -21,7 +21,7 @@ public class ReactionServiceImpl extends CRUDServiceImpl<Reaction> implements Re
 	}
 
 	@Override
-	public List<ReactionUsers> getReactionsUsersOfMessage(String msgId) {
+	public List<ReactionUsers> getAllReactionsUsersOfMessage(String msgId) {
 		return repo.findAllByMessageId(msgId).stream().collect(Collectors.groupingBy(react -> react.getEmoji().getId()))
 				.values().stream()
 				.map(list -> new ReactionUsers(dto(list.get(0).getEmoji(), EmojiNamePict.class), list.stream()

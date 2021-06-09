@@ -59,7 +59,6 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	/** Map the entity into the DTO */
 	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
-		System.out.println(entity);
 		return mapper.convertValue(entity, cl);
 	}
 }

@@ -1,5 +1,7 @@
 package com.formaschool.back.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +26,13 @@ public class MessageController implements CRUDController<Message> {
 		return service;
 	}
 
-	@GetMapping("withReacts/{id}")
-	public MessageWithReacts getMessageWithReactions(@PathVariable String id) {
-		return service.getMessageWithReaction(id);
+	@GetMapping("withReacts/{msgId}")
+	public MessageWithReacts getMessageWithReactions(@PathVariable String msgId) {
+		return service.getMessageWithReacts(msgId);
+	}
+
+	@GetMapping("salonWithReacts/{salonId}")
+	public List<MessageWithReacts> getAllMessageWithReactionsOfSalon(@PathVariable String salonId) {
+		return service.getAllMessageWithReactsOfSalon(salonId);
 	}
 }
