@@ -28,5 +28,6 @@ public class Permission {
 	@DBRef
 	private Role role;
 
+	@DBRef
 	private TeamSalonRights commonRights;
 }
