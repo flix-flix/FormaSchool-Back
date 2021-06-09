@@ -52,7 +52,14 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 	}
 
+	/** Map the entity into the DTO */
 	protected <DTO> DTO map(Optional<T> opt, Class<DTO> cl) {
 		return mapper.convertValue(get(opt), cl);
+	}
+
+	/** Map the entity into the DTO */
+	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
+		System.out.println(entity);
+		return mapper.convertValue(entity, cl);
 	}
 }

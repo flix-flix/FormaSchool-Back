@@ -18,14 +18,14 @@ public class Reaction {
 	private String id;
 
 	@DBRef
-	private Message msg;
+	private Message message;
 	@DBRef
 	private Emoji emoji;
 	@DBRef
 	private Member member;
 
 	public Reaction(Message msg, Member member, Emoji emoji) {
-		this.msg = msg;
+		this.message = msg;
 		this.emoji = emoji;
 		this.member = member;
 	}
