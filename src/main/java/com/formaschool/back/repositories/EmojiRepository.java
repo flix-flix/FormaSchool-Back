@@ -11,5 +11,7 @@ public interface EmojiRepository extends MongoRepository<Emoji, String> {
 	public List<Emoji> findByUserNotNullAndTeamId(String teamId);
 	
 	public List<Emoji> findByUserNotNullAndTeamNull();
+	
+	public List<Emoji> findByUserNullAndTeamNull();
 
 }

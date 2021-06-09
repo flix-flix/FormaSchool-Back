@@ -24,14 +24,14 @@ public class Member {
 	private User user;
 	@DBRef
 	private Team team;
-	// TODO
-//	@DBRef
-//	private List<Role> roles;
+
+	@DBRef
+	private List<Role> roles;
 
 	public Member(String pseudo, User user, Team team, List<Role> roles) {
 		this.pseudo = pseudo;
 		this.user = user;
 		this.team = team;
-//		this.roles = roles;
+		this.roles = roles;
 	}
 }
