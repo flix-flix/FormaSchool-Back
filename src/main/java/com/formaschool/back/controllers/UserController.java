@@ -37,7 +37,7 @@ public class UserController implements CRUDController<User> {
 	}
 
 	// TODO [Remove]
-	@GetMapping("defaultUser")
+	@GetMapping("default")
 	public UserNamePict getDefaultUser() {
 		return service.getDefaultUser();
 	}
