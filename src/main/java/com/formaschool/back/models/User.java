@@ -24,4 +24,13 @@ public class User {
 	private String picture;
 
 	private LocalDate creation;
+
+	public User(String firstname, String lastname, String password, String email, String picture, LocalDate creation) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.password = password;
+		this.email = email;
+		this.picture = picture;
+		this.creation = creation;
+	}
 }

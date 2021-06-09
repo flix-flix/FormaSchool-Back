@@ -1,6 +1,6 @@
 package com.formaschool.back.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -27,6 +27,16 @@ public class Message {
 	@NonNull
 	private String content;
 	private String file;
-	private LocalDate send = LocalDate.now();
-	private LocalDate edit;
+	private LocalDateTime send = LocalDateTime.now();
+	private LocalDateTime edit;
+
+	public Message(Member sender, Salon salon, @NonNull String content, String file, LocalDateTime send,
+			LocalDateTime edit) {
+		this.sender = sender;
+		this.salon = salon;
+		this.content = content;
+		this.file = file;
+		this.send = send;
+		this.edit = edit;
+	}
 }

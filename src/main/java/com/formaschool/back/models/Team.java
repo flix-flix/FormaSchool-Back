@@ -24,6 +24,14 @@ public class Team {
 	private String name;
 	private String desc;
 	private String picture;
+
 	@DBRef
 	private List<Role> roles;
+
+	public Team(@NonNull String name, String desc, String picture, List<Role> roles) {
+		this.name = name;
+		this.desc = desc;
+		this.picture = picture;
+		this.roles = roles;
+	}
 }

@@ -18,13 +18,20 @@ public class Member {
 
 	@Id
 	private String id;
-	
-	private String pseudo;
 
+	private String pseudo;
 	@DBRef
 	private User user;
 	@DBRef
 	private Team team;
+
 	@DBRef
 	private List<Role> roles;
+
+	public Member(String pseudo, User user, Team team, List<Role> roles) {
+		this.pseudo = pseudo;
+		this.user = user;
+		this.team = team;
+		this.roles = roles;
+	}
 }

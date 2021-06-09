@@ -2,6 +2,8 @@ package com.formaschool.back.services;
 
 import java.util.Collection;
 
+import com.formaschool.back.dto.team.TeamNameDescPicDTO;
+
 public interface CRUDService<T> {
 	public Collection<T> findAll();
 
@@ -12,4 +14,6 @@ public interface CRUDService<T> {
 	public T update(T obj);
 
 	public void delete(String id);
+
+	
 }
