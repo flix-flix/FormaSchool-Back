@@ -53,12 +53,12 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 	}
 
 	/** Map the entity into the DTO */
-	protected <DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
-		return mapper.convertValue(opt(opt), cl);
+	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
+		return mapper.convertValue(entity, cl);
 	}
 
 	/** Map the entity into the DTO */
-	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
-		return mapper.convertValue(entity, cl);
+	protected <DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
+		return dto(opt(opt), cl);
 	}
 }

@@ -35,11 +35,16 @@ public class UserController implements CRUDController<User> {
 	public UserNamePict getNamePict(@PathVariable String id) {
 		return service.getUserNamePictById(id);
 	}
-	
+
+	// TODO [Remove]
+	@GetMapping("defaultUser")
+	public UserNamePict getDefaultUser() {
+		return service.getDefaultUser();
+	}
+
 //	ajout get pour userSettings
 	@GetMapping("userSettings/{id}")
 	public UserSettings getuserSettings(@PathVariable String id) {
 		return service.getUserSettingsById(id);
 	}
-	
 }

@@ -26,10 +26,16 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	public UserNamePict getUserNamePictById(String id) {
 		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
-	
+
 	// ajout pour userSettings
 	@Override
 	public UserSettings getUserSettingsById(String id) {
 		return dtoOpt(repo.findById(id), UserSettings.class);
+	}
+
+	@Override
+	public UserNamePict getDefaultUser() {
+		return dtoOpt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst(),
+				UserNamePict.class);
 	}
 }

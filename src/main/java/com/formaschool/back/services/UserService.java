@@ -10,7 +10,10 @@ public interface UserService extends CRUDService<User> {
 	public UserName getUserNameById(String id);
 
 	public UserNamePict getUserNamePictById(String id);
-	
+
 	// ajout pour get userSettings
 	public UserSettings getUserSettingsById(String id);
+
+	// TODO [Remove]
+	public UserNamePict getDefaultUser();
 }
