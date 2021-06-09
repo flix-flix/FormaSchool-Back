@@ -17,7 +17,7 @@ public class Role {
 	@Id
 	private String id;
 
-	private String nom;
+	private String name;
 	private String color;
 	@DBRef
 	private TeamSalonRights commonRights;
@@ -37,4 +37,18 @@ public class Role {
 	private Boolean changePseudo;
 	/** Change every pseudo */
 	private Boolean managePseudo;
+	
+	public Role(String name, String color, TeamSalonRights commonRights, Boolean manageTeam, Boolean createDeleteSalon,
+			Boolean manageEmoji, Boolean seeLogs, Boolean changePseudo, Boolean managePseudo) {
+		super();
+		this.name = name;
+		this.color = color;
+		this.commonRights = commonRights;
+		this.manageTeam = manageTeam;
+		this.createDeleteSalon = createDeleteSalon;
+		this.manageEmoji = manageEmoji;
+		this.seeLogs = seeLogs;
+		this.changePseudo = changePseudo;
+		this.managePseudo = managePseudo;
+	}
 }
