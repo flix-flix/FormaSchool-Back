@@ -6,5 +6,5 @@ import lombok.Data;
 public class TeamNamePict {
 	private String id;
 	private String name;
-	private String pict;
+	private String picture;
 }

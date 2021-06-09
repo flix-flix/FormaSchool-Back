@@ -77,12 +77,12 @@ public class ServiceConfiguration {
 	public ReactionService reactionService(ReactionRepository repo, ObjectMapper mapper) {
 		return new ReactionServiceImpl(repo, mapper);
 	}
-	
+
 	@Bean
 	public RoleService roleService(RoleRepository repo, ObjectMapper mapper) {
 		return new RoleServiceImpl(repo, mapper);
 	}
-	
+
 	@Bean
 	public TeamSalonRightsService teamSalonRightsService(TeamSalonRightsRepository repo, ObjectMapper mapper) {
 		return new TeamSalonRightsServiceImpl(repo, mapper);

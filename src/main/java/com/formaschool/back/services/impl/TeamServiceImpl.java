@@ -47,8 +47,13 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public List<TeamNamePict> getAllTeamOfUser(String userId) {
+	public List<TeamNamePict> findAllTeamOfUser(String userId) {
 		return memberService.findAllByUserId(userId).stream().map(member -> dto(member.getTeam(), TeamNamePict.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public TeamNamePict findTeamNamePictById(String id) {
+		return dtoOpt(repo.findById(id), TeamNamePict.class);
 	}
 }

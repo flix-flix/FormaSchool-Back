@@ -12,5 +12,7 @@ public interface TeamService extends CRUDService<Team> {
 
 	public TeamNameDescPicDTO updateTeamNameDescPicDto(UpdateTeamNameDescPicDTO dto);
 
-	public List<TeamNamePict> getAllTeamOfUser(String id);
+	public List<TeamNamePict> findAllTeamOfUser(String id);
+
+	public TeamNamePict findTeamNamePictById(String id);
 }

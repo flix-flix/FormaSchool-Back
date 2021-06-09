@@ -31,14 +31,19 @@ public class TeamController implements CRUDController<Team> {
 		return service;
 	}
 
-	@GetMapping("teamDesc/{id}")
-	public TeamNameDescPicDTO findById(@PathVariable String id) {
-		return this.service.findTeamNameDescPicDtoById(id);
+	@GetMapping("teamDesc/{teamId}")
+	public TeamNameDescPicDTO findById(@PathVariable String teamId) {
+		return this.service.findTeamNameDescPicDtoById(teamId);
+	}
+
+	@GetMapping("teamNamePict/{teamId}")
+	public TeamNamePict findNamePictById(@PathVariable String teamId) {
+		return this.service.findTeamNamePictById(teamId);
 	}
 
 	@GetMapping("ofUser/{userId}")
-	public List<TeamNamePict> getTeamsOfUser(@PathVariable String userId) {
-		return service.getAllTeamOfUser(userId);
+	public List<TeamNamePict> findTeamsOfUser(@PathVariable String userId) {
+		return service.findAllTeamOfUser(userId);
 	}
 
 	@PatchMapping("teamDesc/{id}")
