@@ -5,10 +5,12 @@ import com.formaschool.back.dto.user.UserNamePict;
 import lombok.Data;
 
 @Data
-public class EmojiNamePictUser {
+public class EmojiNamePictUserTeamId {
 	
+	private String id;
 	private String name;
 	private String picture;
+	private String teamId;
 	private UserNamePict user;
 
 }

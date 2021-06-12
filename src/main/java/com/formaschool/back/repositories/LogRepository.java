@@ -9,5 +9,7 @@ import com.formaschool.back.models.Log;
 public interface LogRepository extends MongoRepository<Log, String> {
 	
 	public List<Log> findByTeamId(String teamId);
+	
+	public List<Log> findByTeamIdNull();
 
 }

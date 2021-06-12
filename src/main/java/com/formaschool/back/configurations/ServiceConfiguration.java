@@ -67,8 +67,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public EmojiService emojiService(EmojiRepository repo, ObjectMapper mapper) {
-		return new EmojiServiceImpl(repo, mapper);
+	public EmojiService emojiService(EmojiRepository repo,TeamService teamService, UserService userService, ObjectMapper mapper) {
+		return new EmojiServiceImpl(repo, teamService, userService, mapper);
 	}
 
 	@Bean

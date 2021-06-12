@@ -27,14 +27,13 @@ public class LogController implements CRUDController<Log> {
 		return service;
 	}
 	
-	@GetMapping("withoutId")
-	public List<LogWithoutId> findAllWithoutId(){
-		return this.service.findAllWithoutId();
+	@GetMapping("withoutId/adminLogs")
+	public List<LogWithoutId> findAdminLogsWithoutId(){
+		return this.service.findAdminLogsWithoutId();
 	}
 	
 	@GetMapping("withoutId/{teamId}")
 	public List<LogWithoutId> findWithoutIdByTeamId(@PathVariable String teamId){
-		System.out.println(teamId);
 		return this.service.findWithoutIdByTeam(teamId);
 	}
 

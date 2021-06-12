@@ -18,8 +18,8 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 		this.repository = repository;
 	}
 
-	public List<LogWithoutId> findAllWithoutId() {
-		List<Log> logs = this.repository.findAll();
+	public List<LogWithoutId> findAdminLogsWithoutId() {
+		List<Log> logs = this.repository.findByTeamIdNull();
 		return logs.stream().map(log -> {
 			return this.mapper.convertValue(log, LogWithoutId.class);
 		}).collect(Collectors.toList());

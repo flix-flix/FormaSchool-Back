@@ -112,13 +112,13 @@ public class InitController {
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
 	public void initCreatedEmojis() {
-		this.emojis.put("bmw", new Emoji(users[2], teams[1], "bmw", "0.png"));
-		this.emojis.put("nike", new Emoji(users[2], teams[1], "nike", "1.png"));
-		this.emojis.put("insta", new Emoji(users[2], teams[2], "insta", "2.png"));
+		this.emojis.put("bmw", new Emoji(users[2], teams[0], "bmw", "0.png"));
+		this.emojis.put("nike", new Emoji(users[2], teams[0], "nike", "1.png"));
+		this.emojis.put("insta", new Emoji(users[2], teams[1], "insta", "2.png"));
 		this.emojis.put("rocket", new Emoji(users[2], null, "rocket", "3.png"));
-		this.emojis.put("bob", new Emoji(users[2], teams[1], "bob", "4.png"));
-		this.emojis.put("boby", new Emoji(users[2], teams[1], "boby", "4.png"));
-		this.emojis.put("bobu", new Emoji(users[2], teams[1], "bobu", "4.png"));
+		this.emojis.put("bob", new Emoji(users[2], teams[0], "bob", "4.png"));
+		this.emojis.put("boby", new Emoji(users[2], teams[0], "boby", "4.png"));
+		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
 	}
 
 	private Message[] msgs = new Message[] {
@@ -254,15 +254,15 @@ public class InitController {
 	};
 
 	private Log[] logs = new Log[] {
-			new Log(null, users[2], teams[1], 0, LocalDateTime.of(2019, 1, 16, 17, 18, 19), "a crée l'emoji Kama"),
-			new Log(null, users[1], teams[1], 6, LocalDateTime.of(2021, 5, 4, 13, 17, 19),
+			new Log(null, users[2], teams[0], 0, LocalDateTime.of(2019, 1, 16, 17, 18, 19), "a crée l'emoji Kama"),
+			new Log(null, users[1], teams[0], 6, LocalDateTime.of(2021, 5, 4, 13, 17, 19),
 					"a épinglé un message de Bouchaib dans Géneral"),
-			new Log(null, users[1], teams[1], 3, LocalDateTime.of(2021, 5, 4, 15, 17, 19), "a crée un salon"),
-			new Log(null, users[1], teams[1], 5, LocalDateTime.of(2021, 5, 4, 9, 53, 19), "a supprimé un salon"),
-			new Log(null, users[2], teams[1], 4, LocalDateTime.of(2021, 2, 4, 6, 53, 29), "a modifie un salon"),
+			new Log(null, users[1], teams[0], 3, LocalDateTime.of(2021, 5, 4, 15, 17, 19), "a crée un salon"),
+			new Log(null, users[1], teams[0], 5, LocalDateTime.of(2021, 5, 4, 9, 53, 19), "a supprimé un salon"),
+			new Log(null, users[2], teams[0], 4, LocalDateTime.of(2021, 2, 4, 6, 53, 29), "a modifie un salon"),
 			new Log(null, users[2], null, 8, LocalDateTime.of(2021, 6, 5, 9, 53, 29),
 					"a créer l'utilisateur Benoit Routier"),
-			new Log(null, users[2], teams[1], 1, LocalDateTime.of(2019, 1, 16, 9, 53, 29), "a Modifier l'emoji Kama"),
+			new Log(null, users[2], teams[0], 1, LocalDateTime.of(2019, 1, 16, 9, 53, 29), "a Modifier l'emoji Kama"),
 			new Log(null, users[2], null, 11, LocalDateTime.of(2019, 1, 16, 7, 53, 29), "a crée l'equipe Dofus") };
 
 	// ====================================================================================================

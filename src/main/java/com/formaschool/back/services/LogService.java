@@ -12,7 +12,7 @@ public interface LogService extends CRUDService<Log>{
 	 * This function allows you to find all logs without their ids
 	 * @return a list of LogWithoutId object
 	 */
-	public List<LogWithoutId> findAllWithoutId();
+	public List<LogWithoutId> findAdminLogsWithoutId();
 	
 	/**
 	 * This function allows you to find all logs without their ids by teamId
