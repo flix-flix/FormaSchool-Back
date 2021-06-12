@@ -1,5 +1,6 @@
 package com.formaschool.back.dto.user;
 
+
 import java.time.LocalDate;
 
 import lombok.Data;
@@ -14,5 +15,4 @@ public class UserSettings {
 	private LocalDate creation ;
 	private String picture;
 	
-
 }
