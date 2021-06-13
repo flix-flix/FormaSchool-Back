@@ -12,5 +12,7 @@ public interface SalonService extends CRUDService<Salon> {
 
 	public SalonNameDescDTO updateSalonNameDesc(UpdateSalonNameDescDTO dto);
 
-	public List<SalonName> findAllSalonOfTeam(String teamId);
+	public List<SalonName> findAllSalonNameOfTeam(String teamId);
+	
+	public List<Salon> findAllSalonOfTeam(String teamId);
 }

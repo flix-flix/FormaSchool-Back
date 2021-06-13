@@ -30,4 +30,12 @@ public class Permission {
 
 	@DBRef
 	private TeamSalonRights commonRights;
+
+	public Permission(Salon salon, Member member, Role role, TeamSalonRights commonRights) {
+		super();
+		this.salon = salon;
+		this.member = member;
+		this.role = role;
+		this.commonRights = commonRights;
+	}
 }

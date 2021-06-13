@@ -37,7 +37,7 @@ public class SalonController implements CRUDController<Salon> {
 
 	@GetMapping("ofTeam/{teamId}")
 	public List<SalonName> findAllSalonOfTeam(@PathVariable String teamId) {
-		return service.findAllSalonOfTeam(teamId);
+		return service.findAllSalonNameOfTeam(teamId);
 	}
 
 	@PatchMapping("salonDesc/{id}")

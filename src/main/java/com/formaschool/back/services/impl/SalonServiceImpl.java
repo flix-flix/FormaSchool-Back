@@ -42,8 +42,13 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 	}
 
 	@Override
-	public List<SalonName> findAllSalonOfTeam(String teamId) {
+	public List<SalonName> findAllSalonNameOfTeam(String teamId) {
 		return repo.findByTeamId(teamId).stream().map(salon -> dto(salon, SalonName.class))
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Salon> findAllSalonOfTeam(String teamId) {
+		return repo.findByTeamId(teamId);
 	}
 }

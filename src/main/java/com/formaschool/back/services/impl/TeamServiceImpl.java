@@ -11,6 +11,7 @@ import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.dto.team.TeamNameDescPicDTO;
 import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.dto.team.UpdateTeamNameDescPicDTO;
+import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.services.MemberService;
@@ -64,4 +65,20 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		Team team = this.repo.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return team.getRoles().stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
 	}
+
+	@Override
+	public void addRoleToTeam(String teamId, Role role) {
+		Team team = this.repo.findById(teamId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		team.getRoles().add(role);
+		this.repo.save(team);
+	}
+
+	@Override
+	public void deleteRole(String teamId, String roleId) {
+		Team team = this.repo.findById(teamId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		team.getRoles().stream().filter(role -> role.getId() == roleId).map(role -> team.getRoles().remove(role));	
+	}
+	
 }
