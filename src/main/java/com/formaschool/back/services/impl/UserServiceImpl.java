@@ -1,6 +1,9 @@
 package com.formaschool.back.services.impl;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
@@ -37,5 +40,12 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	public UserNamePict getDefaultUser() {
 		return dtoOpt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst(),
 				UserNamePict.class);
+	}
+
+	@Override
+	public User addUser(UserCreate userCreate) {
+		User user = dto(userCreate, User.class);
+		user.setCreation(LocalDate.now());
+		return this.repo.save(user);
 	}
 }
