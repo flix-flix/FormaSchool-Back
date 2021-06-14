@@ -90,8 +90,14 @@ public class InitController {
 			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
 			new User("Bouchaib", "Faham", "mdp", "@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
 
+	private List<Role> role1() {
+		ArrayList<Role> role1 = new ArrayList<Role>();
+		role1.add(roles[4]);
+		return role1;
+	}
+
 	private Member[] members = new Member[] { //
-			new Member(null, users[0], teams[0], new ArrayList<>()),
+			new Member(null, users[0], teams[0], role1()),
 			new Member(null, users[1], teams[0], new ArrayList<>()),
 			new Member(null, users[2], teams[0], new ArrayList<>()),
 			new Member(null, users[3], teams[0], new ArrayList<>()),
