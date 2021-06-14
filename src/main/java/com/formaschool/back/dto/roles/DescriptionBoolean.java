@@ -6,8 +6,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Data
 public class DescriptionBoolean {
-	
 	private String desc;
 	private Boolean value;
-
 }

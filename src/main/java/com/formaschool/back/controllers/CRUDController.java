@@ -26,13 +26,13 @@ public interface CRUDController<T> {
 	}
 
 	@PostMapping()
-	public default T save(@RequestBody T salon) {
-		return getGenericService().save(salon);
+	public default T save(@RequestBody T obj) {
+		return getGenericService().save(obj);
 	}
 
 	@PatchMapping("{id}")
-	public default T update(@RequestBody T salon) {
-		return getGenericService().update(salon);
+	public default T update(@RequestBody T obj) {
+		return getGenericService().update(obj);
 	}
 
 	@DeleteMapping("{id}")

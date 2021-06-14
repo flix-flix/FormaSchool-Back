@@ -40,30 +40,28 @@ import com.formaschool.back.repositories.UserRepository;
 @RestController
 @RequestMapping("init")
 public class InitController {
-	
+
 	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, true, true),
-			 new TeamSalonRights(true, true, true, true, true, false, true)
-	};
-	
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, true, true),
+			new TeamSalonRights(true, true, true, true, true, false, true) };
+
 	private Role[] roles = new Role[] {
 			new Role("@everyone", "#A2D0EA", teamSalonRights[0], true, true, true, true, true, true),
 			new Role("@everyone", "#A2D0EA", teamSalonRights[1], true, true, true, true, true, true),
 			new Role("@everyone", "#A2D0EA", teamSalonRights[2], true, true, true, true, true, true),
-			new Role("@everyone", "#A2D0EA", teamSalonRights[3], true, true, true, true, true, true),	
-			new Role("Super_Role", "#fcba03",teamSalonRights[4], true, true, true, true, true, true),
-			new Role("Cant_see_logs", "#dbff29",teamSalonRights[5], true, true, true, false, true, true),
-			new Role("Cant_send_msg", "#ffD02A", teamSalonRights[6], true, true, true, true, true, true)
-	};
-
+			new Role("@everyone", "#A2D0EA", teamSalonRights[3], true, true, true, true, true, true),
+			new Role("Super_Role", "#fcba03", teamSalonRights[4], true, true, true, true, true, true),
+			new Role("Cant_see_logs", "#dbff29", teamSalonRights[5], true, true, true, false, true, true),
+			new Role("Cant_send_msg", "#ffD02A", teamSalonRights[6], true, true, true, true, true, true) };
 
 	private Team[] teams = new Team[] {
-			new Team("IBM", "International Business Machines Corporation", "1.png", List.of(roles[0],roles[4], roles[5])),
+			new Team("IBM", "International Business Machines Corporation", "1.png",
+					List.of(roles[0], roles[4], roles[5])),
 			new Team("Pole emploi", "Invest in Digital People", "2.jpg", List.of(roles[1], roles[6])),
 			new Team("M2i", "M2i formations, Hauts-de-France", "3.png", List.of(roles[2])),
 			new Team("Semifir", "Ceci est la description de l'équipe Semifir", "4.png", List.of(roles[3])), };
@@ -107,7 +105,6 @@ public class InitController {
 			new Member(null, users[1], teams[3], new ArrayList<>()),
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
-	
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
@@ -318,7 +315,6 @@ public class InitController {
 
 		for (Member member : members)
 			memberRepo.save(member);
-
 
 		for (Message msg : msgs)
 			msgRepo.save(msg);

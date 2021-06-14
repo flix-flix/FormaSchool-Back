@@ -12,11 +12,11 @@ import com.formaschool.back.services.TeamSalonRightsService;
 @CrossOrigin
 @RestController
 @RequestMapping("teamSalonRights")
-public class TeamSalonRightsController implements CRUDController<TeamSalonRights>{
+public class TeamSalonRightsController implements CRUDController<TeamSalonRights> {
 
 	@Autowired
 	private TeamSalonRightsService service;
-	
+
 	@Override
 	public CRUDService<TeamSalonRights> getGenericService() {
 		return service;

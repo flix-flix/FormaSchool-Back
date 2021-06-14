@@ -2,8 +2,7 @@ package com.formaschool.back.services;
 
 import com.formaschool.back.models.Permission;
 
-public interface PermissionService extends CRUDService<Permission>{
-	
-	public void deleteByRoleId(String roleId);
+public interface PermissionService extends CRUDService<Permission> {
 
+	public void deleteByRoleId(String roleId);
 }

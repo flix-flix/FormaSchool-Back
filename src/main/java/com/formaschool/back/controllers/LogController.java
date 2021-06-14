@@ -18,7 +18,7 @@ import com.formaschool.back.services.LogService;
 @RequestMapping("logs")
 @CrossOrigin
 public class LogController implements CRUDController<Log> {
-	
+
 	@Autowired
 	private LogService service;
 
@@ -26,15 +26,14 @@ public class LogController implements CRUDController<Log> {
 	public CRUDService<Log> getGenericService() {
 		return service;
 	}
-	
+
 	@GetMapping("withoutId/adminLogs")
-	public List<LogWithoutId> findAdminLogsWithoutId(){
+	public List<LogWithoutId> findAdminLogsWithoutId() {
 		return this.service.findAdminLogsWithoutId();
 	}
-	
+
 	@GetMapping("withoutId/{teamId}")
-	public List<LogWithoutId> findWithoutIdByTeamId(@PathVariable String teamId){
+	public List<LogWithoutId> findWithoutIdByTeamId(@PathVariable String teamId) {
 		return this.service.findWithoutIdByTeam(teamId);
 	}
-
 }

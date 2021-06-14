@@ -4,8 +4,7 @@ import lombok.Data;
 
 @Data
 public class RoleWithoutRights {
-	
 	private String id;
-    private String name;
-    private String color;
+	private String name;
+	private String color;
 }

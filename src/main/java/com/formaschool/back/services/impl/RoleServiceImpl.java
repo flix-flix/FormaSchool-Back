@@ -1,7 +1,6 @@
 package com.formaschool.back.services.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	}
 
 	public List<RoleWithoutRights> findAllWithoutRights() {
-		return repo.findAll().stream().map(role -> dto(role,RoleWithoutRights.class)).collect(Collectors.toList());
+		return repo.findAll().stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -37,15 +36,17 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		List<DescriptionBoolean> commonRights = initCommonRights(role);
 		return new RoleWithDescription(role.getId(), role.getName(), role.getColor(), rights, commonRights);
 	}
-	
+
 	/**
-	 * Init a List with description and boolean 
+	 * Init a List with description and boolean
+	 * 
 	 * @param role a role object from database
 	 * @return a list which contain description and boolean of rights
 	 */
 	public List<DescriptionBoolean> initRights(Role role) {
 		List<DescriptionBoolean> list = new ArrayList<DescriptionBoolean>();
-		list.add(new DescriptionBoolean("Permet de gérer une equipe, changer le nom et la description", role.getManageTeam()));
+		list.add(new DescriptionBoolean("Permet de gérer une equipe, changer le nom et la description",
+				role.getManageTeam()));
 		list.add(new DescriptionBoolean("Permet de créer et de supprimer un salon", role.getCreateDeleteSalon()));
 		list.add(new DescriptionBoolean("Permet de créer, update et supprimer un emoji", role.getManageEmoji()));
 		list.add(new DescriptionBoolean("Permet de voir les logs", role.getSeeLogs()));
@@ -53,21 +54,27 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		list.add(new DescriptionBoolean("Permet de changer tous les pseudos", role.getManagePseudo()));
 		return list;
 	}
+
 	/**
-	 * Init a List with description and boolean 
+	 * Init a List with description and boolean
+	 * 
 	 * @param role a role object from database
 	 * @return a list which contain description and boolean of commonRights
 	 */
 	public List<DescriptionBoolean> initCommonRights(Role role) {
 		List<DescriptionBoolean> list = new ArrayList<DescriptionBoolean>();
-		
-		list.add(new DescriptionBoolean("Permet de gérer les permissions", role.getCommonRights().getManagePermissions()));
+
+		list.add(new DescriptionBoolean("Permet de gérer les permissions",
+				role.getCommonRights().getManagePermissions()));
 		list.add(new DescriptionBoolean("Permet de changer le nom du salon", role.getCommonRights().getUpdateSalon()));
-		list.add(new DescriptionBoolean("Permet de supprimer les messages des autres", role.getCommonRights().getDeleteMsg()));
-		list.add(new DescriptionBoolean("Permet de tag les autres utilisateurs", role.getCommonRights().getTagSomeone()));
+		list.add(new DescriptionBoolean("Permet de supprimer les messages des autres",
+				role.getCommonRights().getDeleteMsg()));
+		list.add(new DescriptionBoolean("Permet de tag les autres utilisateurs",
+				role.getCommonRights().getTagSomeone()));
 		list.add(new DescriptionBoolean("Permet de voir le salon", role.getCommonRights().getSeeSalon()));
-		list.add(new DescriptionBoolean("Permet d'envoyer des messages",  role.getCommonRights().getSendMsg()));
-		list.add(new DescriptionBoolean("Permet d'ajouter des reactions sous les messages",  role.getCommonRights().getAddReaction()));
+		list.add(new DescriptionBoolean("Permet d'envoyer des messages", role.getCommonRights().getSendMsg()));
+		list.add(new DescriptionBoolean("Permet d'ajouter des reactions sous les messages",
+				role.getCommonRights().getAddReaction()));
 		return list;
 	}
 
@@ -81,7 +88,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		role.setName(roleDesc.getName());
 		return this.repo.save(role);
 	}
-	
+
 	public Role updateCommonRights(Role role, RoleWithDescription roleDesc) {
 		role.getCommonRights().setManagePermissions(roleDesc.getCommonRights().get(0).getValue());
 		role.getCommonRights().setUpdateSalon(roleDesc.getCommonRights().get(1).getValue());
@@ -92,7 +99,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		role.getCommonRights().setAddReaction(roleDesc.getCommonRights().get(6).getValue());
 		return role;
 	}
-	
+
 	public Role updateRights(Role role, RoleWithDescription roleDesc) {
 		role.setManageTeam(roleDesc.getRights().get(0).getValue());
 		role.setCreateDeleteSalon(roleDesc.getRights().get(1).getValue());
