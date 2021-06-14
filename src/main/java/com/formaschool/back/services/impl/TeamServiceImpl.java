@@ -8,9 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
-import com.formaschool.back.dto.team.TeamNameDescPicDTO;
+import com.formaschool.back.dto.team.TeamNameDescPict;
 import com.formaschool.back.dto.team.TeamNamePict;
-import com.formaschool.back.dto.team.UpdateTeamNameDescPicDTO;
+import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.repositories.TeamRepository;
@@ -29,13 +29,13 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPicDTO findTeamNameDescPicDtoById(String id) {
+	public TeamNameDescPict findTeamNameDescPicDtoById(String id) {
 		Team team = this.repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return mapper.convertValue(team, TeamNameDescPicDTO.class);
+		return mapper.convertValue(team, TeamNameDescPict.class);
 	}
 
 	@Override
-	public TeamNameDescPicDTO updateTeamNameDescPicDto(UpdateTeamNameDescPicDTO dto) {
+	public TeamNameDescPict updateTeamNameDescPicDto(TeamNameDescPictUpdate dto) {
 		Team team = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -45,7 +45,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		if (dto.getPicture() != null)
 			team.setPicture(dto.getPicture());
 		Team result = this.repo.save(team);
-		return this.mapper.convertValue(result, TeamNameDescPicDTO.class);
+		return this.mapper.convertValue(result, TeamNameDescPict.class);
 	}
 
 	@Override
@@ -80,5 +80,4 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		team.getRoles().stream().filter(role -> role.getId() == roleId).map(role -> team.getRoles().remove(role));	
 	}
-	
 }

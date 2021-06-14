@@ -6,11 +6,9 @@ import lombok.Data;
 
 @Data
 public class EmojiNamePictUserTeamId {
-	
 	private String id;
 	private String name;
 	private String picture;
 	private String teamId;
 	private UserNamePict user;
-
 }

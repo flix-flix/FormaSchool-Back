@@ -8,7 +8,6 @@ import lombok.Data;
 
 @Data
 public class LogWithoutId {
-	
 	private UserNamePict user;
 	private Integer type;
 	private Date date;

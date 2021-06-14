@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formaschool.back.dto.roles.CreateRole;
+import com.formaschool.back.dto.roles.RoleCreate;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.models.Member;
@@ -50,7 +50,8 @@ public class RoleController implements CRUDController<Role> {
 	}
 
 	@PostMapping("createRole/{teamId}")
-	public Role addNewRole(@PathVariable String teamId, @RequestBody CreateRole newRole) {
+
+	public Role addNewRole(@PathVariable String teamId, @RequestBody RoleCreate newRole) {
 		return this.service.addNewRole(teamId, newRole);
 	}
 

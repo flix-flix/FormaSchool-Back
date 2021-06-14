@@ -21,5 +21,4 @@ public class PermissionController implements CRUDController<Permission> {
 	public CRUDService<Permission> getGenericService() {
 		return service;
 	}
-
 }

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back.dto.salon.SalonName;
-import com.formaschool.back.dto.salon.SalonNameDescDTO;
-import com.formaschool.back.dto.salon.UpdateSalonNameDescDTO;
+import com.formaschool.back.dto.salon.SalonNameDesc;
+import com.formaschool.back.dto.salon.SalonNameDescUpdate;
 import com.formaschool.back.models.Salon;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.SalonService;
@@ -31,7 +31,7 @@ public class SalonController implements CRUDController<Salon> {
 	}
 
 	@GetMapping("salonDesc/{teamId}")
-	public SalonNameDescDTO findById(@PathVariable String teamId) {
+	public SalonNameDesc findById(@PathVariable String teamId) {
 		return this.service.findById(teamId);
 	}
 
@@ -41,7 +41,7 @@ public class SalonController implements CRUDController<Salon> {
 	}
 
 	@PatchMapping("salonDesc/{id}")
-	public SalonNameDescDTO updateSalonNameDesc(@RequestBody UpdateSalonNameDescDTO dto) {
+	public SalonNameDesc updateSalonNameDesc(@RequestBody SalonNameDescUpdate dto) {
 		return this.service.updateSalonNameDesc(dto);
 	}
 }
