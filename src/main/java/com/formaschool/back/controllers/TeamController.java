@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,10 +50,5 @@ public class TeamController implements CRUDController<Team> {
 	@PatchMapping("teamDesc/{id}")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
 		return this.service.updateTeamNameDescPicDto(dto);
-	}
-
-	@PatchMapping("deleteRole/{teamId}/{roleId}")
-	public void deleteRole(@PathVariable String teamId, @PathVariable String roleId) {
-		this.service.deleteRole(teamId, roleId);
 	}
 }
