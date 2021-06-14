@@ -8,4 +8,6 @@ import com.formaschool.back.models.Member;
 
 public interface MemberRepository extends MongoRepository<Member, String> {
 	public List<Member> findByUserId(String userId);
+	
+	public List<Member> findByTeamId(String teamId);
 }

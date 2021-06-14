@@ -1,6 +1,9 @@
 package com.formaschool.back.services;
 
 
+import java.util.List;
+
+
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
@@ -14,6 +17,10 @@ public interface UserService extends CRUDService<User> {
 	public UserNamePict getUserNamePictById(String id);
 	
 	public User addUser(UserCreate user);
+	
+	public List<UserNamePict> getUserNotInTheTeam(String teamId);
+	
+	public List<User> getUserByTeamId(String teamId);
 
 	// ajout pour get userSettings
 	public UserSettings getUserSettingsById(String id);

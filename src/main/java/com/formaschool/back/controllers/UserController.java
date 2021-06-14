@@ -1,5 +1,7 @@
 package com.formaschool.back.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,5 +56,10 @@ public class UserController implements CRUDController<User> {
 	@PostMapping("add")
 	public User addUser(@RequestBody UserCreate user) {
 		return this.service.addUser(user);
+	}
+	
+	@GetMapping("userNotInTheTeam/{teamId}")
+	public List<UserNamePict> getUserNotInTheTeam(@PathVariable String teamId){
+		return this.service.getUserNotInTheTeam(teamId);
 	}
 }
