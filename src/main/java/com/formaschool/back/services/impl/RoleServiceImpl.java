@@ -9,18 +9,31 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.roles.DescriptionBoolean;
+import com.formaschool.back.dto.roles.RoleCreate;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.models.Role;
+import com.formaschool.back.models.Salon;
+import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.repositories.RoleRepository;
+import com.formaschool.back.services.PermissionService;
 import com.formaschool.back.services.RoleService;
+import com.formaschool.back.services.SalonService;
+import com.formaschool.back.services.TeamService;
 
 public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleService {
 
 	private RoleRepository repo;
+	private TeamService teamService;
+	private SalonService salonService;
+	private PermissionService permissionService;
 
-	public RoleServiceImpl(RoleRepository repo, ObjectMapper mapper) {
+	public RoleServiceImpl(RoleRepository repo, SalonService salonService, PermissionService permissionService,
+			TeamService teamService, ObjectMapper mapper) {
 		super(repo, mapper);
+		this.teamService = teamService;
+		this.salonService = salonService;
+		this.permissionService = permissionService;
 		this.repo = repo;
 	}
 
@@ -108,5 +121,35 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		role.setChangePseudo(roleDesc.getRights().get(4).getValue());
 		role.setManagePseudo(roleDesc.getRights().get(5).getValue());
 		return role;
+	}
+
+	@Override
+	public Role addNewRole(String teamId, RoleCreate newRole) {
+		TeamSalonRights defaultRights = new TeamSalonRights(true, true, true, true, true, true, true);
+
+		Role role = this.save(
+				new Role(newRole.getName(), newRole.getColor(), defaultRights, true, true, true, true, true, true));
+		this.teamService.addRoleToTeam(teamId, role);
+		return role;
+	}
+
+	@Override
+	public void deleteRole(String teamId, String roleId) {
+		Role role = this.get(roleId);
+
+		List<Salon> salons = this.salonService.findAllSalonOfTeam(teamId);
+		// delete his permission of all salon
+		for (Salon salon : salons) {
+			this.permissionService.deleteByRoleId(role.getId());
+		}
+		// delete the role from the team
+		this.teamService.deleteRole(teamId, roleId);
+		// finally, delete the role
+		this.delete(role.getId());
+	}
+
+	@Override
+	public List<RoleWithoutRights> findAllWithoutRightsByTeamId(String teamId) {
+		return this.teamService.findRoleWithoutRightsByTeamId(teamId);
 	}
 }

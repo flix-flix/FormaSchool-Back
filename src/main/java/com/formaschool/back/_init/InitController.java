@@ -285,8 +285,6 @@ public class InitController {
 	private LogRepository logRepo;
 	@Autowired
 	private RoleRepository roleRepo;
-	@Autowired
-	private TeamSalonRightsRepository teamSalonRightsRepo;
 
 	// ====================================================================================================
 
@@ -304,8 +302,6 @@ public class InitController {
 
 		for (User user : users)
 			userRepo.save(user);
-		for (TeamSalonRights teamSalonRight : teamSalonRights)
-			teamSalonRightsRepo.save(teamSalonRight);
 		for (Role role : roles)
 			roleRepo.save(role);
 		for (Team team : teams)

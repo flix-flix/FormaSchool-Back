@@ -82,13 +82,13 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public RoleService roleService(RoleRepository repo, ObjectMapper mapper) {
-		return new RoleServiceImpl(repo, mapper);
+	public RoleService roleService(RoleRepository repo,SalonService salonService, PermissionService permissionService, TeamService teamService, ObjectMapper mapper) {
+		return new RoleServiceImpl(repo, salonService, permissionService,teamService, mapper);
 	}
 
 	@Bean
-	public PermissionService permissionService(PermissionRepository repo, TeamSalonRightsService tsrService, ObjectMapper mapper) {
-		return new PermissionServiceImpl(repo, tsrService, mapper);
+	public PermissionService permissionService(PermissionRepository repo, ObjectMapper mapper) {
+		return new PermissionServiceImpl(repo, mapper);
 	}
 
 	@Bean

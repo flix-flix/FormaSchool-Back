@@ -19,7 +19,7 @@ public class Role {
 
 	private String name;
 	private String color;
-	@DBRef
+
 	private TeamSalonRights commonRights;
 
 	/** Change team's name and desc */

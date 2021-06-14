@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back.dto.team.TeamNameDescPict;
-import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
-import com.formaschool.back.models.Role;
+import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.TeamService;
@@ -50,12 +49,6 @@ public class TeamController implements CRUDController<Team> {
 	@PatchMapping("teamDesc/{id}")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
 		return this.service.updateTeamNameDescPicDto(dto);
-	}
-
-	@PatchMapping("addRole/{teamId}")
-	public void addRoleToTeam(@PathVariable String teamId, @RequestBody Role role) {
-		System.out.println(role.toString());
-		this.service.addRoleToTeam(teamId, role);
 	}
 
 	@PatchMapping("deleteRole/{teamId}/{roleId}")
