@@ -68,7 +68,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	
 	@Override
 	public List<User> getUserByTeamId(String teamId){
-		List<Member> membersInTheTeam = this.memberService.findMemberByTeamId(teamId);
+		List<Member> membersInTheTeam = this.memberService.findMembersByTeamId(teamId);
 		List<User> userIntheTeam = new ArrayList<User>();
 		for (Member member : membersInTheTeam) {
 			userIntheTeam.add(member.getUser());

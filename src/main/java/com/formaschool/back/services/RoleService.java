@@ -2,13 +2,7 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
-<<<<<<< HEAD
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.formaschool.back.dto.roles.CreateRole;
-=======
 import com.formaschool.back.dto.roles.RoleCreate;
->>>>>>> 9eeb55046fe4358dbac50348bb5108c2fe7a1823
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.models.Member;

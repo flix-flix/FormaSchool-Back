@@ -161,7 +161,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		/*for (RoleWithoutRights role : roles) {
 			member.getRoles().stream().filter(memberRole -> memberRole.getId()==role.getId());
 		}*/
-			
+		return null;
 		}
 	}
 

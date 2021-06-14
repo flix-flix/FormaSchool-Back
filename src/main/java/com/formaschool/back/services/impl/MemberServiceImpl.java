@@ -23,7 +23,8 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	}
 
 	@Override
-	public List<Member> findMemberByTeamId(String teamId) {
-		return this.repo.findByTeamId(teamId);
+	public List<Member> findMembersByTeamId(String teamId) {
+		return this.repo.findMemberByTeamId(teamId);
 	}
+
 }
