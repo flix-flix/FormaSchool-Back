@@ -36,5 +36,4 @@ public class LogController implements CRUDController<Log> {
 	public List<LogWithoutId> findWithoutIdByTeamId(@PathVariable String teamId){
 		return this.service.findWithoutIdByTeam(teamId);
 	}
-
 }

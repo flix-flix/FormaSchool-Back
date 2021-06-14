@@ -16,16 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formaschool.back.dto.roles.CreateRole;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
-import com.formaschool.back.models.Permission;
 import com.formaschool.back.models.Role;
-import com.formaschool.back.models.Salon;
-import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.services.CRUDService;
-import com.formaschool.back.services.PermissionService;
 import com.formaschool.back.services.RoleService;
-import com.formaschool.back.services.SalonService;
-import com.formaschool.back.services.TeamSalonRightsService;
-import com.formaschool.back.services.TeamService;
 
 @CrossOrigin
 @RestController
@@ -34,18 +27,6 @@ public class RoleController implements CRUDController<Role> {
 
 	@Autowired
 	private RoleService service;
-
-	@Autowired
-	private TeamService teamService;
-
-	@Autowired
-	private PermissionService permissionService;
-
-	@Autowired
-	private SalonService salonService;
-
-	@Autowired
-	private TeamSalonRightsService tsrService;
 
 	@Override
 	public CRUDService<Role> getGenericService() {
@@ -59,7 +40,7 @@ public class RoleController implements CRUDController<Role> {
 
 	@GetMapping("withoutRights/{teamId}")
 	public List<RoleWithoutRights> findAllWithoutRightsByTeamId(@PathVariable String teamId) {
-		return this.teamService.findRoleWithoutRightsByTeamId(teamId);
+		return this.service.findAllWithoutRightsByTeamId(teamId);
 	}
 
 	@GetMapping("withDesc/{roleId}")
@@ -69,14 +50,7 @@ public class RoleController implements CRUDController<Role> {
 
 	@PostMapping("createRole/{teamId}")
 	public Role addNewRole(@PathVariable String teamId, @RequestBody CreateRole newRole) {
-
-		TeamSalonRights defaultRights = new TeamSalonRights(true, true, true, true, true, true, true);
-
-		Role role = this.service.save(
-				new Role(newRole.getName(), newRole.getColor(), defaultRights, true, true, true, true, true, true));
-		this.teamService.addRoleToTeam(teamId, role);
-
-		return role;
+		return this.service.addNewRole(teamId, newRole);
 	}
 
 	@PatchMapping("update")
@@ -86,16 +60,6 @@ public class RoleController implements CRUDController<Role> {
 
 	@DeleteMapping("delete/{teamId}/{roleId}")
 	public void deleteRole(@PathVariable String teamId, @PathVariable String roleId) {
-		Role role = this.service.get(roleId);
-
-		List<Salon> salons = this.salonService.findAllSalonOfTeam(teamId);
-		// delete his permission of all salon
-		for (Salon salon : salons) {
-			this.permissionService.deleteByRoleId(role.getId());
-		}
-		// delete the role from the team
-		this.teamService.deleteRole(teamId, roleId);
-		// finally, delete the role
-		this.service.delete(role.getId());
+		this.service.deleteRole(teamId, roleId);
 	}
 }
