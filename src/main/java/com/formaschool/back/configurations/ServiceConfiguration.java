@@ -87,8 +87,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public PermissionService permissionService(PermissionRepository repo, TeamSalonRightsService tsrService, ObjectMapper mapper) {
-		return new PermissionServiceImpl(repo, tsrService, mapper);
+	public PermissionService permissionService(PermissionRepository repo, ObjectMapper mapper) {
+		return new PermissionServiceImpl(repo, mapper);
 	}
 
 	@Bean
