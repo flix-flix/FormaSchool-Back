@@ -52,12 +52,6 @@ public class TeamController implements CRUDController<Team> {
 		return this.service.updateTeamNameDescPicDto(dto);
 	}
 	
-	@PatchMapping("addRole/{teamId}")
-	public void addRoleToTeam(@PathVariable String teamId, @RequestBody Role role) {
-		System.out.println(role.toString());
-		this.service.addRoleToTeam(teamId, role);
-	}
-	
 	@PatchMapping("deleteRole/{teamId}/{roleId}")
 	public void deleteRole(@PathVariable String teamId, @PathVariable String roleId) {
 		this.service.deleteRole(teamId, roleId);

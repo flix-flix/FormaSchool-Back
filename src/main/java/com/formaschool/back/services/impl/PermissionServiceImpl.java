@@ -25,6 +25,7 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 	public void deleteByRoleId(String roleId) {
 		List<Permission> permissions = this.repository.findByRoleId(roleId);
 		for (Permission permission : permissions) {
+			//TODO
 			if(permission.getCommonRights() != null) {
 				this.tsrService.delete(permission.getCommonRights().getId());
 			}
