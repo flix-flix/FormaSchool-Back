@@ -30,20 +30,20 @@ import com.formaschool.back.services.TeamService;
 @CrossOrigin
 @RestController
 @RequestMapping("roles")
-public class RoleController implements CRUDController<Role>{
+public class RoleController implements CRUDController<Role> {
 
 	@Autowired
 	private RoleService service;
-	
+
 	@Autowired
 	private TeamService teamService;
-	
+
 	@Autowired
 	private PermissionService permissionService;
-	
+
 	@Autowired
 	private SalonService salonService;
-	
+
 	@Autowired
 	private TeamSalonRightsService tsrService;
 
@@ -51,59 +51,51 @@ public class RoleController implements CRUDController<Role>{
 	public CRUDService<Role> getGenericService() {
 		return service;
 	}
-	
+
 	@GetMapping("withoutRights")
-	public List<RoleWithoutRights> findAllWithoutRights(){
+	public List<RoleWithoutRights> findAllWithoutRights() {
 		return this.service.findAllWithoutRights();
 	}
-	
+
 	@GetMapping("withoutRights/{teamId}")
-	public List<RoleWithoutRights> findAllWithoutRightsByTeamId(@PathVariable String teamId){
+	public List<RoleWithoutRights> findAllWithoutRightsByTeamId(@PathVariable String teamId) {
 		return this.teamService.findRoleWithoutRightsByTeamId(teamId);
 	}
-	
+
 	@GetMapping("withDesc/{roleId}")
 	public RoleWithDescription findRoleWithDescriptionById(@PathVariable String roleId) {
 		return this.service.findRoleWithDescriptionById(roleId);
 	}
-	
+
 	@PostMapping("createRole/{teamId}")
-	public  Role addNewRole(@PathVariable String teamId, @RequestBody CreateRole newRole) {
-		
-		//Create a default TeamSalonRights with all rights at true
-		TeamSalonRights defaultRights = this.tsrService.save(new TeamSalonRights(true, true, true, true, true, true, true));
-		
-		//Save the role
-		Role role = this.service.save(new Role(newRole.getName(), newRole.getColor(), defaultRights, true, true, true, true, true, true));
-		
-		//Foreach salon of the team, create a new permission for the role
-		List<Salon> salons = this.salonService.findAllSalonOfTeam(teamId);
-		for (Salon salon : salons) {
-			this.permissionService.save(new Permission(salon, null, role, null));
-		}
+	public Role addNewRole(@PathVariable String teamId, @RequestBody CreateRole newRole) {
+
+		TeamSalonRights defaultRights = new TeamSalonRights(true, true, true, true, true, true, true);
+
+		Role role = this.service.save(
+				new Role(newRole.getName(), newRole.getColor(), defaultRights, true, true, true, true, true, true));
+		this.teamService.addRoleToTeam(teamId, role);
+
 		return role;
 	}
-	
+
 	@PatchMapping("update")
 	public Role updateRole(@RequestBody RoleWithDescription role) {
 		return this.service.updateFromRoleWithDesc(role);
 	}
-	
+
 	@DeleteMapping("delete/{teamId}/{roleId}")
 	public void deleteRole(@PathVariable String teamId, @PathVariable String roleId) {
 		Role role = this.service.get(roleId);
-		
-		//delete his common rights
-		this.tsrService.delete(role.getCommonRights().getId());
-		
+
 		List<Salon> salons = this.salonService.findAllSalonOfTeam(teamId);
-		//delete his permission of all salon
+		// delete his permission of all salon
 		for (Salon salon : salons) {
 			this.permissionService.deleteByRoleId(role.getId());
 		}
-		//delete the role from the team
+		// delete the role from the team
 		this.teamService.deleteRole(teamId, roleId);
-		//finally, delete the role
+		// finally, delete the role
 		this.service.delete(role.getId());
 	}
 }
