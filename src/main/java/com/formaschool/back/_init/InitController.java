@@ -87,7 +87,7 @@ public class InitController {
 			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
 			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
 			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
 
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();

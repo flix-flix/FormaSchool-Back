@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._init.InitController;
+import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
+import com.formaschool.back.dto.user.UserLocalStorage;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
@@ -29,11 +32,15 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	private UserRepository repo;
 	private MemberService memberService;
 
+	// ====================================================================================================
+
 	public UserServiceImpl(UserRepository repo, MemberService memberService, ObjectMapper mapper) {
 		super(repo, mapper);
 		this.memberService = memberService;
 		this.repo = repo;
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public UserName getUserNameById(String id) {
@@ -88,5 +95,24 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 			userIntheTeam.add(member.getUser());
 		}
 		return userIntheTeam;
+	}
+
+	@Override
+	public UserLocalStorage connect(UserConnect connect) {
+		User entity = opt(repo.findByEmail(connect.getEmail()));
+		if (!entity.getPassword().equals(convertPwd(connect.getPassword())))
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+		UserLocalStorage dto = dto(entity, UserLocalStorage.class);
+		dto.setMembers(memberService.findAllByUserId(entity.getId()));
+		return dto;
+	}
+
+	// ====================================================================================================
+
+	public String convertPwd(String pwd) {
+		// TODO [Improve]
+		// TODO Call on save/update user
+		return pwd;
 	}
 }

@@ -1,7 +1,6 @@
 package com.formaschool.back.models;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -37,7 +36,7 @@ public class Role {
 	private Boolean changePseudo;
 	/** Change every pseudo */
 	private Boolean managePseudo;
-	
+
 	public Role(String name, String color, TeamSalonRights commonRights, Boolean manageTeam, Boolean createDeleteSalon,
 			Boolean manageEmoji, Boolean seeLogs, Boolean changePseudo, Boolean managePseudo) {
 		super();

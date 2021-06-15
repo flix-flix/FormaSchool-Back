@@ -7,11 +7,10 @@ import com.formaschool.back.services.TeamSalonRightsService;
 
 public class TeamSalonRightsServiceImpl extends CRUDServiceImpl<TeamSalonRights> implements TeamSalonRightsService {
 
-	private TeamSalonRightsRepository repo;
-	
+	// private TeamSalonRightsRepository repo;
+
 	public TeamSalonRightsServiceImpl(TeamSalonRightsRepository repo, ObjectMapper mapper) {
 		super(repo, mapper);
-		this.repo = repo;
+		// this.repo = repo;
 	}
-
 }
