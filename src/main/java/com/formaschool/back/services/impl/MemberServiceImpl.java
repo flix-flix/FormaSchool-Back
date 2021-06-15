@@ -11,6 +11,7 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 
 	private MemberRepository repo;
 
+
 	public MemberServiceImpl(MemberRepository repo, ObjectMapper mapper) {
 		super(repo, mapper);
 		this.repo = repo;
@@ -20,4 +21,10 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	public List<Member> findAllByUserId(String userId) {
 		return repo.findByUserId(userId);
 	}
+
+	@Override
+	public List<Member> findMembersByTeamId(String teamId) {
+		return this.repo.findMemberByTeamId(teamId);
+	}
+
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formaschool.back.dto.roles.RoleCreate;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
+import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.services.CRUDService;
 import com.formaschool.back.services.RoleService;
@@ -63,4 +64,11 @@ public class RoleController implements CRUDController<Role> {
 	public void deleteRole(@PathVariable String teamId, @PathVariable String roleId) {
 		this.service.deleteRole(teamId, roleId);
 	}
+	
+	@GetMapping("findRoleMissingByMember")
+	public List<Role> findRoleMissingByMember(@RequestBody Member member){
+		return null;
+	}
+	
+
 }
