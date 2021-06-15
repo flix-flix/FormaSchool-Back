@@ -12,6 +12,7 @@ import com.formaschool.back.dto.roles.DescriptionBoolean;
 import com.formaschool.back.dto.roles.RoleCreate;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
+import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Salon;
 import com.formaschool.back.models.TeamSalonRights;
@@ -152,4 +153,17 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	public List<RoleWithoutRights> findAllWithoutRightsByTeamId(String teamId) {
 		return this.teamService.findRoleWithoutRightsByTeamId(teamId);
 	}
-}
+
+	@Override
+	public List<Role> findRoleMissingByMember(Member member) {
+		List<RoleWithoutRights> roles= this.teamService.findRoleWithoutRightsByTeamId(member.getTeam().getId()); 
+		
+		/*for (RoleWithoutRights role : roles) {
+			member.getRoles().stream().filter(memberRole -> memberRole.getId()==role.getId());
+		}*/
+		return null;
+		}
+	}
+
+	
+

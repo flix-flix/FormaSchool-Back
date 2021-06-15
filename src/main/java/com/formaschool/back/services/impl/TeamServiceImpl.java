@@ -80,5 +80,10 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		team.getRoles().stream().filter(role -> role.getId() == roleId).map(role -> team.getRoles().remove(role));	
 	}
-	
+
+	@Override
+	public List<TeamNamePict> findAllTeamNamePict() {
+		List<Team> teams = this.repo.findAll();
+		return teams.stream().map(team -> dto(team,TeamNamePict.class)).collect(Collectors.toList());
+	}
 }

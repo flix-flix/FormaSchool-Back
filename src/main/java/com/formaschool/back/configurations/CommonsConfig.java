@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
+import com.formaschool.back._init.InitController;
 
 public class CommonsConfig {
 	@Bean
@@ -16,5 +17,10 @@ public class CommonsConfig {
 		mapper.setVisibility(
 				VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
 		return mapper;
+	}
+
+	@Bean
+	public InitController init() {
+		return new InitController();
 	}
 }
