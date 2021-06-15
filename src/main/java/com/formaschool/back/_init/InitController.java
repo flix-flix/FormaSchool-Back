@@ -34,7 +34,6 @@ import com.formaschool.back.repositories.ReactionRepository;
 import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
 import com.formaschool.back.repositories.TeamRepository;
-import com.formaschool.back.repositories.TeamSalonRightsRepository;
 import com.formaschool.back.repositories.UserRepository;
 
 @RestController
@@ -290,16 +289,25 @@ public class InitController {
 
 	@GetMapping("drop")
 	public void drop() {
-		mongo.getMongoDatabase().drop();
-		new File("alreadyInit").delete();
+		try {
+			mongo.getMongoDatabase().drop();
+		} catch (NullPointerException e) {
+			System.err.println("Can't drop");
+		}
+		setInitStatus(false);
 	}
 
 	@GetMapping("")
 	public void init() {
-		File file = new File("alreadyInit");
-		if (file.exists())
+		if (isAlreadyInit())
 			throw new ResponseStatusException(HttpStatus.NOT_MODIFIED);
+		_init();
+		setInitStatus(true);
+	}
 
+	// ====================================================================================================
+
+	public void _init() {
 		for (User user : users)
 			userRepo.save(user);
 		for (Role role : roles)
@@ -324,12 +332,22 @@ public class InitController {
 
 		for (Log log : logs)
 			logRepo.save(log);
+	}
 
-		try {
-			file.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public boolean isAlreadyInit() {
+		return new File("alreadyInit").exists();
+	}
+
+	public void setInitStatus(boolean exist) {
+		if (exist)
+			try {
+				File file = new File("alreadyInit");
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		else
+			new File("alreadyInit").delete();
 	}
 
 	// ====================================================================================================
