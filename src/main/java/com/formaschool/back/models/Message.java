@@ -26,11 +26,12 @@ public class Message {
 	private Salon salon;
 	@NonNull
 	private String content;
-	private String file;
+	@DBRef
+	private File file;
 	private LocalDateTime send = LocalDateTime.now();
 	private LocalDateTime edit;
 
-	public Message(Member sender, Salon salon, @NonNull String content, String file, LocalDateTime send,
+	public Message(Member sender, Salon salon, @NonNull String content, File file, LocalDateTime send,
 			LocalDateTime edit) {
 		this.sender = sender;
 		this.salon = salon;

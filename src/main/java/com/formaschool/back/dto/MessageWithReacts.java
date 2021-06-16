@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.formaschool.back.dto.member.MemberUserPseudo;
+import com.formaschool.back.models.File;
 
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class MessageWithReacts {
 	private List<ReactionUsers> reactions;
 	private MemberUserPseudo sender;
 	private String content;
-	private String file;
+	private File file;
 	private LocalDateTime send;
 	private LocalDateTime edit;
 }

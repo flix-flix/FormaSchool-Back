@@ -1,6 +1,5 @@
 package com.formaschool.back._init;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.formaschool.back.models.Emoji;
+import com.formaschool.back.models.File;
 import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
@@ -27,6 +27,7 @@ import com.formaschool.back.models.Team;
 import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.EmojiRepository;
+import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
@@ -122,6 +123,11 @@ public class InitController {
 		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
 	}
 
+	private File[] files = new File[] { new File("1", "euratechnologies.png"), //
+			new File("2", "stackoverflow.png"), //
+			new File("3", "java.jpg"), //
+			new File("4", "hello.txt"), };
+
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
 					LocalDateTime.of(2021, 4, 1, 17, 37, 31)),
@@ -144,13 +150,13 @@ public class InitController {
 					LocalDateTime.of(2021, 4, 28, 0, 50, 25), LocalDateTime.of(2021, 4, 28, 0, 50, 25)),
 			new Message(members[3], salons[0], "C'est le feu :fire:\nC'est le feu :fire:\nC'est le feu\nC'est le feu",
 					null, LocalDateTime.of(2021, 4, 28, 0, 50, 11), LocalDateTime.of(2021, 4, 28, 0, 50, 11)),
-			new Message(members[0], salons[0], "Semaine en présentiel", null, LocalDateTime.of(2021, 4, 28, 7, 37, 11),
-					LocalDateTime.of(2021, 4, 28, 7, 37, 11)),
-			new Message(members[1], salons[0], "Java ?", null, LocalDateTime.of(2021, 4, 28, 7, 52, 11),
+			new Message(members[0], salons[0], "Semaine en présentiel", files[0],
+					LocalDateTime.of(2021, 4, 28, 7, 37, 11), LocalDateTime.of(2021, 4, 28, 7, 37, 11)),
+			new Message(members[1], salons[0], "Java ?", files[1], LocalDateTime.of(2021, 4, 28, 7, 52, 11),
 					LocalDateTime.of(2021, 4, 28, 7, 52, 11)),
-			new Message(members[2], salons[0], "Regarde sur StackOverflow", null,
+			new Message(members[2], salons[0], "Regarde sur StackOverflow", files[2],
 					LocalDateTime.of(2021, 4, 28, 7, 52, 35), LocalDateTime.of(2021, 4, 28, 7, 52, 35)),
-			new Message(members[3], salons[0], "Regardez ça", null, LocalDateTime.of(2021, 4, 28, 7, 54, 11),
+			new Message(members[3], salons[0], "Regardez ça", files[3], LocalDateTime.of(2021, 4, 28, 7, 54, 11),
 					LocalDateTime.of(2021, 4, 28, 7, 54, 11)),
 			new Message(members[0], salons[0], "**Distanciation               <->               Sociale**", null,
 					LocalDateTime.of(2021, 5, 5, 23, 1, 7), LocalDateTime.of(2021, 5, 5, 23, 1, 7)),
@@ -284,6 +290,8 @@ public class InitController {
 	@Autowired
 	private ReactionRepository reactRepo;
 	@Autowired
+	private FileRepository fileRepo;
+	@Autowired
 	private MessageRepository msgRepo;
 	@Autowired
 	private LogRepository logRepo;
@@ -325,6 +333,8 @@ public class InitController {
 		for (Member member : members)
 			memberRepo.save(member);
 
+		for (File file : files)
+			fileRepo.save(file);
 		for (Message msg : msgs)
 			msgRepo.save(msg);
 
@@ -342,18 +352,18 @@ public class InitController {
 	// ====================================================================================================
 
 	public boolean isAlreadyInit() {
-		return new File("alreadyInit").exists();
+		return new java.io.File("alreadyInit").exists();
 	}
 
 	public void setInitStatus(boolean exist) {
 		if (exist)
 			try {
-				File file = new File("alreadyInit");
+				java.io.File file = new java.io.File("alreadyInit");
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		else
-			new File("alreadyInit").delete();
+			new java.io.File("alreadyInit").delete();
 	}
 }
