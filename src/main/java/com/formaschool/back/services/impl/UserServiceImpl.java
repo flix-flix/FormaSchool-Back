@@ -1,24 +1,46 @@
 package com.formaschool.back.services.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back._init.InitController;
+import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
+import com.formaschool.back.dto.user.UserLocalStorage;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
+import com.formaschool.back.models.Member;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
+import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.UserService;
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
-	private UserRepository repo;
+	@Autowired
+	private InitController init;
+	private boolean isInit = false;
 
-	public UserServiceImpl(UserRepository repo, ObjectMapper mapper) {
+	private UserRepository repo;
+	private MemberService memberService;
+
+	// ====================================================================================================
+
+	public UserServiceImpl(UserRepository repo, MemberService memberService, ObjectMapper mapper) {
 		super(repo, mapper);
+		this.memberService = memberService;
 		this.repo = repo;
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public UserName getUserNameById(String id) {
@@ -38,6 +60,14 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserNamePict getDefaultUser() {
+		try {
+			if (!isInit) {
+				init.drop();
+				init.init();
+				isInit = true;
+			}
+		} catch (ResponseStatusException e) {
+		}
 		return dtoOpt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst(),
 				UserNamePict.class);
 	}
@@ -47,5 +77,42 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		User user = dto(userCreate, User.class);
 		user.setCreation(LocalDate.now());
 		return this.repo.save(user);
+	}
+
+	@Override
+	public List<UserNamePict> getUserNotInTheTeam(String teamId) {
+		List<User> users = this.repo.findAll();
+		List<User> userIntheTeam = getUserByTeamId(teamId);
+		return users.stream().filter(user -> !userIntheTeam.contains(user)).map(user -> dto(user, UserNamePict.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<User> getUserByTeamId(String teamId) {
+		List<Member> membersInTheTeam = this.memberService.findMembersByTeamId(teamId);
+		List<User> userIntheTeam = new ArrayList<User>();
+		for (Member member : membersInTheTeam) {
+			userIntheTeam.add(member.getUser());
+		}
+		return userIntheTeam;
+	}
+
+	@Override
+	public UserLocalStorage connect(UserConnect connect) {
+		User entity = opt(repo.findByEmail(connect.getEmail()));
+		if (!entity.getPassword().equals(convertPwd(connect.getPassword())))
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+		UserLocalStorage dto = dto(entity, UserLocalStorage.class);
+		dto.setMembers(memberService.findAllByUserId(entity.getId()));
+		return dto;
+	}
+
+	// ====================================================================================================
+
+	public String convertPwd(String pwd) {
+		// TODO [Improve]
+		// TODO Call on save/update user
+		return pwd;
 	}
 }

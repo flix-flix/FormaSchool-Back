@@ -3,7 +3,7 @@
 ## Authors
 
 - BURIE Félix
-- FAHAM Bouchaib
+- FAHAM Bouchaïb
 - NOVELLI Luca
 - VENNIN Jason
 

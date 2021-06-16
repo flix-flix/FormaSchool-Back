@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +44,11 @@ public class TeamController implements CRUDController<Team> {
 	@GetMapping("ofUser/{userId}")
 	public List<TeamNamePict> findTeamsOfUser(@PathVariable String userId) {
 		return service.findAllTeamOfUser(userId);
+	}
+
+	@GetMapping("teamNamePict")
+	public List<TeamNamePict> findAllTeamNamePict() {
+		return this.service.findAllTeamNamePict();
 	}
 
 	@PatchMapping("teamDesc/{id}")

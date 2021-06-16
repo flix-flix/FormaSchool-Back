@@ -29,4 +29,6 @@ public interface TeamService extends CRUDService<Team> {
 	public void addRoleToTeam(String teamId, Role role);
 	
 	public void deleteRole(String teamId, String roleId);
+	
+	public List<TeamNamePict> findAllTeamNamePict();
 }

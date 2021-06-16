@@ -34,7 +34,6 @@ import com.formaschool.back.repositories.ReactionRepository;
 import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
 import com.formaschool.back.repositories.TeamRepository;
-import com.formaschool.back.repositories.TeamSalonRightsRepository;
 import com.formaschool.back.repositories.UserRepository;
 
 @RestController
@@ -88,7 +87,7 @@ public class InitController {
 			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
 			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
 			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
 
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();
@@ -296,16 +295,25 @@ public class InitController {
 
 	@GetMapping("drop")
 	public void drop() {
-		mongo.getMongoDatabase().drop();
-		new File("alreadyInit").delete();
+		try {
+			mongo.getMongoDatabase().drop();
+		} catch (NullPointerException e) {
+			System.err.println("Can't drop");
+		}
+		setInitStatus(false);
 	}
 
 	@GetMapping("")
 	public void init() {
-		File file = new File("alreadyInit");
-		if (file.exists())
+		if (isAlreadyInit())
 			throw new ResponseStatusException(HttpStatus.NOT_MODIFIED);
+		_init();
+		setInitStatus(true);
+	}
 
+	// ====================================================================================================
+
+	public void _init() {
 		for (User user : users)
 			userRepo.save(user);
 		for (Role role : roles)
@@ -330,12 +338,22 @@ public class InitController {
 
 		for (Log log : logs)
 			logRepo.save(log);
+	}
 
-		try {
-			file.createNewFile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public boolean isAlreadyInit() {
+		return new File("alreadyInit").exists();
+	}
+
+	public void setInitStatus(boolean exist) {
+		if (exist)
+			try {
+				File file = new File("alreadyInit");
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		else
+			new File("alreadyInit").delete();
 	}
 
 	// ====================================================================================================
