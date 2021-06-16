@@ -9,5 +9,7 @@ import com.formaschool.back.models.Permission;
 public interface PermissionRepository extends MongoRepository<Permission, String>{
 	
 	public List<Permission> findByRoleId(String roleId);
+	
+	public List<Permission> findBySalonId(String salonId);
 
 }

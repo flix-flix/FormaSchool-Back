@@ -2,6 +2,7 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
+
 import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.dto.team.TeamNameDescPict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
@@ -31,4 +32,6 @@ public interface TeamService extends CRUDService<Team> {
 	public void deleteRole(String teamId, String roleId);
 	
 	public List<TeamNamePict> findAllTeamNamePict();
+	
+	public Team findTeamIdBySalonId(String salonId);
 }

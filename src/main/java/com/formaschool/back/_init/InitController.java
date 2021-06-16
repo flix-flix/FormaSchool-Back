@@ -20,6 +20,7 @@ import com.formaschool.back.models.File;
 import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
+import com.formaschool.back.models.Permission;
 import com.formaschool.back.models.Reaction;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Salon;
@@ -31,6 +32,7 @@ import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
+import com.formaschool.back.repositories.PermissionRepository;
 import com.formaschool.back.repositories.ReactionRepository;
 import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
@@ -110,6 +112,12 @@ public class InitController {
 			new Member(null, users[1], teams[3], new ArrayList<>()),
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
+	
+	private Permission[] permissions = new Permission[] {
+			new Permission(salons[0], members[0], null, new TeamSalonRights(true, true, true, true, true, true, true)),
+			new Permission(salons[0], null, roles[4], new TeamSalonRights(false, false, false, false, false, false, false)),
+			new Permission(salons[0], members[1], null, new TeamSalonRights(true, true, true, true, true, true, true))
+	};
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
@@ -297,6 +305,8 @@ public class InitController {
 	private LogRepository logRepo;
 	@Autowired
 	private RoleRepository roleRepo;
+	@Autowired
+	private PermissionRepository permissionRepo;
 
 	// ====================================================================================================
 
@@ -332,6 +342,9 @@ public class InitController {
 
 		for (Member member : members)
 			memberRepo.save(member);
+		
+		for (Permission permission : permissions) 
+			permissionRepo.save(permission);
 
 		for (File file : files)
 			fileRepo.save(file);

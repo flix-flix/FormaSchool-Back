@@ -47,8 +47,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member) {
-		return new TeamServiceImpl(repo, mapper, member);
+	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member, SalonService salonService) {
+		return new TeamServiceImpl(repo, mapper, member, salonService);
 	}
 
 	@Bean
