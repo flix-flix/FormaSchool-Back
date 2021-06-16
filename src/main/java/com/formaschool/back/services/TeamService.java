@@ -10,7 +10,7 @@ import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Team;
 
 public interface TeamService extends CRUDService<Team> {
-	public TeamNameDescPict findTeamNameDescPicDtoById(String id);
+	public TeamNameDescPict findTeamNameDescPicById(String id);
 
 	public TeamNameDescPict updateTeamNameDescPicDto(TeamNameDescPictUpdate dto);
 

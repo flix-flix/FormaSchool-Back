@@ -29,7 +29,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPict findTeamNameDescPicDtoById(String id) {
+	public TeamNameDescPict findTeamNameDescPicById(String id) {
 		Team team = this.repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		return mapper.convertValue(team, TeamNameDescPict.class);
 	}
