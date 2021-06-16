@@ -38,7 +38,6 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 
 	private MessageWithReacts toMessageWithReacts(Message entity) {
 		MessageWithReacts dto = dto(entity, MessageWithReacts.class);
-		System.out.println(entity.getFile());
 		dto.setReactions(reactService.getAllReactionsUsersOfMessage(entity.getId()));
 		return dto;
 	}

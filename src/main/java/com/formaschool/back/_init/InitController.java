@@ -43,6 +43,12 @@ import com.formaschool.back.repositories.UserRepository;
 @RequestMapping("init")
 public class InitController {
 
+	private User[] users = new User[] {
+			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
+			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
+			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
+
 	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
 			new TeamSalonRights(true, true, true, true, true, true, true),
 			new TeamSalonRights(true, true, true, true, true, true, true),
@@ -86,12 +92,6 @@ public class InitController {
 					"Chaque version est prévue pour être compatible avec la version antérieure. Google a promis de faire des mises à jour deux fois par année.",
 					teams[3]), };
 
-	private User[] users = new User[] {
-			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
-			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
-			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
-
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();
 		role1.add(roles[4]);
@@ -99,7 +99,8 @@ public class InitController {
 	}
 
 	private Member[] members = new Member[] { //
-			new Member(null, users[0], teams[0], role1()), new Member(null, users[1], teams[0], new ArrayList<>()),
+			new Member(null, users[0], teams[0], role1()), //
+			new Member(null, users[1], teams[0], new ArrayList<>()),
 			new Member(null, users[2], teams[0], new ArrayList<>()),
 			new Member(null, users[3], teams[0], new ArrayList<>()),
 
@@ -112,12 +113,13 @@ public class InitController {
 			new Member(null, users[1], teams[3], new ArrayList<>()),
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
-	
+
 	private Permission[] permissions = new Permission[] {
 			new Permission(salons[0], members[0], null, new TeamSalonRights(true, true, true, true, true, true, true)),
-			new Permission(salons[0], null, roles[4], new TeamSalonRights(false, false, false, false, false, false, false)),
-			new Permission(salons[0], members[1], null, new TeamSalonRights(true, true, true, true, true, true, true))
-	};
+			new Permission(salons[0], null, roles[4],
+					new TeamSalonRights(false, false, false, false, false, false, false)),
+			new Permission(salons[0], members[1], null,
+					new TeamSalonRights(true, true, true, true, true, true, true)) };
 
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
@@ -342,8 +344,8 @@ public class InitController {
 
 		for (Member member : members)
 			memberRepo.save(member);
-		
-		for (Permission permission : permissions) 
+
+		for (Permission permission : permissions)
 			permissionRepo.save(permission);
 
 		for (File file : files)
