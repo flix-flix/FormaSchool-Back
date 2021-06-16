@@ -60,14 +60,6 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserNamePict getDefaultUser() {
-		try {
-			if (!isInit) {
-				init.drop();
-				init.init();
-				isInit = true;
-			}
-		} catch (ResponseStatusException e) {
-		}
 		return dtoOpt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst(),
 				UserNamePict.class);
 	}
@@ -99,6 +91,8 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserLocalStorage connect(UserConnect connect) {
+		initMongo();
+
 		User entity = opt(repo.findByEmail(connect.getEmail()));
 		if (!entity.getPassword().equals(convertPwd(connect.getPassword())))
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
@@ -114,5 +108,18 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		// TODO [Improve]
 		// TODO Call on save/update user
 		return pwd;
+	}
+
+	// ====================================================================================================
+
+	public void initMongo() {
+		if (isInit)
+			return;
+		try {
+			init.drop();
+			init.init();
+			isInit = true;
+		} catch (ResponseStatusException e) {
+		}
 	}
 }

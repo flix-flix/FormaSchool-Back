@@ -96,8 +96,7 @@ public class InitController {
 	}
 
 	private Member[] members = new Member[] { //
-			new Member(null, users[0], teams[0], role1()),
-			new Member(null, users[1], teams[0], new ArrayList<>()),
+			new Member(null, users[0], teams[0], role1()), new Member(null, users[1], teams[0], new ArrayList<>()),
 			new Member(null, users[2], teams[0], new ArrayList<>()),
 			new Member(null, users[3], teams[0], new ArrayList<>()),
 
@@ -222,37 +221,37 @@ public class InitController {
 					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
 
 	private Reaction[] reactions = new Reaction[] { //
-			react(msgs[0], members[0], "bagel"), //
-			react(msgs[0], members[0], "beer_mug"), //
-			react(msgs[0], members[0], "beverage_box"), //
-			react(msgs[0], members[1], "bagel"), //
+			new Reaction(msgs[0], members[0], emojis.get("bagel")), //
+			new Reaction(msgs[0], members[0], emojis.get("beer_mug")), //
+			new Reaction(msgs[0], members[0], emojis.get("beverage_box")), //
+			new Reaction(msgs[0], members[1], emojis.get("bagel")), //
 
-			react(msgs[11], members[0], "grinning_face_with_sweat"), //
-			react(msgs[11], members[2], "grinning_face_with_sweat"), //
-			react(msgs[11], members[3], "grinning_face_with_sweat"), //
+			new Reaction(msgs[11], members[0], emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[2], emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[3], emojis.get("grinning_face_with_sweat")), //
 
-			react(msgs[13], members[2], "OK_hand"), //
+			new Reaction(msgs[13], members[2], emojis.get("OK_hand")), //
 
-			react(msgs[14], members[0], "stop_sign"), //
-			react(msgs[14], members[1], "microbe"), //
-			react(msgs[14], members[1], "stop_sign"), //
+			new Reaction(msgs[14], members[0], emojis.get("stop_sign")), //
+			new Reaction(msgs[14], members[1], emojis.get("microbe")), //
+			new Reaction(msgs[14], members[1], emojis.get("stop_sign")), //
 
-			react(msgs[15], members[0], "fire"), //
-			react(msgs[15], members[2], "fire"), //
-			react(msgs[15], members[3], "fire"), //
-			react(msgs[15], members[0], "flexed_biceps"), //
-			react(msgs[15], members[2], "flexed_biceps"), //
-			react(msgs[15], members[3], "flexed_biceps"), //
+			new Reaction(msgs[15], members[0], emojis.get("fire")), //
+			new Reaction(msgs[15], members[2], emojis.get("fire")), //
+			new Reaction(msgs[15], members[3], emojis.get("fire")), //
+			new Reaction(msgs[15], members[0], emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[2], emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[3], emojis.get("flexed_biceps")), //
 
 			// Nourriture
-			react(msgs[19], members[2], "clinking_beer_mugs"), //
-			react(msgs[19], members[1], "beverage_box"), //
-			react(msgs[19], members[3], "beverage_box"), //
+			new Reaction(msgs[19], members[2], emojis.get("clinking_beer_mugs")), //
+			new Reaction(msgs[19], members[1], emojis.get("beverage_box")), //
+			new Reaction(msgs[19], members[3], emojis.get("beverage_box")), //
 
-			react(msgs[20], members[0], "hamburger"), //
-			react(msgs[21], members[0], "hamburger"), //
+			new Reaction(msgs[20], members[0], emojis.get("hamburger")), //
+			new Reaction(msgs[21], members[0], emojis.get("hamburger")), //
 
-			react(msgs[2], members[0], "beer_mug"), //
+			new Reaction(msgs[2], members[0], emojis.get("beer_mug")), //
 	};
 
 	private Log[] logs = new Log[] {
@@ -340,6 +339,8 @@ public class InitController {
 			logRepo.save(log);
 	}
 
+	// ====================================================================================================
+
 	public boolean isAlreadyInit() {
 		return new File("alreadyInit").exists();
 	}
@@ -354,11 +355,5 @@ public class InitController {
 			}
 		else
 			new File("alreadyInit").delete();
-	}
-
-	// ====================================================================================================
-
-	private Reaction react(Message msg, Member member, String name) {
-		return new Reaction(msg, member, emojis.get(name));
 	}
 }
