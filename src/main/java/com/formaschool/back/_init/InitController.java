@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.formaschool.back.models.Emoji;
+import com.formaschool.back.models.FileModel;
 import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
+import com.formaschool.back.models.Permission;
 import com.formaschool.back.models.Reaction;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Salon;
@@ -27,9 +29,11 @@ import com.formaschool.back.models.Team;
 import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.EmojiRepository;
+import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
+import com.formaschool.back.repositories.PermissionRepository;
 import com.formaschool.back.repositories.ReactionRepository;
 import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
@@ -39,6 +43,12 @@ import com.formaschool.back.repositories.UserRepository;
 @RestController
 @RequestMapping("init")
 public class InitController {
+
+	private User[] users = new User[] {
+			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
+			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
+			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
 
 	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
 			new TeamSalonRights(true, true, true, true, true, true, true),
@@ -83,12 +93,6 @@ public class InitController {
 					"Chaque version est prévue pour être compatible avec la version antérieure. Google a promis de faire des mises à jour deux fois par année.",
 					teams[3]), };
 
-	private User[] users = new User[] {
-			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
-			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
-			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
-
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();
 		role1.add(roles[4]);
@@ -96,7 +100,7 @@ public class InitController {
 	}
 
 	private Member[] members = new Member[] { //
-			new Member(null, users[0], teams[0], role1()),
+			new Member(null, users[0], teams[0], role1()), //
 			new Member(null, users[1], teams[0], new ArrayList<>()),
 			new Member(null, users[2], teams[0], new ArrayList<>()),
 			new Member(null, users[3], teams[0], new ArrayList<>()),
@@ -111,6 +115,13 @@ public class InitController {
 			new Member(null, users[2], teams[3], new ArrayList<>()),
 			new Member(null, users[3], teams[3], new ArrayList<>()), };
 
+	private Permission[] permissions = new Permission[] {
+			new Permission(salons[0], members[0], null, new TeamSalonRights(true, true, true, true, true, true, true)),
+			new Permission(salons[0], null, roles[4],
+					new TeamSalonRights(false, false, false, false, false, false, false)),
+			new Permission(salons[0], members[1], null,
+					new TeamSalonRights(true, true, true, true, true, true, true)) };
+
 	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
 
 	public void initCreatedEmojis() {
@@ -122,6 +133,12 @@ public class InitController {
 		this.emojis.put("boby", new Emoji(users[2], teams[0], "boby", "4.png"));
 		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
 	}
+
+	private FileModel[] files = new FileModel[] { new FileModel("1", "euratechnologies.png"), //
+			new FileModel("2", "stackoverflow.png"), //
+			new FileModel("3", "java.jpg"), //
+			new FileModel("4", "hello.txt"), //
+	};
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
@@ -145,13 +162,13 @@ public class InitController {
 					LocalDateTime.of(2021, 4, 28, 0, 50, 25), LocalDateTime.of(2021, 4, 28, 0, 50, 25)),
 			new Message(members[3], salons[0], "C'est le feu :fire:\nC'est le feu :fire:\nC'est le feu\nC'est le feu",
 					null, LocalDateTime.of(2021, 4, 28, 0, 50, 11), LocalDateTime.of(2021, 4, 28, 0, 50, 11)),
-			new Message(members[0], salons[0], "Semaine en présentiel", null, LocalDateTime.of(2021, 4, 28, 7, 37, 11),
-					LocalDateTime.of(2021, 4, 28, 7, 37, 11)),
-			new Message(members[1], salons[0], "Java ?", null, LocalDateTime.of(2021, 4, 28, 7, 52, 11),
+			new Message(members[0], salons[0], "Semaine en présentiel", files[0],
+					LocalDateTime.of(2021, 4, 28, 7, 37, 11), LocalDateTime.of(2021, 4, 28, 7, 37, 11)),
+			new Message(members[1], salons[0], "Java ?", files[1], LocalDateTime.of(2021, 4, 28, 7, 52, 11),
 					LocalDateTime.of(2021, 4, 28, 7, 52, 11)),
-			new Message(members[2], salons[0], "Regarde sur StackOverflow", null,
+			new Message(members[2], salons[0], "Regarde sur StackOverflow", files[2],
 					LocalDateTime.of(2021, 4, 28, 7, 52, 35), LocalDateTime.of(2021, 4, 28, 7, 52, 35)),
-			new Message(members[3], salons[0], "Regardez ça", null, LocalDateTime.of(2021, 4, 28, 7, 54, 11),
+			new Message(members[3], salons[0], "Regardez ça", files[3], LocalDateTime.of(2021, 4, 28, 7, 54, 11),
 					LocalDateTime.of(2021, 4, 28, 7, 54, 11)),
 			new Message(members[0], salons[0], "**Distanciation               <->               Sociale**", null,
 					LocalDateTime.of(2021, 5, 5, 23, 1, 7), LocalDateTime.of(2021, 5, 5, 23, 1, 7)),
@@ -222,37 +239,37 @@ public class InitController {
 					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
 
 	private Reaction[] reactions = new Reaction[] { //
-			react(msgs[0], members[0], "bagel"), //
-			react(msgs[0], members[0], "beer_mug"), //
-			react(msgs[0], members[0], "beverage_box"), //
-			react(msgs[0], members[1], "bagel"), //
+			new Reaction(msgs[0], members[0], emojis.get("bagel")), //
+			new Reaction(msgs[0], members[0], emojis.get("beer_mug")), //
+			new Reaction(msgs[0], members[0], emojis.get("beverage_box")), //
+			new Reaction(msgs[0], members[1], emojis.get("bagel")), //
 
-			react(msgs[11], members[0], "grinning_face_with_sweat"), //
-			react(msgs[11], members[2], "grinning_face_with_sweat"), //
-			react(msgs[11], members[3], "grinning_face_with_sweat"), //
+			new Reaction(msgs[11], members[0], emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[2], emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[3], emojis.get("grinning_face_with_sweat")), //
 
-			react(msgs[13], members[2], "OK_hand"), //
+			new Reaction(msgs[13], members[2], emojis.get("OK_hand")), //
 
-			react(msgs[14], members[0], "stop_sign"), //
-			react(msgs[14], members[1], "microbe"), //
-			react(msgs[14], members[1], "stop_sign"), //
+			new Reaction(msgs[14], members[0], emojis.get("stop_sign")), //
+			new Reaction(msgs[14], members[1], emojis.get("microbe")), //
+			new Reaction(msgs[14], members[1], emojis.get("stop_sign")), //
 
-			react(msgs[15], members[0], "fire"), //
-			react(msgs[15], members[2], "fire"), //
-			react(msgs[15], members[3], "fire"), //
-			react(msgs[15], members[0], "flexed_biceps"), //
-			react(msgs[15], members[2], "flexed_biceps"), //
-			react(msgs[15], members[3], "flexed_biceps"), //
+			new Reaction(msgs[15], members[0], emojis.get("fire")), //
+			new Reaction(msgs[15], members[2], emojis.get("fire")), //
+			new Reaction(msgs[15], members[3], emojis.get("fire")), //
+			new Reaction(msgs[15], members[0], emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[2], emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[3], emojis.get("flexed_biceps")), //
 
 			// Nourriture
-			react(msgs[19], members[2], "clinking_beer_mugs"), //
-			react(msgs[19], members[1], "beverage_box"), //
-			react(msgs[19], members[3], "beverage_box"), //
+			new Reaction(msgs[19], members[2], emojis.get("clinking_beer_mugs")), //
+			new Reaction(msgs[19], members[1], emojis.get("beverage_box")), //
+			new Reaction(msgs[19], members[3], emojis.get("beverage_box")), //
 
-			react(msgs[20], members[0], "hamburger"), //
-			react(msgs[21], members[0], "hamburger"), //
+			new Reaction(msgs[20], members[0], emojis.get("hamburger")), //
+			new Reaction(msgs[21], members[0], emojis.get("hamburger")), //
 
-			react(msgs[2], members[0], "beer_mug"), //
+			new Reaction(msgs[2], members[0], emojis.get("beer_mug")), //
 	};
 
 	private Log[] logs = new Log[] {
@@ -285,11 +302,15 @@ public class InitController {
 	@Autowired
 	private ReactionRepository reactRepo;
 	@Autowired
+	private FileRepository fileRepo;
+	@Autowired
 	private MessageRepository msgRepo;
 	@Autowired
 	private LogRepository logRepo;
 	@Autowired
 	private RoleRepository roleRepo;
+	@Autowired
+	private PermissionRepository permissionRepo;
 
 	// ====================================================================================================
 
@@ -326,6 +347,11 @@ public class InitController {
 		for (Member member : members)
 			memberRepo.save(member);
 
+		for (Permission permission : permissions)
+			permissionRepo.save(permission);
+
+		for (FileModel file : files)
+			fileRepo.save(file);
 		for (Message msg : msgs)
 			msgRepo.save(msg);
 
@@ -339,6 +365,8 @@ public class InitController {
 		for (Log log : logs)
 			logRepo.save(log);
 	}
+
+	// ====================================================================================================
 
 	public boolean isAlreadyInit() {
 		return new File("alreadyInit").exists();
@@ -354,11 +382,5 @@ public class InitController {
 			}
 		else
 			new File("alreadyInit").delete();
-	}
-
-	// ====================================================================================================
-
-	private Reaction react(Message msg, Member member, String name) {
-		return new Reaction(msg, member, emojis.get(name));
 	}
 }

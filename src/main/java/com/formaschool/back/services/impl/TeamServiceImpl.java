@@ -9,23 +9,26 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.dto.team.TeamNameDescPict;
-import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
+import com.formaschool.back.dto.team.TeamNamePict;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.services.MemberService;
+import com.formaschool.back.services.SalonService;
 import com.formaschool.back.services.TeamService;
 
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
 	private TeamRepository repo;
 	private MemberService memberService;
+	private SalonService salonService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService, SalonService salonService) {
 		super(repo, mapper);
 		this.repo = repo;
 		this.memberService = memberService;
+		this.salonService = salonService;
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPict updateTeamNameDescPicDto(TeamNameDescPictUpdate dto) {
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto) {
 		Team team = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -85,5 +88,10 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	public List<TeamNamePict> findAllTeamNamePict() {
 		List<Team> teams = this.repo.findAll();
 		return teams.stream().map(team -> dto(team,TeamNamePict.class)).collect(Collectors.toList());
+	}
+
+	@Override
+	public Team findTeamIdBySalonId(String salonId) {
+		return this.salonService.get(salonId).getTeam();
 	}
 }

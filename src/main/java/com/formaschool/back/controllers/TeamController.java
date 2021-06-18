@@ -31,6 +31,17 @@ public class TeamController implements CRUDController<Team> {
 		return service;
 	}
 
+
+	@GetMapping("bySalon/{salonId}")
+	public Team findTeamIdBySalonId(@PathVariable String salonId) {
+		return this.service.findTeamIdBySalonId(salonId);
+	}
+	
+	@GetMapping("teamDesc/{teamId}")
+	public TeamNameDescPict findById(@PathVariable String teamId) {
+		return this.service.findTeamNameDescPicById(teamId);
+	}
+
 	@GetMapping("teamNamePict/{teamId}")
 	public TeamNamePict findNamePictById(@PathVariable String teamId) {
 		return this.service.findTeamNamePictById(teamId);
@@ -53,6 +64,6 @@ public class TeamController implements CRUDController<Team> {
 
 	@PatchMapping("teamNameDescPict/{teamId}")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
-		return this.service.updateTeamNameDescPicDto(dto);
+		return this.service.updateTeamNameDescPic(dto);
 	}
 }

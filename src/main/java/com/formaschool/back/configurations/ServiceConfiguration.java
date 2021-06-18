@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.repositories.EmojiRepository;
+import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.repositories.LogRepository;
 import com.formaschool.back.repositories.MemberRepository;
 import com.formaschool.back.repositories.MessageRepository;
@@ -16,6 +17,7 @@ import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.repositories.TeamSalonRightsRepository;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.EmojiService;
+import com.formaschool.back.services.FileService;
 import com.formaschool.back.services.LogService;
 import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.MessageService;
@@ -27,6 +29,7 @@ import com.formaschool.back.services.TeamSalonRightsService;
 import com.formaschool.back.services.TeamService;
 import com.formaschool.back.services.UserService;
 import com.formaschool.back.services.impl.EmojiServiceImpl;
+import com.formaschool.back.services.impl.FileServiceImpl;
 import com.formaschool.back.services.impl.LogServiceImpl;
 import com.formaschool.back.services.impl.MemberServiceImpl;
 import com.formaschool.back.services.impl.MessageServiceImpl;
@@ -47,8 +50,9 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member) {
-		return new TeamServiceImpl(repo, mapper, member);
+	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member,
+			SalonService salonService) {
+		return new TeamServiceImpl(repo, mapper, member, salonService);
 	}
 
 	@Bean
@@ -57,17 +61,19 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, ReactionService react) {
-		return new MessageServiceImpl(repo, mapper, react);
+	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, MemberService member,
+			SalonService salon, FileService file, ReactionService react) {
+		return new MessageServiceImpl(repo, mapper, member, salon, file, react);
 	}
 
 	@Bean
-	public MemberService memberService(MemberRepository repo, ObjectMapper mapper) {
-		return new MemberServiceImpl(repo, mapper);
+	public MemberService memberService(MemberRepository repo, PermissionService permissionService, ObjectMapper mapper) {
+		return new MemberServiceImpl(repo, permissionService, mapper);
 	}
 
 	@Bean
-	public EmojiService emojiService(EmojiRepository repo,TeamService teamService, UserService userService, ObjectMapper mapper) {
+	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
+			ObjectMapper mapper) {
 		return new EmojiServiceImpl(repo, teamService, userService, mapper);
 	}
 
@@ -82,8 +88,9 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public RoleService roleService(RoleRepository repo,SalonService salonService, PermissionService permissionService, TeamService teamService, ObjectMapper mapper) {
-		return new RoleServiceImpl(repo, salonService, permissionService,teamService, mapper);
+	public RoleService roleService(RoleRepository repo, SalonService salonService, PermissionService permissionService,
+			TeamService teamService, ObjectMapper mapper) {
+		return new RoleServiceImpl(repo, salonService, permissionService, teamService, mapper);
 	}
 
 	@Bean
@@ -94,5 +101,10 @@ public class ServiceConfiguration {
 	@Bean
 	public TeamSalonRightsService teamSalonRightsService(TeamSalonRightsRepository repo, ObjectMapper mapper) {
 		return new TeamSalonRightsServiceImpl(repo, mapper);
+	}
+
+	@Bean
+	public FileService fileService(FileRepository repo, ObjectMapper mapper) {
+		return new FileServiceImpl(repo, mapper);
 	}
 }
