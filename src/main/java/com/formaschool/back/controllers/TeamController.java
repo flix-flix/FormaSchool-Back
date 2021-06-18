@@ -51,7 +51,7 @@ public class TeamController implements CRUDController<Team> {
 		return this.service.findAllTeamNamePict();
 	}
 
-	@PatchMapping("teamDesc/{id}")
+	@PatchMapping("teamNameDescPict/{teamId}")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
 		return this.service.updateTeamNameDescPicDto(dto);
 	}
