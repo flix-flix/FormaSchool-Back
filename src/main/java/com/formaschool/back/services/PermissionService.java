@@ -14,4 +14,8 @@ public interface PermissionService extends CRUDService<Permission> {
 	public List<PermissionMemberUserRoleWithoutRights> findPermissionBySalonId(String salonId);
 	
 	public PermissionRights findPermissionRightsById(String permissionId);
+	
+	public PermissionRights updatePermission(PermissionRights permissionRights);
+	
+	public Permission findBySalonIdAndMemberId(String salonId, String memberId);
 }
