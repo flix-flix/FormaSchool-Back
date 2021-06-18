@@ -69,4 +69,23 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 				permission.getCommonRights().getAddReaction()));
 		return list;
 	}
+
+	@Override
+	public PermissionRights updatePermission(PermissionRights permissionRights) {
+		Permission permission = this.get(permissionRights.getId());
+		permission = getValueFromPermissionRights(permission, permissionRights);
+		this.repository.save(permission);
+		return permissionRights;
+	}
+	
+	public Permission getValueFromPermissionRights(Permission permission, PermissionRights permissionRights) {
+		permission.getCommonRights().setManagePermissions(permissionRights.getCommonRights().get(0).getValue());
+		permission.getCommonRights().setUpdateSalon(permissionRights.getCommonRights().get(1).getValue());
+		permission.getCommonRights().setDeleteMsg(permissionRights.getCommonRights().get(2).getValue());
+		permission.getCommonRights().setTagSomeone(permissionRights.getCommonRights().get(3).getValue());
+		permission.getCommonRights().setSeeSalon(permissionRights.getCommonRights().get(4).getValue());
+		permission.getCommonRights().setSendMsg(permissionRights.getCommonRights().get(5).getValue());
+		permission.getCommonRights().setAddReaction(permissionRights.getCommonRights().get(6).getValue());
+		return permission;
+	}
 }
