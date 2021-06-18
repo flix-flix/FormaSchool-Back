@@ -13,6 +13,6 @@ public interface SalonService extends CRUDService<Salon> {
 	public SalonNameDesc updateSalonNameDesc(SalonNameDescUpdate dto);
 
 	public List<SalonName> findAllSalonNameOfTeam(String teamId);
-	
+
 	public List<Salon> findAllSalonOfTeam(String teamId);
 }

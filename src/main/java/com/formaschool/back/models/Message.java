@@ -27,11 +27,11 @@ public class Message {
 	@NonNull
 	private String content;
 	@DBRef
-	private File file;
+	private FileModel file;
 	private LocalDateTime send = LocalDateTime.now();
 	private LocalDateTime edit;
 
-	public Message(Member sender, Salon salon, @NonNull String content, File file, LocalDateTime send,
+	public Message(Member sender, Salon salon, @NonNull String content, FileModel file, LocalDateTime send,
 			LocalDateTime edit) {
 		this.sender = sender;
 		this.salon = salon;

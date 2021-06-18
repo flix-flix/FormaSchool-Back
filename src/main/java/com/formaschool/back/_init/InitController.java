@@ -1,5 +1,6 @@
 package com.formaschool.back._init;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.formaschool.back.models.Emoji;
-import com.formaschool.back.models.File;
+import com.formaschool.back.models.FileModel;
 import com.formaschool.back.models.Log;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Message;
@@ -133,10 +134,11 @@ public class InitController {
 		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
 	}
 
-	private File[] files = new File[] { new File("1", "euratechnologies.png"), //
-			new File("2", "stackoverflow.png"), //
-			new File("3", "java.jpg"), //
-			new File("4", "hello.txt"), };
+	private FileModel[] files = new FileModel[] { new FileModel("1", "euratechnologies.png"), //
+			new FileModel("2", "stackoverflow.png"), //
+			new FileModel("3", "java.jpg"), //
+			new FileModel("4", "hello.txt"), //
+	};
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
@@ -348,7 +350,7 @@ public class InitController {
 		for (Permission permission : permissions)
 			permissionRepo.save(permission);
 
-		for (File file : files)
+		for (FileModel file : files)
 			fileRepo.save(file);
 		for (Message msg : msgs)
 			msgRepo.save(msg);
@@ -367,18 +369,18 @@ public class InitController {
 	// ====================================================================================================
 
 	public boolean isAlreadyInit() {
-		return new java.io.File("alreadyInit").exists();
+		return new File("alreadyInit").exists();
 	}
 
 	public void setInitStatus(boolean exist) {
 		if (exist)
 			try {
-				java.io.File file = new java.io.File("alreadyInit");
+				File file = new File("alreadyInit");
 				file.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		else
-			new java.io.File("alreadyInit").delete();
+			new File("alreadyInit").delete();
 	}
 }
