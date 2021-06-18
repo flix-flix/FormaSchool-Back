@@ -88,4 +88,10 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 		permission.getCommonRights().setAddReaction(permissionRights.getCommonRights().get(6).getValue());
 		return permission;
 	}
+
+	@Override
+	public Permission findBySalonIdAndMemberId(String salonId, String memberId) {
+		Permission permission = this.repository.findBySalonIdAndMemberId(salonId, memberId);
+		return permission;
+	}
 }

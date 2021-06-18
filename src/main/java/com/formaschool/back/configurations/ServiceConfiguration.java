@@ -62,8 +62,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public MemberService memberService(MemberRepository repo, ObjectMapper mapper) {
-		return new MemberServiceImpl(repo, mapper);
+	public MemberService memberService(MemberRepository repo, PermissionService permissionService, ObjectMapper mapper) {
+		return new MemberServiceImpl(repo, permissionService, mapper);
 	}
 
 	@Bean
