@@ -15,6 +15,7 @@ import com.formaschool.back.dto.roles.RoleWithoutRights;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Salon;
+import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.services.PermissionService;
 import com.formaschool.back.services.RoleService;
@@ -114,15 +115,15 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		return role;
 	}
 
-	/*@Override
-	public Role addNewRole1(String teamId, RoleCreate newRole) {
+	@Override
+	public Role addNewRole(String teamId, RoleCreate newRole) {
 		TeamSalonRights defaultRights = new TeamSalonRights(true, true, true, true, true, true, true);
 
 		Role role = this.save(
 				new Role(newRole.getName(), newRole.getColor(), defaultRights, true, true, true, true, true, true));
 		this.teamService.addRoleToTeam(teamId, role);
 		return role;
-	}*/
+	}
 	
 	@Override
 	public void deleteRole(String teamId, String roleId) {
@@ -145,15 +146,18 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	}
 
 	@Override
-	public Role addNewRole(String teamId, RoleCreate newRole) {
+	public List<Role> findRoleMissingByMember(Member member) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Role> findRoleMissingByMember(Member member) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RoleWithoutRights> findRoleWithoutRightsInTeamWithoutPermission(String salonId) {
+		Salon salon = this.salonService.get(salonId);
+		List<RoleWithoutRights> roles = this.teamService.findRoleWithoutRightsByTeamId(salon.getTeam().getId());
+		return roles.stream()
+		.filter(role -> this.permissionService.findBySalonIdAndRoleId(salonId, role.getId())==null)
+		.collect(Collectors.toList());
 	}
 
 	//@Override

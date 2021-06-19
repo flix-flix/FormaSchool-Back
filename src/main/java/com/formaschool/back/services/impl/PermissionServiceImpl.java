@@ -11,7 +11,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.permission.PermissionMemberUserRoleWithoutRights;
 import com.formaschool.back.dto.permission.PermissionRights;
 import com.formaschool.back.dto.roles.DescriptionBoolean;
+import com.formaschool.back.models.Member;
 import com.formaschool.back.models.Permission;
+import com.formaschool.back.models.Role;
+import com.formaschool.back.models.Salon;
+import com.formaschool.back.models.TeamSalonRights;
 import com.formaschool.back.repositories.PermissionRepository;
 import com.formaschool.back.services.PermissionService;
 
@@ -91,7 +95,29 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 
 	@Override
 	public Permission findBySalonIdAndMemberId(String salonId, String memberId) {
-		Permission permission = this.repository.findBySalonIdAndMemberId(salonId, memberId);
-		return permission;
+		return this.repository.findBySalonIdAndMemberId(salonId, memberId);
+	}
+
+	@Override
+	public Permission findBySalonIdAndRoleId(String salonId, String roleId) {
+		return this.repository.findBySalonIdAndRoleId(salonId, roleId);
+	}
+
+	@Override
+	public PermissionMemberUserRoleWithoutRights  addFromRole(String salonId, String roleId) {
+		Salon salon = new Salon(salonId); 
+		Role role = new Role(roleId);
+		TeamSalonRights tsr = new TeamSalonRights(true, true, true, true, true, true, true);
+		Permission permission = this.repository.save(new Permission(salon, null, role, tsr));
+		return dto(permission, PermissionMemberUserRoleWithoutRights.class);
+	}
+
+	@Override
+	public PermissionMemberUserRoleWithoutRights addFromMember(String salonId, String memberId) {
+		Salon salon = new Salon(salonId); 
+		Member member = new Member(memberId);
+		TeamSalonRights tsr = new TeamSalonRights(true, true, true, true, true, true, true);
+		Permission permission = this.repository.save(new Permission(salon, member, null, tsr));
+		return dto(permission, PermissionMemberUserRoleWithoutRights.class);
 	}
 }

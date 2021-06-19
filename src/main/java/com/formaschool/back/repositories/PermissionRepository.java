@@ -13,5 +13,7 @@ public interface PermissionRepository extends MongoRepository<Permission, String
 	public List<Permission> findBySalonId(String salonId);
 	
 	public Permission findBySalonIdAndMemberId(String salonId, String memberId);
+	
+	public Permission findBySalonIdAndRoleId(String salonId, String roleId);
 
 }

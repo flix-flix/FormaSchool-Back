@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.formaschool.back.dto.member.MemberUserNamePict;
 import com.formaschool.back.dto.member.MemberUserPseudo;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.services.CRUDService;
@@ -32,8 +33,8 @@ public class MemberController implements CRUDController<Member> {
 		return this.service.findMembersByTeamId(teamId);
 	}
 	
-	@GetMapping("withoutPermission/{teamId}/{salonId}")
-	public List<MemberUserPseudo> findMembersInTeamWithoutPermissionForSalon(@PathVariable String teamId, @PathVariable String salonId){
-		return this.service.findMembersInTeamWithoutPermissionForSalon(teamId, salonId);
+	@GetMapping("withoutPermission/{salonId}")
+	public List<MemberUserNamePict> findMembersInTeamWithoutPermissionForSalon(@PathVariable String salonId){
+		return this.service.findMembersInTeamWithoutPermissionForSalon(salonId);
 	}
 }
