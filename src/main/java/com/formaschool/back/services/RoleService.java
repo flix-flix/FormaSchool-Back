@@ -2,6 +2,7 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
+
 import com.formaschool.back.dto.roles.RoleCreate;
 import com.formaschool.back.dto.roles.RoleWithDescription;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
@@ -23,5 +24,7 @@ public interface RoleService extends CRUDService<Role> {
 	public void deleteRole(String teamId, String roleId);
 	
 	public List<Role> findRoleMissingByMember(Member member);
+	
+	public List<RoleWithoutRights> findRoleWithoutRightsInTeamWithoutPermission(String salonId);
 	
 }

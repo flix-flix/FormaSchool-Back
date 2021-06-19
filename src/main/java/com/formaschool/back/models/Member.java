@@ -34,4 +34,9 @@ public class Member {
 		this.team = team;
 		this.roles = roles;
 	}
+
+	public Member(String id) {
+		super();
+		this.id = id;
+	}
 }

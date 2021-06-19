@@ -50,4 +50,9 @@ public class Role {
 		this.changePseudo = changePseudo;
 		this.managePseudo = managePseudo;
 	}
+
+	public Role(String id) {
+		super();
+		this.id = id;
+	}
 }

@@ -70,5 +70,10 @@ public class RoleController implements CRUDController<Role> {
 		return null;
 	}
 	
+	@GetMapping("withoutPermission/{salonId}")
+	public List<RoleWithoutRights> findRoleWithoutRightsInTeamWithoutPermission(@PathVariable String salonId){
+		return this.service.findRoleWithoutRightsInTeamWithoutPermission(salonId);
+	}
+	
 
 }

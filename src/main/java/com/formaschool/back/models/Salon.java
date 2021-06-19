@@ -29,4 +29,10 @@ public class Salon {
 		this.desc = desc;
 		this.team = team;
 	}
+
+	public Salon(String id) {
+		super();
+		this.id = id;
+	}
+	
 }
