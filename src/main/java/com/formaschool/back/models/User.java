@@ -3,6 +3,7 @@ package com.formaschool.back.models;
 import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -21,16 +22,22 @@ public class User {
 	private String lastname;
 	private String password;
 	private String email;
-	private String picture;
+	@DBRef
+	private FileModel pictureFile;
 
 	private LocalDate creation;
 
-	public User(String firstname, String lastname, String password, String email, String picture, LocalDate creation) {
+	public User(String firstname, String lastname, String password, String email, FileModel pictureFile,
+			LocalDate creation) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.password = password;
 		this.email = email;
-		this.picture = picture;
+		this.pictureFile = pictureFile;
 		this.creation = creation;
+	}
+
+	public String getPicture() {
+		return pictureFile.getId();
 	}
 }

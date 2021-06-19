@@ -44,11 +44,49 @@ import com.formaschool.back.repositories.UserRepository;
 @RequestMapping("init")
 public class InitController {
 
+	private FileModel[] files = new FileModel[] { //
+			// ========== Shared files ==========
+			new FileModel("file_1", "euratechnologies.png"), //
+			new FileModel("file_2", "stackoverflow.png"), //
+			new FileModel("file_3", "java.jpg"), //
+			new FileModel("file_4", "hello.txt"), //
+
+			// ========== Users ==========
+			new FileModel("user_1", "user1.jpg"), // 4
+			new FileModel("user_2", "user2.jpg"), //
+			new FileModel("user_3", "user3.jpg"), //
+			new FileModel("user_4", "user4.jpg"), //
+			new FileModel("user_5", "user5.jpg"), //
+			new FileModel("user_6", "user6.jpg"), //
+			new FileModel("user_7", "user7.jpg"), //
+
+			// ========== Teams ==========
+			new FileModel("team_1", "team1.png"), // 11
+			new FileModel("team_2", "team2.jpg"), //
+			new FileModel("team_3", "team3.png"), //
+			new FileModel("team_4", "team4.png"), //
+
+			// ========== Emojis orga ==========
+			new FileModel("emoji_orga_1", "emojiOrga1"), // 15
+			new FileModel("emoji_orga_2", "emojiOrga1"), //
+
+			// ========== Emojis teams ==========
+			new FileModel("emoji_team_1_1", "emojiTeam1_1.png"), // 17
+			new FileModel("emoji_team_1_2", "emojiTeam1_2.png"), //
+			new FileModel("emoji_team_1_3", "emojiTeam1_3.png"), //
+
+			new FileModel("emoji_team_2_1", "emojiTeam2_1.png"), //
+
+			new FileModel("emoji_team_3_1", "emojiTeam3_1.png"), //
+
+			new FileModel("emoji_team_4_1", "emojiTeam4_1.png"), //
+	};
+
 	private User[] users = new User[] {
-			new User("Félix", "Burie", "123456", "felix@gmail.com", "1.jpg", LocalDate.of(2021, 2, 20)),
-			new User("Jason", "Vennin", "azerty", "jason@gmail.com", "2.jpg", LocalDate.of(2021, 2, 25)),
-			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", "3.jpg", LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", "4.jpg", LocalDate.of(2021, 3, 12)), };
+			new User("Félix", "Burie", "123456", "felix@gmail.com", files[4], LocalDate.of(2021, 2, 20)),
+			new User("Jason", "Vennin", "azerty", "jason@gmail.com", files[5], LocalDate.of(2021, 2, 25)),
+			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", files[6], LocalDate.of(2021, 3, 7)),
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", files[7], LocalDate.of(2021, 3, 12)), };
 
 	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
 			new TeamSalonRights(true, true, true, true, true, true, true),
@@ -69,11 +107,11 @@ public class InitController {
 			new Role("Cant_send_msg", "#ffD02A", teamSalonRights[6], true, true, true, true, true, true) };
 
 	private Team[] teams = new Team[] {
-			new Team("IBM", "International Business Machines Corporation", "1.png",
+			new Team("IBM", "International Business Machines Corporation", files[11],
 					List.of(roles[0], roles[4], roles[5])),
-			new Team("Pole emploi", "Invest in Digital People", "2.jpg", List.of(roles[1], roles[6])),
-			new Team("M2i", "M2i formations, Hauts-de-France", "3.png", List.of(roles[2])),
-			new Team("Semifir", "Ceci est la description de l'équipe Semifir", "4.png", List.of(roles[3])), };
+			new Team("Pole emploi", "Invest in Digital People", files[12], List.of(roles[1], roles[6])),
+			new Team("M2i", "M2i formations, Hauts-de-France", files[13], List.of(roles[2])),
+			new Team("Semifir", "Ceci est la description de l'équipe Semifir", files[14], List.of(roles[3])), };
 
 	private Salon[] salons = new Salon[] { new Salon("Général", "Messages en tout genre", teams[0]),
 			new Salon("Nourriture:pizza:", "Comment se péter le bide", teams[0]),
@@ -133,12 +171,6 @@ public class InitController {
 		this.emojis.put("boby", new Emoji(users[2], teams[0], "boby", "4.png"));
 		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
 	}
-
-	private FileModel[] files = new FileModel[] { new FileModel("1", "euratechnologies.png"), //
-			new FileModel("2", "stackoverflow.png"), //
-			new FileModel("3", "java.jpg"), //
-			new FileModel("4", "hello.txt"), //
-	};
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),

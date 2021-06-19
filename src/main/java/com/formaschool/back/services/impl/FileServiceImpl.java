@@ -1,6 +1,5 @@
 package com.formaschool.back.services.impl;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.springframework.core.io.UrlResource;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.models.FileModel;
 import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.services.FileService;
+import com.formaschool.back.services.impl.enums.Folder;
 
 public class FileServiceImpl extends CRUDServiceImpl<FileModel> implements FileService {
 
@@ -20,16 +20,16 @@ public class FileServiceImpl extends CRUDServiceImpl<FileModel> implements FileS
 		this.repo = repo;
 	}
 
+	// ====================================================================================================
+
 	@Override
-	public FileModel saveMultiPartFile(MultipartFile file) {
+	public FileModel upload(Folder folder, MultipartFile file) {
 		if (file == null)
 			return null;
 		FileModel model = repo.save(new FileModel(file.getOriginalFilename()));
 
-		String path = new File("src/main/resources/static/_uploads/" + model.getPath()).getAbsolutePath();
-
 		try {
-			file.transferTo(new File(path));
+			file.transferTo(folder.getFile(model.getPath()));
 		} catch (IllegalStateException | IOException e) {
 			e.printStackTrace();
 		}
@@ -37,14 +37,12 @@ public class FileServiceImpl extends CRUDServiceImpl<FileModel> implements FileS
 	}
 
 	@Override
-	public byte[] download(String id) throws IOException {
+	public byte[] download(Folder folder, String id) throws IOException {
 		int dot = id.lastIndexOf(".");
 		if (dot != -1)
 			id = id.substring(0, dot);
 
-		String path = new File("src/main/resources/static/_uploads/" + opt(repo.findById(id)).getPath())
-				.getAbsolutePath();
-
-		return new UrlResource(new File(path).toPath().toUri()).getInputStream().readAllBytes();
+		return new UrlResource(folder.getFile(opt(repo.findById(id)).getPath()).toURI()).getInputStream()
+				.readAllBytes();
 	}
 }

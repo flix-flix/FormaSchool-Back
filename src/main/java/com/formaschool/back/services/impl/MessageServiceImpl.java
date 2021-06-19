@@ -14,6 +14,7 @@ import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.MessageService;
 import com.formaschool.back.services.ReactionService;
 import com.formaschool.back.services.SalonService;
+import com.formaschool.back.services.impl.enums.Folder;
 
 public class MessageServiceImpl extends CRUDServiceImpl<Message> implements MessageService {
 
@@ -50,7 +51,7 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	@Override
 	public MessageWithReacts restSendMsg(MessageSend dto) {
 		Message entity = new Message(memberService.get(dto.getMemberId()), salonService.get(dto.getSalonId()),
-				dto.getContent(), fileService.saveMultiPartFile(dto.getFile()), LocalDateTime.now(), null);
+				dto.getContent(), fileService.upload(Folder.SHARED_FILES, dto.getFile()), LocalDateTime.now(), null);
 		repo.save(entity);
 		return dto(entity, MessageWithReacts.class);
 	}

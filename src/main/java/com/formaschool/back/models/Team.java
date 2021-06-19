@@ -23,15 +23,21 @@ public class Team {
 	@NonNull
 	private String name;
 	private String desc;
-	private String picture;
+
+	@DBRef
+	private FileModel pictureFile;
 
 	@DBRef
 	private List<Role> roles;
 
-	public Team(@NonNull String name, String desc, String picture, List<Role> roles) {
+	public Team(@NonNull String name, String desc, FileModel pictureFile, List<Role> roles) {
 		this.name = name;
 		this.desc = desc;
-		this.picture = picture;
+		this.pictureFile = pictureFile;
 		this.roles = roles;
+	}
+
+	public String getPicture() {
+		return pictureFile.getId();
 	}
 }

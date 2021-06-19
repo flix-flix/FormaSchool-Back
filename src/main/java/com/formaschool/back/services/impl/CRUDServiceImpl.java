@@ -27,7 +27,7 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	@Override
 	public T get(String id) {
-		return repo.findById(id).get();
+		return opt(repo.findById(id));
 	}
 
 	@Override

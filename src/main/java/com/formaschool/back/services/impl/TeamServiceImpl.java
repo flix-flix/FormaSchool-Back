@@ -24,7 +24,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	private MemberService memberService;
 	private SalonService salonService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService, SalonService salonService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
+			SalonService salonService) {
 		super(repo, mapper);
 		this.repo = repo;
 		this.memberService = memberService;
@@ -45,8 +46,11 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 			team.setName(dto.getName());
 		if (dto.getDesc() != null)
 			team.setDesc(dto.getDesc());
-		if (dto.getPicture() != null)
-			team.setPicture(dto.getPicture());
+
+		// TODO
+		// if (dto.getPicture() != null)
+		// team.setPicture(dto.getPicture());
+
 		Team result = this.repo.save(team);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
 	}
@@ -81,13 +85,13 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	public void deleteRole(String teamId, String roleId) {
 		Team team = this.repo.findById(teamId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
-		team.getRoles().stream().filter(role -> role.getId() == roleId).map(role -> team.getRoles().remove(role));	
+		team.getRoles().stream().filter(role -> role.getId() == roleId).map(role -> team.getRoles().remove(role));
 	}
 
 	@Override
 	public List<TeamNamePict> findAllTeamNamePict() {
 		List<Team> teams = this.repo.findAll();
-		return teams.stream().map(team -> dto(team,TeamNamePict.class)).collect(Collectors.toList());
+		return teams.stream().map(team -> dto(team, TeamNamePict.class)).collect(Collectors.toList());
 	}
 
 	@Override
