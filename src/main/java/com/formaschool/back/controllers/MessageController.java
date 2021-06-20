@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.formaschool.back.dto.messages.MessageDelete;
 import com.formaschool.back.dto.messages.MessageSend;
+import com.formaschool.back.dto.messages.MessageSendString;
 import com.formaschool.back.dto.messages.MessageWithReacts;
 import com.formaschool.back.models.Message;
 import com.formaschool.back.services.CRUDService;
@@ -69,16 +69,15 @@ public class MessageController implements CRUDController<Message> {
 
 	// ====================================================================================================
 
-	@MessageMapping("chat.register")
-	@SendTo("/topic/public")
-	public String register(@Payload String memberId, SimpMessageHeaderAccessor header) {
-		header.getSessionAttributes().put("memberId", memberId);
-		return "registered";
-	}
-
 	@MessageMapping("chat.send")
 	@SendTo("/topic/public")
-	public MessageWithReacts sendMsg(@Payload MessageSend msg) {
+	public MessageWithReacts sendMsgWithFile(MessageSendString msg) {
 		return service.sendMessage(msg);
+	}
+
+	@MessageMapping("chat.delete")
+	@SendTo("/topic/public")
+	public MessageDelete sendMsgWithFile(String msgId) {
+		return service.deleteMessage(msgId);
 	}
 }

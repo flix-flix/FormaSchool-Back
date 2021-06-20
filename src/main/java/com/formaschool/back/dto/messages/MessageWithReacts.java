@@ -12,10 +12,14 @@ import lombok.Data;
 @Data
 public class MessageWithReacts {
 	private String id;
-	private List<ReactionUsers> reactions;
 	private MemberUserPseudo sender;
+	private String salonId;
+
 	private String content;
 	private FileModel file;
+
+	private List<ReactionUsers> reactions;
+
 	private LocalDateTime send;
 	private LocalDateTime edit;
 }

@@ -11,5 +11,7 @@ public interface FileService extends CRUDService<FileModel> {
 
 	public FileModel upload(Folder folder, MultipartFile file);
 
+	public FileModel upload(Folder folder, String fileName, String fileBase64);
+
 	public byte[] download(Folder folder, String id) throws IOException;
 }

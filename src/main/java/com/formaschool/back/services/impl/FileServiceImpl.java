@@ -1,6 +1,9 @@
 package com.formaschool.back.services.impl;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Base64.Decoder;
 
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,5 +47,25 @@ public class FileServiceImpl extends CRUDServiceImpl<FileModel> implements FileS
 
 		return new UrlResource(folder.getFile(opt(repo.findById(id)).getPath()).toURI()).getInputStream()
 				.readAllBytes();
+	}
+
+	@Override
+	public FileModel upload(Folder folder, String fileName, String fileBase64) {
+		if (fileBase64 == null)
+			return null;
+		FileModel model = repo.save(new FileModel(fileName));
+
+		try {
+			Decoder decoder = Base64.getDecoder();
+			byte[] decodedByte = decoder.decode(fileBase64.split(",")[1]);
+			FileOutputStream fos = new FileOutputStream(folder.getFile(model.getPath()));
+			fos.write(decodedByte);
+			fos.close();
+
+//			file.transferTo(folder.getFile(model.getPath()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return model;
 	}
 }
