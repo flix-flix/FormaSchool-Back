@@ -4,7 +4,8 @@ import java.io.File;
 
 public enum Folder {
 
-	USERS("users"), TEAMS("teams"), EMOJIS_ORGA("emojis"), EMOJIS_TEAMS("emojis"), SHARED_FILES("sharedFiles");
+	USERS("users"), TEAMS("teams"), EMOJIS_DEFAULT("emojis"), EMOJIS_ORGA("emojisOrga"), EMOJIS_TEAMS("emojisTeams"),
+	SHARED_FILES("sharedFiles");
 
 	private String name;
 

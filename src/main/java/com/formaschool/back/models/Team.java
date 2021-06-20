@@ -3,6 +3,7 @@ package com.formaschool.back.models;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -37,6 +38,7 @@ public class Team {
 		this.roles = roles;
 	}
 
+	@Transient
 	public String getPicture() {
 		return pictureFile.getId();
 	}

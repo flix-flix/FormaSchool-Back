@@ -21,15 +21,17 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	private TeamService teamService;
 	private UserService userService;
 
-	public EmojiServiceImpl(EmojiRepository repo,TeamService teamService, UserService userService, ObjectMapper mapper) {
+	public EmojiServiceImpl(EmojiRepository repo, TeamService teamService, UserService userService,
+			ObjectMapper mapper) {
 		super(repo, mapper);
 		this.userService = userService;
 		this.teamService = teamService;
 		this.repo = repo;
 	}
-	
-	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId){
-		List<Emoji>emojis = this.repo.findByUserNotNullAndTeamId(teamId);
+
+	@Override
+	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId) {
+		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamId(teamId);
 		return emojis.stream().map(emoji -> {
 			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
@@ -37,7 +39,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 
 	@Override
 	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga() {
-		List<Emoji>emojis = this.repo.findByUserNotNullAndTeamNull();
+		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
 			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
@@ -53,7 +55,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 
 	@Override
 	public Boolean IsNameAlreadyUse(String id, String name) {
-		return this.repo.findByIdNotAndName(id, name).size()!=0;
+		return this.repo.findByIdNotAndName(id, name).size() != 0;
 	}
 
 	@Override
@@ -61,7 +63,9 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		Emoji result = this.repo.findById(emoji.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		result.setName(emoji.getName());
-		result.setPicture(emoji.getPicture());
+
+		// TODO
+		// result.setPicture(emoji.getPicture());
 		this.repo.save(result);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
@@ -70,12 +74,13 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji) {
 		Emoji result = new Emoji();
 		result.setName(emoji.getName());
-		result.setPicture(emoji.getPicture());
-		if(emoji.getTeamId()!=null) {
+		// TODO
+		// result.setPicture(emoji.getPicture());
+		if (emoji.getTeamId() != null) {
 			result.setTeam(this.teamService.get(emoji.getTeamId()));
 		}
 		result.setUser(this.userService.get(emoji.getUser().getId()));
 		this.repo.save(result);
-		return dto(result,EmojiNamePictUserTeamId.class);
+		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 }

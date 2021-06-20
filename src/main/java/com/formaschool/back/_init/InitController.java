@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -39,6 +42,7 @@ import com.formaschool.back.repositories.RoleRepository;
 import com.formaschool.back.repositories.SalonRepository;
 import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.repositories.UserRepository;
+import com.formaschool.back.services.impl.enums.Folder;
 
 @RestController
 @RequestMapping("init")
@@ -67,19 +71,19 @@ public class InitController {
 			new FileModel("team_4", "team4.png"), //
 
 			// ========== Emojis orga ==========
-			new FileModel("emoji_orga_1", "emojiOrga1"), // 15
-			new FileModel("emoji_orga_2", "emojiOrga1"), //
+			new FileModel("orga_1", "emojisOrga/emojiOrga1.png"), // 15
+			new FileModel("orga_2", "emojisOrga/emojiOrga1.png"), //
 
 			// ========== Emojis teams ==========
-			new FileModel("emoji_team_1_1", "emojiTeam1_1.png"), // 17
-			new FileModel("emoji_team_1_2", "emojiTeam1_2.png"), //
-			new FileModel("emoji_team_1_3", "emojiTeam1_3.png"), //
+			new FileModel("team_1_1", "emojisTeams/emojiTeam1_1.png"), // 17
+			new FileModel("team_1_2", "emojisTeams/emojiTeam1_2.png"), //
+			new FileModel("team_1_3", "emojisTeams/emojiTeam1_3.png"), //
 
-			new FileModel("emoji_team_2_1", "emojiTeam2_1.png"), //
+			new FileModel("team_2_1", "emojisTeams/emojiTeam2_1.png"), //
 
-			new FileModel("emoji_team_3_1", "emojiTeam3_1.png"), //
+			new FileModel("team_3_1", "emojisTeams/emojiTeam3_1.png"), //
 
-			new FileModel("emoji_team_4_1", "emojiTeam4_1.png"), //
+			new FileModel("team_4_1", "emojisTeams/emojiTeam4_1.png"), //
 	};
 
 	private User[] users = new User[] {
@@ -160,17 +164,33 @@ public class InitController {
 			new Permission(salons[0], members[1], null,
 					new TeamSalonRights(true, true, true, true, true, true, true)) };
 
-	private HashMap<String, Emoji> emojis = InitEmojis.initEmoji();
+	// ====================================================================================================
 
-	public void initCreatedEmojis() {
-		this.emojis.put("bmw", new Emoji(users[2], teams[0], "bmw", "0.png"));
-		this.emojis.put("nike", new Emoji(users[2], teams[0], "nike", "1.png"));
-		this.emojis.put("insta", new Emoji(users[2], teams[1], "insta", "2.png"));
-		this.emojis.put("rocket", new Emoji(users[2], null, "rocket", "3.png"));
-		this.emojis.put("bob", new Emoji(users[2], teams[0], "bob", "4.png"));
-		this.emojis.put("boby", new Emoji(users[2], teams[0], "boby", "4.png"));
-		this.emojis.put("bobu", new Emoji(users[2], teams[0], "bobu", "4.png"));
-	}
+	private FileModel[] emojiFiles = Arrays.stream(Folder.EMOJIS_DEFAULT.getFile("").listFiles())
+			// -4 -> id ignore '.png'
+			.map(file -> new FileModel(file.getName().substring(0, file.getName().length() - 4),
+					"emojis/" + file.getName()))
+			.toArray(FileModel[]::new);
+
+	private Emoji[] emojis = Arrays.stream(emojiFiles).map(file -> new Emoji(null, null, file.getId(), file))
+			.toArray(Emoji[]::new);
+
+	private Map<String, Emoji> _emojis = Arrays.stream(emojis)
+			.collect(Collectors.toMap(emoji -> emoji.getPictureFile().getId(), Function.identity()));
+
+	private Emoji[] emojisCreated = new Emoji[] { //
+			new Emoji(users[1], null, "m2i", files[15]), //
+			new Emoji(users[2], null, "semifir", files[16]), //
+
+			new Emoji(users[2], teams[0], "bob", files[17]), //
+			new Emoji(users[1], teams[0], "rl", files[18]), //
+			new Emoji(users[3], teams[0], "ibm", files[19]), //
+			new Emoji(users[1], teams[1], "pe", files[20]), //
+			new Emoji(users[2], teams[2], "nike", files[21]), //
+			new Emoji(users[2], teams[3], "bmw", files[22]), //
+	};
+
+	// ====================================================================================================
 
 	private Message[] msgs = new Message[] {
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
@@ -271,37 +291,37 @@ public class InitController {
 					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
 
 	private Reaction[] reactions = new Reaction[] { //
-			new Reaction(msgs[0], members[0], emojis.get("bagel")), //
-			new Reaction(msgs[0], members[0], emojis.get("beer_mug")), //
-			new Reaction(msgs[0], members[0], emojis.get("beverage_box")), //
-			new Reaction(msgs[0], members[1], emojis.get("bagel")), //
+			new Reaction(msgs[0], members[0], _emojis.get("bagel")), //
+			new Reaction(msgs[0], members[0], _emojis.get("beer_mug")), //
+			new Reaction(msgs[0], members[0], _emojis.get("beverage_box")), //
+			new Reaction(msgs[0], members[1], _emojis.get("bagel")), //
 
-			new Reaction(msgs[11], members[0], emojis.get("grinning_face_with_sweat")), //
-			new Reaction(msgs[11], members[2], emojis.get("grinning_face_with_sweat")), //
-			new Reaction(msgs[11], members[3], emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[0], _emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[2], _emojis.get("grinning_face_with_sweat")), //
+			new Reaction(msgs[11], members[3], _emojis.get("grinning_face_with_sweat")), //
 
-			new Reaction(msgs[13], members[2], emojis.get("OK_hand")), //
+			new Reaction(msgs[13], members[2], _emojis.get("OK_hand")), //
 
-			new Reaction(msgs[14], members[0], emojis.get("stop_sign")), //
-			new Reaction(msgs[14], members[1], emojis.get("microbe")), //
-			new Reaction(msgs[14], members[1], emojis.get("stop_sign")), //
+			new Reaction(msgs[14], members[0], _emojis.get("stop_sign")), //
+			new Reaction(msgs[14], members[1], _emojis.get("microbe")), //
+			new Reaction(msgs[14], members[1], _emojis.get("stop_sign")), //
 
-			new Reaction(msgs[15], members[0], emojis.get("fire")), //
-			new Reaction(msgs[15], members[2], emojis.get("fire")), //
-			new Reaction(msgs[15], members[3], emojis.get("fire")), //
-			new Reaction(msgs[15], members[0], emojis.get("flexed_biceps")), //
-			new Reaction(msgs[15], members[2], emojis.get("flexed_biceps")), //
-			new Reaction(msgs[15], members[3], emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[0], _emojis.get("fire")), //
+			new Reaction(msgs[15], members[2], _emojis.get("fire")), //
+			new Reaction(msgs[15], members[3], _emojis.get("fire")), //
+			new Reaction(msgs[15], members[0], _emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[2], _emojis.get("flexed_biceps")), //
+			new Reaction(msgs[15], members[3], _emojis.get("flexed_biceps")), //
 
 			// Nourriture
-			new Reaction(msgs[19], members[2], emojis.get("clinking_beer_mugs")), //
-			new Reaction(msgs[19], members[1], emojis.get("beverage_box")), //
-			new Reaction(msgs[19], members[3], emojis.get("beverage_box")), //
+			new Reaction(msgs[19], members[2], _emojis.get("clinking_beer_mugs")), //
+			new Reaction(msgs[19], members[1], _emojis.get("beverage_box")), //
+			new Reaction(msgs[19], members[3], _emojis.get("beverage_box")), //
 
-			new Reaction(msgs[20], members[0], emojis.get("hamburger")), //
-			new Reaction(msgs[21], members[0], emojis.get("hamburger")), //
+			new Reaction(msgs[20], members[0], _emojis.get("hamburger")), //
+			new Reaction(msgs[21], members[0], _emojis.get("hamburger")), //
 
-			new Reaction(msgs[2], members[0], emojis.get("beer_mug")), //
+			new Reaction(msgs[2], members[0], _emojis.get("beer_mug")), //
 	};
 
 	private Log[] logs = new Log[] {
@@ -360,42 +380,28 @@ public class InitController {
 	public void init() {
 		if (isAlreadyInit())
 			throw new ResponseStatusException(HttpStatus.NOT_MODIFIED);
-		_init();
+
+		System.out.println(">>> Init Mongo");
+		saveTime();
+
+		Arrays.stream(users).forEach(obj -> userRepo.save(obj));
+		Arrays.stream(roles).forEach(obj -> roleRepo.save(obj));
+		Arrays.stream(teams).forEach(obj -> teamRepo.save(obj));
+		Arrays.stream(salons).forEach(obj -> salonRepo.save(obj));
+		Arrays.stream(members).forEach(obj -> memberRepo.save(obj));
+		Arrays.stream(permissions).forEach(obj -> permissionRepo.save(obj));
+		Arrays.stream(files).forEach(obj -> fileRepo.save(obj));
+		Arrays.stream(msgs).forEach(obj -> msgRepo.save(obj));
+		timeInfo("before emojis");
+		Arrays.stream(emojiFiles).forEach(obj -> fileRepo.save(obj));
+		timeInfo("emojis files");
+		Arrays.stream(emojis).forEach(obj -> emojiRepo.save(obj));
+		timeInfo("emojis");
+		Arrays.stream(emojisCreated).forEach(obj -> emojiRepo.save(obj));
+		Arrays.stream(reactions).forEach(obj -> reactRepo.save(obj));
+		Arrays.stream(logs).forEach(obj -> logRepo.save(obj));
+
 		setInitStatus(true);
-	}
-
-	// ====================================================================================================
-
-	public void _init() {
-		for (User user : users)
-			userRepo.save(user);
-		for (Role role : roles)
-			roleRepo.save(role);
-		for (Team team : teams)
-			teamRepo.save(team);
-		for (Salon salon : salons)
-			salonRepo.save(salon);
-
-		for (Member member : members)
-			memberRepo.save(member);
-
-		for (Permission permission : permissions)
-			permissionRepo.save(permission);
-
-		for (FileModel file : files)
-			fileRepo.save(file);
-		for (Message msg : msgs)
-			msgRepo.save(msg);
-
-		initCreatedEmojis();
-		for (Emoji emoji : emojis.values())
-			emojiRepo.save(emoji);
-
-		for (Reaction react : reactions)
-			reactRepo.save(react);
-
-		for (Log log : logs)
-			logRepo.save(log);
 	}
 
 	// ====================================================================================================
@@ -414,5 +420,23 @@ public class InitController {
 			}
 		else
 			new File("alreadyInit").delete();
+	}
+
+	// ====================================================================================================
+
+	static double time = -1;
+
+	/** Save current time in memory */
+	public static void saveTime() {
+		time = System.currentTimeMillis();
+	}
+
+	/**
+	 * Display the message with the time elapsed since last call to
+	 * {@link #saveTime()} or {@link #timeInfo(String)}
+	 */
+	public static void timeInfo(String str) {
+		System.out.println(String.format(">>> " + str + " (%.3fs)", (System.currentTimeMillis() - time) / 1000));
+		saveTime();
 	}
 }
