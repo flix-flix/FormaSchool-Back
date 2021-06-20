@@ -56,6 +56,11 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 		return dto(entity, MessageWithReacts.class);
 	}
 
+	@Override
+	public void restDeleteMsg(String msgId) {
+		repo.deleteById(msgId);
+	}
+
 	// ====================================================================================================
 	// WebSocket
 

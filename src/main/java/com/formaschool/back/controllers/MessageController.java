@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,6 +60,11 @@ public class MessageController implements CRUDController<Message> {
 			@RequestParam(value = "memberId") String memberId, @RequestParam(value = "salonId") String salonId,
 			@RequestParam(value = "content") String content) {
 		return service.restSendMsg(new MessageSend(memberId, salonId, content, file));
+	}
+
+	@DeleteMapping("deleteMsg/{msgId}")
+	public void restdeleteMsg(@PathVariable String msgId) {
+		service.restDeleteMsg(msgId);
 	}
 
 	// ====================================================================================================

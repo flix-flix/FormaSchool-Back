@@ -14,4 +14,6 @@ public interface MessageService extends CRUDService<Message> {
 	public MessageWithReacts sendMessage(MessageSend msg);
 
 	public MessageWithReacts restSendMsg(MessageSend msg);
+
+	public void restDeleteMsg(String msgId);
 }
