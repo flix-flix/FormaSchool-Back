@@ -17,6 +17,8 @@ import com.formaschool.back.dto.user.UserLocalStorage;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
+import com.formaschool.back.logging.Logger;
+import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
@@ -32,12 +34,16 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	private UserRepository repo;
 	private MemberService memberService;
 
+	private final Logger LOGGER;
+
 	// ====================================================================================================
 
-	public UserServiceImpl(UserRepository repo, MemberService memberService, ObjectMapper mapper) {
+	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory,
+			MemberService memberService) {
 		super(repo, mapper);
-		this.memberService = memberService;
 		this.repo = repo;
+		LOGGER = factory.getElasticLogger("UserService");
+		this.memberService = memberService;
 	}
 
 	// ====================================================================================================
@@ -52,7 +58,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
 
-	// ajout pour userSettings
+	// Ajout pour userSettings
 	@Override
 	public UserSettings getUserSettingsById(String id) {
 		return dtoOpt(repo.findById(id), UserSettings.class);
@@ -67,6 +73,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	@Override
 	public User addUser(UserCreate userCreate) {
 		User user = dto(userCreate, User.class);
+		LOGGER.info("Create user: " + user);
 		user.setCreation(LocalDate.now());
 		return this.repo.save(user);
 	}
@@ -94,8 +101,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		initMongo();
 
 		User entity = opt(repo.findByEmail(connect.getEmail()));
-		if (!entity.getPassword().equals(convertPwd(connect.getPassword())))
+		if (!entity.getPassword().equals(convertPwd(connect.getPassword()))) {
+			LOGGER.warn("Wrong mdp: " + connect.getEmail());
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		}
+		LOGGER.info("User connect: " + connect.getEmail());
 
 		UserLocalStorage dto = dto(entity, UserLocalStorage.class);
 		dto.setMembers(memberService.findAllByUserId(entity.getId()));

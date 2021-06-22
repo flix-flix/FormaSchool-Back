@@ -9,6 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.emoji.EmojiNamePict;
 import com.formaschool.back.dto.emoji.EmojiNamePictUserTeamId;
+import com.formaschool.back.logging.Logger;
+import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.models.Emoji;
 import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.services.EmojiService;
@@ -18,15 +20,18 @@ import com.formaschool.back.services.UserService;
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
 
 	private EmojiRepository repo;
+	private final Logger LOGGER;
+
 	private TeamService teamService;
 	private UserService userService;
 
-	public EmojiServiceImpl(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper) {
+	public EmojiServiceImpl(EmojiRepository repo, ObjectMapper mapper, LoggerFactory factory, TeamService teamService,
+			UserService userService) {
 		super(repo, mapper);
+		this.repo = repo;
+		LOGGER = factory.getElasticLogger("EmojiService");
 		this.userService = userService;
 		this.teamService = teamService;
-		this.repo = repo;
 	}
 
 	@Override
@@ -81,6 +86,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		}
 		result.setUser(this.userService.get(emoji.getUser().getId()));
 		this.repo.save(result);
+		LOGGER.info("Create emoji: " + result);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 }
