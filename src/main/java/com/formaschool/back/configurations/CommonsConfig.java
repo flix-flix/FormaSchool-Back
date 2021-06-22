@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
-import com.formaschool.back._init.InitController;
+import com.formaschool.back._init.InitService;
 
 @Configuration
 public class CommonsConfig {
@@ -22,7 +22,7 @@ public class CommonsConfig {
 	}
 
 	@Bean
-	public InitController init() {
-		return new InitController();
+	public InitService init() {
+		return new InitService();
 	}
 }
