@@ -11,6 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._init.InitController;
+import com.formaschool.back.dto.team.TeamNameDescPict;
+import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserLocalStorage;
@@ -18,6 +20,7 @@ import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
 import com.formaschool.back.models.Member;
+import com.formaschool.back.models.Team;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.MemberService;
@@ -52,11 +55,35 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
 
-	// ajout pour userSettings
+	// userSettings début
+	
 	@Override
 	public UserSettings getUserSettingsById(String id) {
 		return dtoOpt(repo.findById(id), UserSettings.class);
 	}
+	
+	@Override
+	public UserSettings updateuserSettings(UserSettings dto) {
+		User user = this.repo.findById(dto.getId())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		if (dto.getFirstname() != null)
+			user.setFirstname(dto.getFirstname());
+		if (dto.getLastname() != null)
+			user.setLastname(dto.getLastname());
+		if (dto.getEmail() != null)
+			user.setEmail(dto.getEmail());
+//		if (dto.getAge() != 0)
+//			user.setAge(dto.getAge());
+//		if (dto.getPhone() != 0)
+//			user.setPhone(dto.getPhone());
+		if (dto.getPassword() != null)
+			user.setPassword(dto.getPassword());
+
+		User result = this.repo.save(user);
+		return this.mapper.convertValue(result, UserSettings.class);
+	}
+	
+	// userSettings fin
 
 	@Override
 	public UserNamePict getDefaultUser() {

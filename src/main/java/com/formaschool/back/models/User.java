@@ -23,6 +23,7 @@ public class User {
 	private String lastname;
 	private String password;
 	private String email;
+	
 	@DBRef
 	private FileModel pictureFile;
 
@@ -42,4 +43,5 @@ public class User {
 	public String getPicture() {
 		return pictureFile.getId();
 	}
+	
 }
