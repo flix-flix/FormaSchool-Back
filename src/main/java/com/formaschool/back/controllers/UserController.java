@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.formaschool.back.dto.salon.SalonNameDesc;
-import com.formaschool.back.dto.salon.SalonNameDescUpdate;
+//import com.formaschool.back.dto.salon.SalonNameDesc;
+//import com.formaschool.back.dto.salon.SalonNameDescUpdate;
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserLocalStorage;
@@ -57,7 +57,8 @@ public class UserController implements CRUDController<User> {
 		return service.connect(connect);
 	}
 
-//	userSettings début
+	// userSettings Début
+	
 	@GetMapping("userSettings/{id}")
 	public UserSettings getuserSettings(@PathVariable String id) {
 		return service.getUserSettingsById(id);
@@ -67,7 +68,8 @@ public class UserController implements CRUDController<User> {
 	public UserSettings updateuserSettings(@RequestBody UserSettings dto) {
 		return this.service.updateuserSettings(dto);
 	}
-//	userSettings fin
+	
+	// userSettings Fin
 
 	@PostMapping("add")
 	public User addUser(@RequestBody UserCreate user) {

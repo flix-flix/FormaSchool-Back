@@ -11,8 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._init.InitController;
-import com.formaschool.back.dto.team.TeamNameDescPict;
-import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
+//import com.formaschool.back.dto.team.TeamNameDescPict;
+//import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserLocalStorage;
@@ -20,7 +20,7 @@ import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
 import com.formaschool.back.dto.user.UserSettings;
 import com.formaschool.back.models.Member;
-import com.formaschool.back.models.Team;
+//import com.formaschool.back.models.Team;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.MemberService;
@@ -55,7 +55,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
 
-	// userSettings début
+	// userSettings Début
 	
 	@Override
 	public UserSettings getUserSettingsById(String id) {
@@ -83,7 +83,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return this.mapper.convertValue(result, UserSettings.class);
 	}
 	
-	// userSettings fin
+	// userSettings Fin
 
 	@Override
 	public UserNamePict getDefaultUser() {
