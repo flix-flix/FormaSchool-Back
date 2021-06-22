@@ -40,6 +40,6 @@ public class User {
 
 	@Transient
 	public String getPicture() {
-		return pictureFile.getId();
+		return pictureFile!=null? pictureFile.getId():null;
 	}
 }

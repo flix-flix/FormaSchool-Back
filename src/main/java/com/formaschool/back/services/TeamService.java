@@ -2,8 +2,10 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.formaschool.back.dto.roles.RoleWithoutRights;
+import com.formaschool.back.dto.team.TeamNameDescFile;
 import com.formaschool.back.dto.team.TeamNameDescPict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.team.TeamNamePict;
@@ -26,6 +28,8 @@ public interface TeamService extends CRUDService<Team> {
 	 * @return a list of RoleWithoutRights
 	 */
 	public List<RoleWithoutRights> findRoleWithoutRightsByTeamId(String teamId);
+	
+	public Team saveWithFile(TeamNameDescFile dto);
 	
 	public void addRoleToTeam(String teamId, Role role);
 	

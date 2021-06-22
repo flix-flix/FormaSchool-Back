@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.formaschool.back.dto.team.TeamNameDescFile;
 import com.formaschool.back.dto.team.TeamNameDescPict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.team.TeamNamePict;
@@ -61,7 +65,10 @@ public class TeamController implements CRUDController<Team> {
 	public List<TeamNamePict> findAllTeamNamePict() {
 		return this.service.findAllTeamNamePict();
 	}
-
+	@PostMapping("saveWithFile")
+	public Team saveWithFile(@RequestBody TeamNameDescFile team) {
+		return service.saveWithFile(team);
+	}
 	@PatchMapping("teamNameDescPict/{teamId}")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
 		return this.service.updateTeamNameDescPic(dto);

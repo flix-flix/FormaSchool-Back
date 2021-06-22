@@ -1,5 +1,7 @@
 package com.formaschool.back.services.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,28 +10,34 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.roles.RoleWithoutRights;
+import com.formaschool.back.dto.team.TeamNameDescFile;
 import com.formaschool.back.dto.team.TeamNameDescPict;
 import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.team.TeamNamePict;
+import com.formaschool.back.models.Message;
 import com.formaschool.back.models.Role;
 import com.formaschool.back.models.Team;
 import com.formaschool.back.repositories.TeamRepository;
+import com.formaschool.back.services.FileService;
 import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.SalonService;
 import com.formaschool.back.services.TeamService;
+import com.formaschool.back.services.impl.enums.Folder;
 
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
 	private TeamRepository repo;
 	private MemberService memberService;
 	private SalonService salonService;
+	private FileService fileService;
 
 	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService) {
+			SalonService salonService, FileService fileService) {
 		super(repo, mapper);
 		this.repo = repo;
 		this.memberService = memberService;
 		this.salonService = salonService;
+		this.fileService = fileService;
 	}
 
 	@Override
@@ -97,5 +105,18 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	@Override
 	public Team findTeamIdBySalonId(String salonId) {
 		return this.salonService.get(salonId).getTeam();
+	}
+
+	@Override
+	public Team saveWithFile(TeamNameDescFile team) {
+		Team entity;
+		if(team.getFile()!=null) {
+			entity = new Team(team.getName(), team.getDesc(),
+					fileService.upload(Folder.TEAMS, team.getFilename(), team.getFile()), new ArrayList<>());
+		}
+		else {
+			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
+		}
+		return repo.save(entity);
 	}
 }
