@@ -22,13 +22,12 @@ import com.formaschool.back.services.impl.enums.Folder;
 public class MessageServiceImpl extends CRUDServiceImpl<Message> implements MessageService {
 
 	private MessageRepository repo;
+	private final Logger LOGGER;
 
 	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
 	private ReactionService reactService;
-
-	private final Logger LOGGER;
 
 	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, LoggerFactory factory,
 			MemberService memberService, SalonService salonService, FileService fileService,
