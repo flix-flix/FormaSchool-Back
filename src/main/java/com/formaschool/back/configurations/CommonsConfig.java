@@ -1,6 +1,7 @@
 package com.formaschool.back.configurations;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.formaschool.back._init.InitController;
 
+@Configuration
 public class CommonsConfig {
 	@Bean
 	public ObjectMapper objectMapper() {

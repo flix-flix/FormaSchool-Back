@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.formaschool.back.models.Emoji;
@@ -44,8 +41,8 @@ import com.formaschool.back.repositories.TeamRepository;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.impl.enums.Folder;
 
-@RestController
-@RequestMapping("init")
+//@RestController
+//@RequestMapping("init")
 public class InitController {
 
 	private FileModel[] files = new FileModel[] { //
@@ -366,7 +363,7 @@ public class InitController {
 
 	// ====================================================================================================
 
-	@GetMapping("drop")
+//	@GetMapping("drop")
 	public void drop() {
 		try {
 			mongo.getMongoDatabase().drop();
@@ -376,7 +373,7 @@ public class InitController {
 		setInitStatus(false);
 	}
 
-	@GetMapping("")
+//	@GetMapping("init")
 	public void init() {
 		if (isAlreadyInit())
 			throw new ResponseStatusException(HttpStatus.NOT_MODIFIED);
@@ -392,11 +389,11 @@ public class InitController {
 		Arrays.stream(permissions).forEach(obj -> permissionRepo.save(obj));
 		Arrays.stream(files).forEach(obj -> fileRepo.save(obj));
 		Arrays.stream(msgs).forEach(obj -> msgRepo.save(obj));
-		timeInfo("before emojis");
+		timeInfo("Before emojis");
 		Arrays.stream(emojiFiles).forEach(obj -> fileRepo.save(obj));
-		timeInfo("emojis files");
+		timeInfo("Emojis files");
 		Arrays.stream(emojis).forEach(obj -> emojiRepo.save(obj));
-		timeInfo("emojis");
+		timeInfo("Emojis");
 		Arrays.stream(emojisCreated).forEach(obj -> emojiRepo.save(obj));
 		Arrays.stream(reactions).forEach(obj -> reactRepo.save(obj));
 		Arrays.stream(logs).forEach(obj -> logRepo.save(obj));

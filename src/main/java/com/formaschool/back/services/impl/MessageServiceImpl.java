@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.dto.messages.MessageDelete;
-import com.formaschool.back.dto.messages.MessageSend;
 import com.formaschool.back.dto.messages.MessageSendString;
 import com.formaschool.back.dto.messages.MessageWithReacts;
+import com.formaschool.back.logging.Logger;
+import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.models.Message;
 import com.formaschool.back.repositories.MessageRepository;
 import com.formaschool.back.services.FileService;
@@ -27,9 +28,15 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	private FileService fileService;
 	private ReactionService reactService;
 
-	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService, FileService fileService, ReactionService reactService) {
+	private final Logger LOGGER;
+
+	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, LoggerFactory factory,
+			MemberService memberService, SalonService salonService, FileService fileService,
+			ReactionService reactService) {
 		super(repo, mapper);
+
+		LOGGER = factory.getElasticLogger("MessageService");
+
 		this.repo = repo;
 		this.memberService = memberService;
 		this.salonService = salonService;
@@ -50,19 +57,6 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 		return repo.findBySalonId(salonId).stream().map(msg -> toMessageWithReacts(msg)).collect(Collectors.toList());
 	}
 
-	@Override
-	public MessageWithReacts restSendMsg(MessageSend dto) {
-		Message entity = new Message(memberService.get(dto.getMemberId()), salonService.get(dto.getSalonId()),
-				dto.getContent(), fileService.upload(Folder.SHARED_FILES, dto.getFile()), LocalDateTime.now(), null);
-		repo.save(entity);
-		return dto(entity, MessageWithReacts.class);
-	}
-
-	@Override
-	public void restDeleteMsg(String msgId) {
-		repo.deleteById(msgId);
-	}
-
 	// ====================================================================================================
 	// WebSocket
 
@@ -72,6 +66,9 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 				msg.getContent(), fileService.upload(Folder.SHARED_FILES, msg.getFileName(), msg.getFile()),
 				LocalDateTime.now(), null);
 		repo.save(entity);
+		LOGGER.info("Send message: " + entity);
+		if (entity.getFile() != null)
+			LOGGER.info("Send File: " + entity.getFile().getName());
 		return toMessageWithReacts(entity);
 	}
 
@@ -80,6 +77,7 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 		// TODO Remove file, reactions, ...
 		Message entity = opt(repo.findById(msgId));
 		repo.deleteById(msgId);
+		LOGGER.warn("Delete message: " + entity);
 		return new MessageDelete(entity.getSalon().getId(), msgId);
 	}
 

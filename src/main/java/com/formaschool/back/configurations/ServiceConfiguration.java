@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.repositories.EmojiRepository;
 import com.formaschool.back.repositories.FileRepository;
 import com.formaschool.back.repositories.LogRepository;
@@ -45,8 +46,9 @@ import com.formaschool.back.services.impl.UserServiceImpl;
 public class ServiceConfiguration {
 
 	@Bean
-	public UserService userService(UserRepository repo, MemberService memberService, ObjectMapper mapper) {
-		return new UserServiceImpl(repo, memberService, mapper);
+	public UserService userService(UserRepository repo, MemberService memberService, ObjectMapper mapper,
+			LoggerFactory logger) {
+		return new UserServiceImpl(repo, mapper, logger, memberService);
 	}
 
 	@Bean
@@ -61,21 +63,21 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, MemberService member,
-			SalonService salon, FileService file, ReactionService react) {
-		return new MessageServiceImpl(repo, mapper, member, salon, file, react);
+	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, LoggerFactory logger,
+			MemberService member, SalonService salon, FileService file, ReactionService react) {
+		return new MessageServiceImpl(repo, mapper, logger, member, salon, file, react);
 	}
 
 	@Bean
-	public MemberService memberService(MemberRepository repo, PermissionService permissionService, 
+	public MemberService memberService(MemberRepository repo, PermissionService permissionService,
 			SalonService salonService, ObjectMapper mapper) {
 		return new MemberServiceImpl(repo, permissionService, salonService, mapper);
 	}
 
 	@Bean
 	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper) {
-		return new EmojiServiceImpl(repo, teamService, userService, mapper);
+			ObjectMapper mapper, LoggerFactory logger) {
+		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService);
 	}
 
 	@Bean
