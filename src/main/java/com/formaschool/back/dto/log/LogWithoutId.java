@@ -1,6 +1,6 @@
 package com.formaschool.back.dto.log;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.formaschool.back.dto.user.UserNamePict;
 
@@ -10,6 +10,6 @@ import lombok.Data;
 public class LogWithoutId {
 	private UserNamePict user;
 	private Integer type;
-	private Date date;
+	private LocalDateTime date;
 	private String desc;
 }

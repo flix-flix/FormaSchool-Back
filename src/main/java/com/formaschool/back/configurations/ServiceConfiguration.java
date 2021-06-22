@@ -47,8 +47,8 @@ public class ServiceConfiguration {
 
 	@Bean
 	public UserService userService(UserRepository repo, MemberService memberService, ObjectMapper mapper,
-			LoggerFactory logger) {
-		return new UserServiceImpl(repo, mapper, logger, memberService);
+			LoggerFactory logger, FileService fileService) {
+		return new UserServiceImpl(repo, mapper, logger, memberService, fileService);
 	}
 
 	@Bean

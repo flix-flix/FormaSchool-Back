@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._init.InitController;
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
+import com.formaschool.back.dto.user.UserCreateWithFile;
 import com.formaschool.back.dto.user.UserLocalStorage;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
@@ -22,8 +23,10 @@ import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.models.Member;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
+import com.formaschool.back.services.FileService;
 import com.formaschool.back.services.MemberService;
 import com.formaschool.back.services.UserService;
+import com.formaschool.back.services.impl.enums.Folder;
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
@@ -33,17 +36,19 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	private UserRepository repo;
 	private MemberService memberService;
+	private FileService fileService;
 
 	private final Logger LOGGER;
 
 	// ====================================================================================================
 
 	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory,
-			MemberService memberService) {
+			MemberService memberService, FileService fileService) {
 		super(repo, mapper);
 		this.repo = repo;
 		LOGGER = factory.getElasticLogger("UserService");
 		this.memberService = memberService;
+		this.fileService = fileService;
 	}
 
 	// ====================================================================================================
@@ -131,5 +136,19 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 			isInit = true;
 		} catch (ResponseStatusException e) {
 		}
+	}
+
+	@Override
+	public User saveWithFile(UserCreateWithFile user) {
+		User entity;
+		if(user.getFile()!=null) {
+			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword()
+					, user.getEmail(), fileService.upload(Folder.USERS, user.getFilename(), user.getFile()), LocalDate.now());
+		}
+		else {
+			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword()
+					, user.getEmail(), null, LocalDate.now());
+		}
+		return repo.save(entity);
 	}
 }

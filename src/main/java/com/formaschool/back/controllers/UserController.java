@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
+import com.formaschool.back.dto.user.UserCreateWithFile;
 import com.formaschool.back.dto.user.UserLocalStorage;
 import com.formaschool.back.dto.user.UserName;
 import com.formaschool.back.dto.user.UserNamePict;
@@ -31,6 +32,17 @@ public class UserController implements CRUDController<User> {
 	@Override
 	public CRUDService<User> getGenericService() {
 		return service;
+	}
+	
+//	ajout get pour userSettings
+	@GetMapping("userSettings/{id}")
+	public UserSettings getuserSettings(@PathVariable String id) {
+		return service.getUserSettingsById(id);
+	}
+	
+	@GetMapping("userNotInTheTeam/{teamId}")
+	public List<UserNamePict> getUserNotInTheTeam(@PathVariable String teamId) {
+		return this.service.getUserNotInTheTeam(teamId);
 	}
 
 	@GetMapping("name/{id}")
@@ -54,19 +66,15 @@ public class UserController implements CRUDController<User> {
 		return service.connect(connect);
 	}
 
-//	ajout get pour userSettings
-	@GetMapping("userSettings/{id}")
-	public UserSettings getuserSettings(@PathVariable String id) {
-		return service.getUserSettingsById(id);
-	}
-
 	@PostMapping("add")
 	public User addUser(@RequestBody UserCreate user) {
 		return this.service.addUser(user);
 	}
-
-	@GetMapping("userNotInTheTeam/{teamId}")
-	public List<UserNamePict> getUserNotInTheTeam(@PathVariable String teamId) {
-		return this.service.getUserNotInTheTeam(teamId);
+	
+	@PostMapping("saveWithFile")
+	public User saveWithFile(@RequestBody UserCreateWithFile user) {
+		return this.service.saveWithFile(user);
 	}
+
+	
 }
