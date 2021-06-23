@@ -46,8 +46,8 @@ public class InitService {
 	private FileModel[] files = new FileModel[] { //
 			// ========== Shared files ==========
 			new FileModel("file_1", "euratechnologies.png"), //
-			new FileModel("file_2", "stackoverflow.png"), //
-			new FileModel("file_3", "java.jpg"), //
+			new FileModel("file_2", "java.jpg"), //
+			new FileModel("file_3", "stackoverflow.png"), //
 			new FileModel("file_4", "hello.txt"), //
 
 			// ========== Users ==========
