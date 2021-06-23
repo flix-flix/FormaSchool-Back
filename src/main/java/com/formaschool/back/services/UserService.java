@@ -2,7 +2,6 @@ package com.formaschool.back.services;
 
 import java.util.List;
 
-
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserCreateWithFile;
@@ -23,14 +22,20 @@ public interface UserService extends CRUDService<User> {
 	public List<UserNamePict> getUserNotInTheTeam(String teamId);
 
 	public List<User> getUserByTeamId(String teamId);
-	
+
 	public User saveWithFile(UserCreateWithFile user);
 
-	// ajout pour get userSettings
-	public UserSettings getUserSettingsById(String id);
+	// ====================================================================================================
 
 	// TODO [Remove]
 	public UserNamePict getDefaultUser();
 
 	public UserLocalStorage connect(UserConnect connect);
+
+	// ====================================================================================================
+	// userSettings
+
+	public UserSettings getUserSettingsById(String id);
+
+	public UserSettings updateuserSettings(UserSettings dto);
 }

@@ -11,6 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._init.InitController;
+//import com.formaschool.back.dto.team.TeamNameDescPict;
+//import com.formaschool.back.dto.team.TeamNameDescPictUpdate;
 import com.formaschool.back.dto.user.UserConnect;
 import com.formaschool.back.dto.user.UserCreate;
 import com.formaschool.back.dto.user.UserCreateWithFile;
@@ -21,6 +23,7 @@ import com.formaschool.back.dto.user.UserSettings;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.models.Member;
+//import com.formaschool.back.models.Team;
 import com.formaschool.back.models.User;
 import com.formaschool.back.repositories.UserRepository;
 import com.formaschool.back.services.FileService;
@@ -42,8 +45,8 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	// ====================================================================================================
 
-	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory,
-			MemberService memberService, FileService fileService) {
+	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory, MemberService memberService,
+			FileService fileService) {
 		super(repo, mapper);
 		this.repo = repo;
 		LOGGER = factory.getElasticLogger("UserService");
@@ -63,11 +66,33 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return dtoOpt(repo.findById(id), UserNamePict.class);
 	}
 
-	// Ajout pour userSettings
 	@Override
 	public UserSettings getUserSettingsById(String id) {
 		return dtoOpt(repo.findById(id), UserSettings.class);
 	}
+
+	@Override
+	public UserSettings updateuserSettings(UserSettings dto) {
+		User user = this.repo.findById(dto.getId())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		if (dto.getFirstname() != null)
+			user.setFirstname(dto.getFirstname());
+		if (dto.getLastname() != null)
+			user.setLastname(dto.getLastname());
+		if (dto.getEmail() != null)
+			user.setEmail(dto.getEmail());
+//		if (dto.getAge() != 0)
+//			user.setAge(dto.getAge());
+//		if (dto.getPhone() != 0)
+//			user.setPhone(dto.getPhone());
+		if (dto.getPassword() != null)
+			user.setPassword(dto.getPassword());
+
+		User result = this.repo.save(user);
+		return this.mapper.convertValue(result, UserSettings.class);
+	}
+
+	// userSettings Fin
 
 	@Override
 	public UserNamePict getDefaultUser() {
@@ -141,13 +166,12 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	@Override
 	public User saveWithFile(UserCreateWithFile user) {
 		User entity;
-		if(user.getFile()!=null) {
-			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword()
-					, user.getEmail(), fileService.upload(Folder.USERS, user.getFilename(), user.getFile()), LocalDate.now());
-		}
-		else {
-			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword()
-					, user.getEmail(), null, LocalDate.now());
+		if (user.getFile() != null) {
+			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(),
+					fileService.upload(Folder.USERS, user.getFilename(), user.getFile()), LocalDate.now());
+		} else {
+			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(), null,
+					LocalDate.now());
 		}
 		return repo.save(entity);
 	}
