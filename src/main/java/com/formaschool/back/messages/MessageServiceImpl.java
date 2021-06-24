@@ -12,6 +12,7 @@ import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.members.MemberService;
 import com.formaschool.back.messages.dto.MessageDelete;
+import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSendString;
 import com.formaschool.back.messages.dto.MessageWithReacts;
 import com.formaschool.back.reactions.ReactionService;
@@ -67,6 +68,13 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 		if (entity.getFile() != null)
 			LOGGER.info("Send File: " + entity.getFile().getName());
 		return toMessageWithReacts(entity);
+	}
+
+	@Override
+	public MessageWithReacts editMessage(MessageEdit msg) {
+		Message entity = opt(repo.findById(msg.getId()));
+		entity.setContent(msg.getContent());
+		return toMessageWithReacts(repo.save(entity));
 	}
 
 	@Override

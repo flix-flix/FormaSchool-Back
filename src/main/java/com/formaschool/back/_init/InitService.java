@@ -108,7 +108,7 @@ public class InitService {
 	private Team[] teams = new Team[] {
 			new Team("IBM", "International Business Machines Corporation", files[11],
 					List.of(roles[0], roles[4], roles[5])),
-			new Team("Pole emploi", "Invest in Digital People", files[12], List.of(roles[1], roles[6])),
+			new Team("Pole Emploi", "Invest in Digital People", files[12], List.of(roles[1], roles[6])),
 			new Team("M2i", "M2i formations, Hauts-de-France", files[13], List.of(roles[2])),
 			new Team("Semifir", "Ceci est la description de l'équipe Semifir", files[14], List.of(roles[3])), };
 

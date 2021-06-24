@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formaschool.back._crud.CRUDController;
 import com.formaschool.back._crud.CRUDService;
 import com.formaschool.back.messages.dto.MessageDelete;
+import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSendString;
 import com.formaschool.back.messages.dto.MessageWithReacts;
 
@@ -47,6 +48,12 @@ public class MessageController implements CRUDController<Message> {
 	@SendTo("/topic/public")
 	public MessageWithReacts sendMsgWithFile(MessageSendString msg) {
 		return service.sendMessage(msg);
+	}
+
+	@MessageMapping("chat.edit")
+	@SendTo("/topic/public")
+	public MessageWithReacts editMsgWithFile(MessageEdit msg) {
+		return service.editMessage(msg);
 	}
 
 	@MessageMapping("chat.delete")
