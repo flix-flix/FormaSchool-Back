@@ -1,6 +1,5 @@
 package com.formaschool.back.teams;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,8 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
-import com.formaschool.back.members.MemberService;
-import com.formaschool.back.messages.Message;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
@@ -25,15 +22,13 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
 	private TeamRepository repo;
-	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService, FileService fileService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
+			FileService fileService) {
 		super(repo, mapper);
 		this.repo = repo;
-		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
 	}
@@ -59,12 +54,6 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 		Team result = this.repo.save(team);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
-	}
-
-	@Override
-	public List<TeamNamePict> findAllTeamOfUser(String userId) {
-		return memberService.findAllByUserId(userId).stream().map(member -> dto(member.getTeam(), TeamNamePict.class))
-				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -108,11 +97,10 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	@Override
 	public Team saveWithFile(TeamNameDescFile team) {
 		Team entity;
-		if(team.getFile()!=null) {
+		if (team.getFile() != null) {
 			entity = new Team(team.getName(), team.getDesc(),
 					fileService.upload(Folder.TEAMS, team.getFilename(), team.getFile()), new ArrayList<>());
-		}
-		else {
+		} else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
 		return repo.save(entity);

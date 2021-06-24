@@ -52,9 +52,9 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member,
-			SalonService salonService, FileService fileService) {
-		return new TeamServiceImpl(repo, mapper, member, salonService, fileService);
+	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
+			FileService fileService) {
+		return new TeamServiceImpl(repo, mapper, salonService, fileService);
 	}
 
 	@Bean
@@ -70,8 +70,8 @@ public class ServiceConfiguration {
 
 	@Bean
 	public MemberService memberService(MemberRepository repo, PermissionService permissionService,
-			SalonService salonService, ObjectMapper mapper) {
-		return new MemberServiceImpl(repo, permissionService, salonService, mapper);
+			RoleService roleService, SalonService salonService, ObjectMapper mapper) {
+		return new MemberServiceImpl(repo, permissionService, salonService, roleService, mapper);
 	}
 
 	@Bean
