@@ -1,4 +1,4 @@
-package com.formaschool.back.teams;
+package com.formaschool.back.teams.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,13 @@ import com.formaschool.back.logs.LogService;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
+import com.formaschool.back.teams.Team;
+import com.formaschool.back.teams.TeamRepository;
 import com.formaschool.back.teams.dto.TeamNameDescFile;
 import com.formaschool.back.teams.dto.TeamNameDescPict;
 import com.formaschool.back.teams.dto.TeamNameDescPictUpdate;
 import com.formaschool.back.teams.dto.TeamNamePict;
+import com.formaschool.back.teams.services.TeamService;
 
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 

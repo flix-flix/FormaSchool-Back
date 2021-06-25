@@ -16,7 +16,7 @@ import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.logs.Log;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.logs.Type;
-import com.formaschool.back.teams.TeamService;
+import com.formaschool.back.teams.services.TeamService;
 import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserService;
 

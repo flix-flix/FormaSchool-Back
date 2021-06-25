@@ -1,4 +1,4 @@
-package com.formaschool.back.teams.services;
+package com.formaschool.back.teams.impl;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back.members.MemberService;
 import com.formaschool.back.teams.Team;
 import com.formaschool.back.teams.dto.TeamNamePict;
+import com.formaschool.back.teams.services.TeamMemberService;
 
 public class TeamMemberServiceImpl implements TeamMemberService {
 

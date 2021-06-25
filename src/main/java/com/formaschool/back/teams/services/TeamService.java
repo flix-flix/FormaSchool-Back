@@ -1,10 +1,11 @@
-package com.formaschool.back.teams;
+package com.formaschool.back.teams.services;
 
 import java.util.List;
 
 import com.formaschool.back._crud.CRUDService;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
+import com.formaschool.back.teams.Team;
 import com.formaschool.back.teams.dto.TeamNameDescFile;
 import com.formaschool.back.teams.dto.TeamNameDescPict;
 import com.formaschool.back.teams.dto.TeamNameDescPictUpdate;

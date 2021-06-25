@@ -20,6 +20,7 @@ import com.formaschool.back.teams.dto.TeamNameDescPict;
 import com.formaschool.back.teams.dto.TeamNameDescPictUpdate;
 import com.formaschool.back.teams.dto.TeamNamePict;
 import com.formaschool.back.teams.services.TeamMemberService;
+import com.formaschool.back.teams.services.TeamService;
 
 @RestController
 @RequestMapping("teams")

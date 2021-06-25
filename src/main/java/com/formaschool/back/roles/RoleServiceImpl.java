@@ -17,7 +17,7 @@ import com.formaschool.back.roles.dto.RoleWithDescription;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.Salon;
 import com.formaschool.back.salons.SalonService;
-import com.formaschool.back.teams.TeamService;
+import com.formaschool.back.teams.services.TeamService;
 
 public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleService {
 

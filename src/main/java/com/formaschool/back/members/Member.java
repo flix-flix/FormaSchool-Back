@@ -32,6 +32,7 @@ public class Member {
 	@DBRef
 	private List<Role> roles;
 
+	/** true: private messages, false: team 'classic' */
 	private boolean priv;
 
 	public Member(String pseudo, User user, Team team, List<Role> roles, boolean priv) {
