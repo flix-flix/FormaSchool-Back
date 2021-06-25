@@ -114,7 +114,7 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamMemberService teamMemberService(ObjectMapper mapper, MemberService member) {
-		return new TeamMemberServiceImpl(mapper, member);
+	public TeamMemberService teamMemberService(MemberService member) {
+		return new TeamMemberServiceImpl(member);
 	}
 }
