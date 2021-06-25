@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.formaschool.back._crud.CRUDService;
 import com.formaschool.back.logs.dto.LogWithoutId;
+import com.formaschool.back.salons.Salon;
 
 public interface LogService extends CRUDService<Log>{
 	
@@ -22,5 +23,7 @@ public interface LogService extends CRUDService<Log>{
 	public List<LogWithoutId> findWithoutIdByTeam(String teamId);
 	
 	public Log addLog(Log log);
+	
+	public void updateSalonLog(Salon salon, String idAddedBy);
 
 }

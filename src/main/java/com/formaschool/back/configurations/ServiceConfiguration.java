@@ -58,8 +58,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
-		return new SalonServiceImpl(repo, mapper);
+	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService) {
+		return new SalonServiceImpl(repo, mapper, logService);
 	}
 
 	@Bean
