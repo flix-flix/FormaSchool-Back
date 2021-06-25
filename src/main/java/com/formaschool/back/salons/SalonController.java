@@ -39,7 +39,7 @@ public class SalonController implements CRUDController<Salon> {
 		return service.findAllSalonNameOfTeam(teamId);
 	}
 
-	@PatchMapping("salonDesc/{id}")
+	@PatchMapping("salonDesc")
 	public SalonNameDesc updateSalonNameDesc(@RequestBody SalonNameDescUpdate dto) {
 		return this.service.updateSalonNameDesc(dto);
 	}

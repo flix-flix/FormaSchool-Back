@@ -17,6 +17,7 @@ public class TeamMemberServiceImpl implements TeamMemberService {
 
 	@Autowired
 	private MemberService memberService;
+	@Autowired
 	private ObjectMapper mapper;
 
 	public TeamMemberServiceImpl(MemberService memberService) {

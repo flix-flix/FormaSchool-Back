@@ -69,7 +69,7 @@ public class TeamController implements CRUDController<Team> {
 		return service.saveWithFile(team);
 	}
 
-	@PatchMapping("teamNameDescPict/{teamId}")
+	@PatchMapping("teamNameDescPict")
 	public TeamNameDescPict updateTeamNameDescPic(@RequestBody TeamNameDescPictUpdate dto) {
 		return this.service.updateTeamNameDescPic(dto);
 	}

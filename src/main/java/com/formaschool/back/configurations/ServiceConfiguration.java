@@ -38,6 +38,8 @@ import com.formaschool.back.salons.SalonServiceImpl;
 import com.formaschool.back.teams.TeamRepository;
 import com.formaschool.back.teams.TeamService;
 import com.formaschool.back.teams.TeamServiceImpl;
+import com.formaschool.back.teams.services.TeamMemberService;
+import com.formaschool.back.teams.services.TeamMemberServiceImpl;
 import com.formaschool.back.users.UserRepository;
 import com.formaschool.back.users.UserService;
 import com.formaschool.back.users.UserServiceImpl;
@@ -110,4 +112,10 @@ public class ServiceConfiguration {
 	public FileService fileService(FileRepository repo, ObjectMapper mapper) {
 		return new FileServiceImpl(repo, mapper);
 	}
+
+	@Bean
+	public TeamMemberService teamService(MemberService member) {
+		return new TeamMemberServiceImpl(member);
+	}
+
 }
