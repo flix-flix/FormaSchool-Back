@@ -15,7 +15,7 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 public interface TeamService extends CRUDService<Team> {
 	public TeamNameDescPict findTeamNameDescPicById(String id);
 
-	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto);
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto, String idAddedBy);
 
 	public List<TeamNamePict> findAllTeamOfUser(String id);
 

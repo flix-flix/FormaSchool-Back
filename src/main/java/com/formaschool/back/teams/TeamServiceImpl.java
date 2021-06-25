@@ -50,7 +50,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto) {
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto, String idAddedBy) {
 		Team team = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -58,11 +58,9 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		if (dto.getDesc() != null)
 			team.setDesc(dto.getDesc());
 
-		// TODO
-		// if (dto.getPicture() != null)
-		// team.setPicture(dto.getPicture());
-
 		Team result = this.repo.save(team);
+		String desc = "a changé le nom et/ou la description de l'equipe"; 
+		this.logService.addLog(new Log(new User(idAddedBy), result, Type.UPDATE_TEAM.ordinal(), LocalDateTime.now(), desc));
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
 	}
 
