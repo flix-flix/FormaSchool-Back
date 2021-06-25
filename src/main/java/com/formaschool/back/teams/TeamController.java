@@ -70,7 +70,8 @@ public class TeamController implements CRUDController<Team> {
 		return service.saveWithFile(team, userId);
 	}
 	@PatchMapping("teamNameDescPict")
-	public TeamNameDescPict updateTeamNameDescPic(@RequestHeader("Authorization") String authorization, @RequestBody TeamNameDescPictUpdate dto) {
+	public TeamNameDescPict updateTeamNameDescPic(@RequestHeader("Authorization") String authorization, 
+			@RequestBody TeamNameDescPictUpdate dto) {
 		String userId = authorization.split(" ")[1];
 		return this.service.updateTeamNameDescPic(dto, userId);
 	}

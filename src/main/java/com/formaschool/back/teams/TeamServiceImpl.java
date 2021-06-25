@@ -59,8 +59,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 			team.setDesc(dto.getDesc());
 
 		Team result = this.repo.save(team);
-		String desc = "a changé le nom et/ou la description de l'equipe"; 
-		this.logService.addLog(new Log(new User(idAddedBy), result, Type.UPDATE_TEAM.ordinal(), LocalDateTime.now(), desc));
+		this.logService.updateTeamLog(result, idAddedBy);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
 	}
 
@@ -118,8 +117,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
-		String desc = "a créer la team " + team.getName();
-		this.logService.addLog(new Log(new User(idAddedBy), null, Type.CREATE_TEAM.ordinal(), LocalDateTime.now(), desc));
+		this.logService.addTeamLog(entity, idAddedBy);
 		return repo.save(entity);
 	}
 }

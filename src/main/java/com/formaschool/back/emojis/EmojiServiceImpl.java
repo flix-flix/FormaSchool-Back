@@ -75,11 +75,9 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		String oldname = result.getName();
 		result.setName(emoji.getName());
 		this.repo.save(result);
-		updateLog(idAddedBy, oldname, result);
+		this.logService.updateEmojiLog(result, oldname, idAddedBy);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
-
-	
 
 	@Override
 	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
@@ -91,48 +89,16 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		result.setUser(this.userService.get(emoji.getUser().getId()));
 		this.repo.save(result);
 		LOGGER.info("Create emoji: " + result);
-		addLogCreate(emoji, idAddedBy, result);
+		this.logService.addEmojiLog(result, idAddedBy);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 
-	/**
-	 * Add a log when added an emoji 
-	 * @param emoji the emoji created
-	 * @param idAddedBy the id of the user who created the emoji
-	 * @param result the new emoji
-	 */
-	private void addLogCreate(EmojiNamePictUserTeamId emoji, String idAddedBy, Emoji result) {
-		String desc = "a créer l'emoji " + emoji.getName();
-		this.logService.addLog(
-				new Log(
-					new User(idAddedBy),
-					emoji.getTeamId()!=null?result.getTeam():null,
-					Type.CREATE_EMOJI.ordinal(),
-					LocalDateTime.now(),
-					desc)
-				);
-	}
-	/**
-	 * Add a log when updating an emoji
-	 * @param idAddedBy the userid of the one updating 
-	 * @param oldname the oldname of the emoji
-	 * @param result the new emoji updated
-	 */
-	private void updateLog(String idAddedBy, String oldname,  Emoji result) {
-		String desc = "a modifie l'emoji " + oldname + " par " + result.getName();
-		this.logService.addLog(
-				new Log(new User(idAddedBy), result.getTeam(), Type.UPDATE_EMOJI.ordinal(), LocalDateTime.now(), desc)
-				);
-	}
 
 	@Override
 	public void deleteEmoji(String emojiId, String idAddedBy) {
 		Emoji entity = this.repo.findById(emojiId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
-		String desc = "a supprimer l'emoji " + entity.getName();
-		this.logService.addLog(
-				new Log(new User(idAddedBy), entity.getTeam(), Type.DELETE_EMOJI.ordinal(), LocalDateTime.now(), desc)
-				);
+		this.logService.deleteEmojiLog(entity, idAddedBy);
 		this.repo.deleteById(emojiId);
 	}
 }

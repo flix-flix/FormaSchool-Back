@@ -108,7 +108,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		User user = dto(userCreate, User.class);
 		LOGGER.info("Create user: " + user);
 		user.setCreation(LocalDate.now());
-		addLog(userCreate.getFirstname(), userCreate.getLastname(), idAddedBy);
+		this.logService.addUserLog(user.getFirstname(), user.getLastname(), idAddedBy);
 		return this.repo.save(user);
 	}
 
@@ -178,13 +178,9 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(), null,
 					LocalDate.now());
 		}
-		addLog(user.getFirstname(), user.getLastname(), idAddedBy);
+		this.logService.addUserLog(user.getFirstname(), user.getLastname(), idAddedBy);
 		return repo.save(entity);
 	}
 	
-	private void addLog(String firstname, String lastname, String idAddedBy) {
-		String desc = "a créer un utilisateur " + firstname+ lastname;
-		this.logService.addLog(new Log(new User(idAddedBy), null, 
-				Type.CREATE_USER.ordinal(), LocalDateTime.now(), desc));
-	}
+
 }
