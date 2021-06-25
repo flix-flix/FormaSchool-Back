@@ -1,6 +1,5 @@
 package com.formaschool.back.teams;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +12,6 @@ import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.members.MemberService;
-import com.formaschool.back.messages.Message;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
@@ -63,8 +61,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 	@Override
 	public List<TeamNamePict> findAllTeamOfUser(String userId) {
-		return memberService.findAllByUserId(userId).stream().map(member -> dto(member.getTeam(), TeamNamePict.class))
-				.collect(Collectors.toList());
+		return memberService.findAllByUserId(userId).stream().filter(member -> !member.isPriv())
+				.map(member -> dto(member.getTeam(), TeamNamePict.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -96,8 +94,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 	@Override
 	public List<TeamNamePict> findAllTeamNamePict() {
-		List<Team> teams = this.repo.findAll();
-		return teams.stream().map(team -> dto(team, TeamNamePict.class)).collect(Collectors.toList());
+		return this.repo.findAll().stream().filter(team -> team.getDesc() != null)
+				.map(team -> dto(team, TeamNamePict.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -108,11 +106,10 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	@Override
 	public Team saveWithFile(TeamNameDescFile team) {
 		Team entity;
-		if(team.getFile()!=null) {
+		if (team.getFile() != null) {
 			entity = new Team(team.getName(), team.getDesc(),
 					fileService.upload(Folder.TEAMS, team.getFilename(), team.getFile()), new ArrayList<>());
-		}
-		else {
+		} else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
 		return repo.save(entity);

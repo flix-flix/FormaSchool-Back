@@ -130,6 +130,31 @@ public class InitService {
 					"Chaque version est prévue pour être compatible avec la version antérieure. Google a promis de faire des mises à jour deux fois par année.",
 					teams[3]), };
 
+	private Team[] privTeams = new Team[] { //
+			new Team("m p 1", "mg priv 1", null, null), //
+			new Team("m p 2", "mg priv 2", null, null), //
+			new Team("m p 3", "mg priv 3", null, null),//
+	};
+
+	private Salon[] privSalons = new Salon[] { //
+			new Salon("Geneneralllll 1", "plop plop plop !", privTeams[0]), //
+			new Salon("Geneneralllll 2", "plop plop plop !!", privTeams[1]), //
+			new Salon("Geneneralllll 3", "plop plop plop !!!", privTeams[2]), //
+	};
+
+	private Member[] privMembers = new Member[] { //
+			new Member(null, users[0], teams[0], null), //
+			new Member(null, users[1], teams[0], null), //
+
+			new Member(null, users[0], teams[1], null), //
+			new Member(null, users[2], teams[1], null), //
+
+			new Member(null, users[1], teams[2], null), //
+			new Member(null, users[2], teams[2], null), //
+	};
+
+	// ========================###################################################"
+
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();
 		role1.add(roles[4]);
@@ -384,6 +409,11 @@ public class InitService {
 		Arrays.stream(members).forEach(obj -> memberRepo.save(obj));
 		Arrays.stream(permissions).forEach(obj -> permissionRepo.save(obj));
 		Arrays.stream(files).forEach(obj -> fileRepo.save(obj));
+
+		Arrays.stream(privTeams).forEach(obj -> teamRepo.save(obj));
+		Arrays.stream(privSalons).forEach(obj -> salonRepo.save(obj));
+		Arrays.stream(privMembers).forEach(obj -> memberRepo.save(obj));
+
 		Arrays.stream(msgs).forEach(obj -> msgRepo.save(obj));
 		timeInfo("Before emojis");
 		Arrays.stream(emojiFiles).forEach(obj -> fileRepo.save(obj));
