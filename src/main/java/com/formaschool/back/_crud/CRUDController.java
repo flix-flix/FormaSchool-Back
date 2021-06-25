@@ -13,27 +13,27 @@ public interface CRUDController<T> {
 
 	public abstract CRUDService<T> getGenericService();
 
-	@GetMapping()
+	@GetMapping("crud")
 	public default Collection<T> findAll() {
 		return getGenericService().findAll();
 	}
 
-	@GetMapping("{id}")
+	@GetMapping("crud/{id}")
 	public default T getById(@PathVariable String id) {
 		return getGenericService().get(id);
 	}
 
-	@PostMapping()
+	@PostMapping("crud")
 	public default T save(@RequestBody T obj) {
 		return getGenericService().save(obj);
 	}
 
-	@PatchMapping("{id}")
+	@PatchMapping("crud/{id}")
 	public default T update(@RequestBody T obj) {
 		return getGenericService().update(obj);
 	}
 
-	@DeleteMapping("{id}")
+	@DeleteMapping("crud/{id}")
 	public default void delete(@PathVariable String id) {
 		getGenericService().delete(id);
 	}
