@@ -1,5 +1,6 @@
 package com.formaschool.back.emojis;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,11 @@ import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
+import com.formaschool.back.logs.Log;
+import com.formaschool.back.logs.LogService;
+import com.formaschool.back.logs.Type;
 import com.formaschool.back.teams.TeamService;
+import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserService;
 
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
@@ -22,14 +27,16 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 
 	private TeamService teamService;
 	private UserService userService;
+	private LogService logService;
 
 	public EmojiServiceImpl(EmojiRepository repo, ObjectMapper mapper, LoggerFactory factory, TeamService teamService,
-			UserService userService) {
+			UserService userService, LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
 		LOGGER = factory.getElasticLogger("EmojiService");
 		this.userService = userService;
 		this.teamService = teamService;
+		this.logService = logService;
 	}
 
 	@Override
@@ -74,7 +81,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	}
 
 	@Override
-	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji) {
+	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
 		Emoji result = new Emoji();
 		result.setName(emoji.getName());
 		// TODO
@@ -85,6 +92,19 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		result.setUser(this.userService.get(emoji.getUser().getId()));
 		this.repo.save(result);
 		LOGGER.info("Create emoji: " + result);
+		addLogCreate(emoji, idAddedBy, result);
 		return dto(result, EmojiNamePictUserTeamId.class);
+	}
+
+	private void addLogCreate(EmojiNamePictUserTeamId emoji, String idAddedBy, Emoji result) {
+		String desc = "a créer l'emoji " + emoji.getName();
+		this.logService.addLog(
+				new Log(
+					new User(idAddedBy),
+					emoji.getTeamId()!=null?result.getTeam():null,
+					Type.CREATE_EMOJI.ordinal(),
+					LocalDateTime.now(),
+					desc)
+				);
 	}
 }

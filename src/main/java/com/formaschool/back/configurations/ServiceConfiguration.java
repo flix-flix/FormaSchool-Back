@@ -76,8 +76,8 @@ public class ServiceConfiguration {
 
 	@Bean
 	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper, LoggerFactory logger) {
-		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService);
+			ObjectMapper mapper, LoggerFactory logger, LogService logService) {
+		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService, logService);
 	}
 
 	@Bean

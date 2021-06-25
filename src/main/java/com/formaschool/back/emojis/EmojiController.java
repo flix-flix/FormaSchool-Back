@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,8 +52,10 @@ public class EmojiController implements CRUDController<Emoji> {
 	}
 
 	@PostMapping("createdEmojis")
-	public EmojiNamePictUserTeamId addCreatedEmoji(@RequestBody EmojiNamePictUserTeamId emoji) {
-		return this.service.addCreatedEmoji(emoji);
+	public EmojiNamePictUserTeamId addCreatedEmoji(@RequestHeader("Authorization") String authorization, 
+			@RequestBody EmojiNamePictUserTeamId emoji) {
+		String userId = authorization.split(" ")[1];
+		return this.service.addCreatedEmoji(emoji, userId);
 	}
 
 	@GetMapping("nameAlreadyUse/{id}/{name}")
