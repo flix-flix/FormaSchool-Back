@@ -17,13 +17,13 @@ public interface UserService extends CRUDService<User> {
 
 	public UserNamePict getUserNamePictById(String id);
 
-	public User addUser(UserCreate user);
+	public User addUser(UserCreate user, String idAddedBy);
 
 	public List<UserNamePict> getUserNotInTheTeam(String teamId);
 
 	public List<User> getUserByTeamId(String teamId);
 
-	public User saveWithFile(UserCreateWithFile user);
+	public User saveWithFile(UserCreateWithFile user, String idAddedBy);
 
 	// ====================================================================================================
 

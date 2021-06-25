@@ -10,7 +10,7 @@ import com.formaschool.back.salons.dto.SalonNameDescUpdate;
 public interface SalonService extends CRUDService<Salon> {
 	public SalonNameDesc findById(String id);
 
-	public SalonNameDesc updateSalonNameDesc(SalonNameDescUpdate dto);
+	public SalonNameDesc updateSalonNameDesc(SalonNameDescUpdate dto, String idAddedBy);
 
 	public List<SalonName> findAllSalonNameOfTeam(String teamId);
 

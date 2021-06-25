@@ -38,6 +38,11 @@ public class Team {
 		this.pictureFile = pictureFile;
 		this.roles = roles;
 	}
+	public Team(String id) {
+		super();
+		this.id = id;
+	}
+	
 
 	@Transient
 	public String getPicture() {

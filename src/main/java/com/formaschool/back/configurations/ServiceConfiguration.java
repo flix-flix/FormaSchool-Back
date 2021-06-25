@@ -49,19 +49,19 @@ public class ServiceConfiguration {
 
 	@Bean
 	public UserService userService(UserRepository repo, MemberService memberService, ObjectMapper mapper,
-			LoggerFactory logger, FileService fileService) {
-		return new UserServiceImpl(repo, mapper, logger, memberService, fileService);
+			LoggerFactory logger, FileService fileService, LogService logService) {
+		return new UserServiceImpl(repo, mapper, logger, memberService, fileService, logService);
 	}
 
 	@Bean
 	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
-			FileService fileService) {
-		return new TeamServiceImpl(repo, mapper, salonService, fileService);
+			FileService fileService, LogService logService) {
+		return new TeamServiceImpl(repo, mapper, salonService, fileService, logService);
 	}
 
 	@Bean
-	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
-		return new SalonServiceImpl(repo, mapper);
+	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService) {
+		return new SalonServiceImpl(repo, mapper, logService);
 	}
 
 	@Bean
@@ -78,8 +78,8 @@ public class ServiceConfiguration {
 
 	@Bean
 	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper, LoggerFactory logger) {
-		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService);
+			ObjectMapper mapper, LoggerFactory logger, LogService logService) {
+		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService, logService);
 	}
 
 	@Bean

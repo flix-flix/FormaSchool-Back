@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
+import com.formaschool.back.logs.LogService;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
@@ -24,13 +25,15 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	private TeamRepository repo;
 	private SalonService salonService;
 	private FileService fileService;
+	private LogService logService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
-			FileService fileService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService, FileService fileService,
+			LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
 		this.salonService = salonService;
 		this.fileService = fileService;
+		this.logService = logService;
 	}
 
 	@Override
@@ -40,7 +43,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto) {
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto, String idAddedBy) {
 		Team team = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -48,11 +51,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		if (dto.getDesc() != null)
 			team.setDesc(dto.getDesc());
 
-		// TODO
-		// if (dto.getPicture() != null)
-		// team.setPicture(dto.getPicture());
-
 		Team result = this.repo.save(team);
+		this.logService.updateTeamLog(result, idAddedBy);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
 	}
 
@@ -95,7 +95,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public Team saveWithFile(TeamNameDescFile team) {
+	public Team saveWithFile(TeamNameDescFile team, String idAddedBy) {
 		Team entity;
 		if (team.getFile() != null) {
 			entity = new Team(team.getName(), team.getDesc(),
@@ -103,6 +103,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		} else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
+		this.logService.addTeamLog(entity, idAddedBy);
 		return repo.save(entity);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back.logs.LogService;
 import com.formaschool.back.salons.dto.SalonName;
 import com.formaschool.back.salons.dto.SalonNameDesc;
 import com.formaschool.back.salons.dto.SalonNameDescUpdate;
@@ -15,10 +16,12 @@ import com.formaschool.back.salons.dto.SalonNameDescUpdate;
 public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonService {
 
 	private SalonRepository repo;
+	private LogService logService;
 
-	public SalonServiceImpl(SalonRepository repo, ObjectMapper mapper) {
+	public SalonServiceImpl(SalonRepository repo, ObjectMapper mapper, LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
+		this.logService = logService;
 	}
 
 	@Override
@@ -28,7 +31,7 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 	}
 
 	@Override
-	public SalonNameDesc updateSalonNameDesc(SalonNameDescUpdate dto) {
+	public SalonNameDesc updateSalonNameDesc(SalonNameDescUpdate dto, String idAddedBy) {
 		Salon salon = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -36,6 +39,7 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 		if (dto.getDesc() != null)
 			salon.setDesc(dto.getDesc());
 		Salon result = this.repo.save(salon);
+		this.logService.updateSalonLog(result, idAddedBy);
 		return this.mapper.convertValue(result, SalonNameDesc.class);
 	}
 

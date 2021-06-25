@@ -13,7 +13,7 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 public interface TeamService extends CRUDService<Team> {
 	public TeamNameDescPict findTeamNameDescPicById(String id);
 
-	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto);
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto, String idAddedBy);
 
 	public TeamNamePict findTeamNamePictById(String id);
 
@@ -25,7 +25,7 @@ public interface TeamService extends CRUDService<Team> {
 	 */
 	public List<RoleWithoutRights> findRoleWithoutRightsByTeamId(String teamId);
 
-	public Team saveWithFile(TeamNameDescFile dto);
+	public Team saveWithFile(TeamNameDescFile dto, String idAddedBy);
 
 	public void addRoleToTeam(String teamId, Role role);
 
