@@ -143,14 +143,14 @@ public class InitService {
 	};
 
 	private Member[] privMembers = new Member[] { //
-			new Member(null, users[0], teams[0], null), //
-			new Member(null, users[1], teams[0], null), //
+			new Member(null, users[0], privTeams[0], null, true), //
+			new Member(null, users[1], privTeams[0], null, true), //
 
-			new Member(null, users[0], teams[1], null), //
-			new Member(null, users[2], teams[1], null), //
+			new Member(null, users[0], privTeams[1], null, true), //
+			new Member(null, users[2], privTeams[1], null, true), //
 
-			new Member(null, users[1], teams[2], null), //
-			new Member(null, users[2], teams[2], null), //
+			new Member(null, users[1], privTeams[2], null, true), //
+			new Member(null, users[2], privTeams[2], null, true), //
 	};
 
 	// ========================###################################################"

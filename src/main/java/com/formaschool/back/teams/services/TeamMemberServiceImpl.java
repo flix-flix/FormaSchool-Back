@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,20 +14,21 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 
 public class TeamMemberServiceImpl implements TeamMemberService {
 
-	@Autowired
 	private MemberService memberService;
-	@Autowired
 	private ObjectMapper mapper;
 
-	public TeamMemberServiceImpl(MemberService memberService) {
+	public TeamMemberServiceImpl(ObjectMapper mapper, MemberService memberService) {
+		this.mapper = mapper;
 		this.memberService = memberService;
 	}
 
 	@Override
 	public List<TeamNamePict> findAllTeamOfUser(String userId) {
-		return memberService.findAllByUserId(userId).stream().map(member -> dto(member.getTeam(), TeamNamePict.class))
-				.collect(Collectors.toList());
+		return memberService.findAllByUserId(userId).stream().filter(member -> !member.isPriv())
+				.map(member -> dto(member.getTeam(), TeamNamePict.class)).collect(Collectors.toList());
 	}
+
+	// ===================================================================
 
 	/** Throw BAD_REQUEST if the Optional is empty */
 	protected Team opt(Optional<Team> opt) {

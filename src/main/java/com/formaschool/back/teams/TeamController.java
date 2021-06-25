@@ -27,6 +27,7 @@ public class TeamController implements CRUDController<Team> {
 
 	@Autowired
 	private TeamService service;
+	@Autowired
 	private TeamMemberService teamMemberService;
 
 	@Override
