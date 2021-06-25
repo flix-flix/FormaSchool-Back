@@ -85,8 +85,6 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
 		Emoji result = new Emoji();
 		result.setName(emoji.getName());
-		// TODO
-		// result.setPicture(emoji.getPicture());
 		if (emoji.getTeamId() != null) {
 			result.setTeam(this.teamService.get(emoji.getTeamId()));
 		}
@@ -97,6 +95,12 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 
+	/**
+	 * Add a log when added an emoji 
+	 * @param emoji the emoji created
+	 * @param idAddedBy the id of the user who created the emoji
+	 * @param result the new emoji
+	 */
 	private void addLogCreate(EmojiNamePictUserTeamId emoji, String idAddedBy, Emoji result) {
 		String desc = "a créer l'emoji " + emoji.getName();
 		this.logService.addLog(
@@ -108,6 +112,12 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 					desc)
 				);
 	}
+	/**
+	 * Add a log when updating an emoji
+	 * @param idAddedBy the userid of the one updating 
+	 * @param oldname the oldname of the emoji
+	 * @param result the new emoji updated
+	 */
 	private void updateLog(String idAddedBy, String oldname,  Emoji result) {
 		String desc = "a modifie l'emoji " + oldname + " par " + result.getName();
 		this.logService.addLog(
