@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
+import com.formaschool.back.logs.Log;
+import com.formaschool.back.logs.LogService;
+import com.formaschool.back.logs.Type;
 import com.formaschool.back.members.MemberService;
-import com.formaschool.back.messages.Message;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
@@ -21,6 +23,7 @@ import com.formaschool.back.teams.dto.TeamNameDescFile;
 import com.formaschool.back.teams.dto.TeamNameDescPict;
 import com.formaschool.back.teams.dto.TeamNameDescPictUpdate;
 import com.formaschool.back.teams.dto.TeamNamePict;
+import com.formaschool.back.users.User;
 
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
@@ -28,14 +31,16 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
+	private LogService logService;
 
 	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService, FileService fileService) {
+			SalonService salonService, FileService fileService, LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
 		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
+		this.logService = logService;
 	}
 
 	@Override
@@ -106,7 +111,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public Team saveWithFile(TeamNameDescFile team) {
+	public Team saveWithFile(TeamNameDescFile team, String idAddedBy) {
 		Team entity;
 		if(team.getFile()!=null) {
 			entity = new Team(team.getName(), team.getDesc(),
@@ -115,6 +120,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
+		String desc = "a créer la team " + team.getName();
+		this.logService.addLog(new Log(new User(idAddedBy), null, Type.CREATE_TEAM.ordinal(), LocalDateTime.now(), desc));
 		return repo.save(entity);
 	}
 }

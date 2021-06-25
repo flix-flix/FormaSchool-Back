@@ -29,7 +29,7 @@ public interface TeamService extends CRUDService<Team> {
 	 */
 	public List<RoleWithoutRights> findRoleWithoutRightsByTeamId(String teamId);
 	
-	public Team saveWithFile(TeamNameDescFile dto);
+	public Team saveWithFile(TeamNameDescFile dto, String idAddedBy);
 	
 	public void addRoleToTeam(String teamId, Role role);
 	
