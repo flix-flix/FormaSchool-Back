@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
-import com.formaschool.back.members.MemberService;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
@@ -23,15 +22,13 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
 	private TeamRepository repo;
-	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService, FileService fileService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
+			FileService fileService) {
 		super(repo, mapper);
 		this.repo = repo;
-		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
 	}
@@ -57,12 +54,6 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 		Team result = this.repo.save(team);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
-	}
-
-	@Override
-	public List<TeamNamePict> findAllTeamOfUser(String userId) {
-		return memberService.findAllByUserId(userId).stream().filter(member -> !member.isPriv())
-				.map(member -> dto(member.getTeam(), TeamNamePict.class)).collect(Collectors.toList());
 	}
 
 	@Override
