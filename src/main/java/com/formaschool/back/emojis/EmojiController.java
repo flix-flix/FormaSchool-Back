@@ -47,8 +47,10 @@ public class EmojiController implements CRUDController<Emoji> {
 	}
 
 	@PatchMapping("createdEmojis")
-	public EmojiNamePictUserTeamId updateEmoji(@RequestBody EmojiNamePictUserTeamId emoji) {
-		return this.service.updateEmoji(emoji);
+	public EmojiNamePictUserTeamId updateEmoji(@RequestHeader("Authorization") String authorization,
+			@RequestBody EmojiNamePictUserTeamId emoji) {
+		String userId = authorization.split(" ")[1];
+		return this.service.updateEmoji(emoji, userId);
 	}
 
 	@PostMapping("createdEmojis")

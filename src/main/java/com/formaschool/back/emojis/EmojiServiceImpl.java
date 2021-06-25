@@ -69,16 +69,17 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	}
 
 	@Override
-	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji) {
+	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
 		Emoji result = this.repo.findById(emoji.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		String oldname = result.getName();
 		result.setName(emoji.getName());
-
-		// TODO
-		// result.setPicture(emoji.getPicture());
 		this.repo.save(result);
+		updateLog(idAddedBy, oldname, result);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
+
+	
 
 	@Override
 	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
@@ -105,6 +106,12 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 					Type.CREATE_EMOJI.ordinal(),
 					LocalDateTime.now(),
 					desc)
+				);
+	}
+	private void updateLog(String idAddedBy, String oldname,  Emoji result) {
+		String desc = "a modifie l'emoji " + oldname + " par " + result.getName();
+		this.logService.addLog(
+				new Log(new User(idAddedBy), result.getTeam(), Type.UPDATE_EMOJI.ordinal(), LocalDateTime.now(), desc)
 				);
 	}
 }
