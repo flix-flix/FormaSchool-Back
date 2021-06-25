@@ -31,4 +31,13 @@ public class Log {
 	private Integer type;
 	private LocalDateTime date;
 	private String desc;
+	
+	public Log(User user, Team team, Integer type, LocalDateTime date, String desc) {
+		super();
+		this.user = user;
+		this.team = team;
+		this.type = type;
+		this.date = date;
+		this.desc = desc;
+	}
 }

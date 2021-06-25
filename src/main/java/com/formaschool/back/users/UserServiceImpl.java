@@ -1,6 +1,7 @@
 package com.formaschool.back.users;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,8 +17,12 @@ import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
+import com.formaschool.back.logs.Log;
+import com.formaschool.back.logs.LogService;
+import com.formaschool.back.logs.Type;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.members.MemberService;
+import com.formaschool.back.teams.Team;
 import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
@@ -25,6 +30,7 @@ import com.formaschool.back.users.dto.UserLocalStorage;
 import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
 import com.formaschool.back.users.dto.UserSettings;
+
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
@@ -35,18 +41,20 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	private UserRepository repo;
 	private MemberService memberService;
 	private FileService fileService;
+	private LogService logService;
 
 	private final Logger LOGGER;
 
 	// ====================================================================================================
 
 	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory, MemberService memberService,
-			FileService fileService) {
+			FileService fileService, LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
 		LOGGER = factory.getElasticLogger("UserService");
 		this.memberService = memberService;
 		this.fileService = fileService;
+		this.logService = logService;
 	}
 
 	// ====================================================================================================
@@ -96,12 +104,14 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public User addUser(UserCreate userCreate) {
+	public User addUser(UserCreate userCreate, String idAddedBy) {
 		User user = dto(userCreate, User.class);
 		LOGGER.info("Create user: " + user);
 		user.setCreation(LocalDate.now());
+		addLog(userCreate.getFirstname(), userCreate.getLastname(), idAddedBy);
 		return this.repo.save(user);
 	}
+
 
 	@Override
 	public List<UserNamePict> getUserNotInTheTeam(String teamId) {
@@ -159,7 +169,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	}
 
 	@Override
-	public User saveWithFile(UserCreateWithFile user) {
+	public User saveWithFile(UserCreateWithFile user, String idAddedBy) {
 		User entity;
 		if (user.getFile() != null) {
 			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(),
@@ -168,6 +178,13 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(), null,
 					LocalDate.now());
 		}
+		addLog(user.getFirstname(), user.getLastname(), idAddedBy);
 		return repo.save(entity);
+	}
+	
+	private void addLog(String firstname, String lastname, String idAddedBy) {
+		String desc = "a créer un utilisateur " + firstname+ lastname;
+		this.logService.addLog(new Log(new User(idAddedBy), null, 
+				Type.CREATE_USER.ordinal(), LocalDateTime.now(), desc));
 	}
 }

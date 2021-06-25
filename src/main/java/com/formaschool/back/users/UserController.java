@@ -64,12 +64,13 @@ public class UserController implements CRUDController<User> {
 	@PostMapping("add")
 	public User addUser(@RequestHeader("Authorization") String authorization, @RequestBody UserCreate user) {
 		String userId = authorization.split(" ")[1];
-		return this.service.addUser(user);
+		return this.service.addUser(user, userId);
 	}
 
 	@PostMapping("saveWithFile")
-	public User saveWithFile(@RequestBody UserCreateWithFile user) {
-		return this.service.saveWithFile(user);
+	public User saveWithFile(@RequestHeader("Authorization") String authorization, @RequestBody UserCreateWithFile user) {
+		String userId = authorization.split(" ")[1];
+		return this.service.saveWithFile(user, userId);
 	}
 
 	// ====================================================================================================

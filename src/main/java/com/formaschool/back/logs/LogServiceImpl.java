@@ -29,4 +29,9 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 			return this.mapper.convertValue(log, LogWithoutId.class);
 		}).collect(Collectors.toList());
 	}
+
+	@Override
+	public Log addLog(Log log) {
+		return this.repository.save(log);
+	}
 }

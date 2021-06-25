@@ -40,10 +40,15 @@ public class User {
 		this.pictureFile = pictureFile;
 		this.creation = creation;
 	}
+	public User(String id) {
+		super();
+		this.id = id;
+	}
+	
 
 	@Transient
 	public String getPicture() {
 		return pictureFile!=null? pictureFile.getId():null;
 	}
-	
+
 }

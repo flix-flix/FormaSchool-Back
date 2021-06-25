@@ -20,5 +20,7 @@ public interface LogService extends CRUDService<Log>{
 	 * @return a list of LogWithoutId
 	 */
 	public List<LogWithoutId> findWithoutIdByTeam(String teamId);
+	
+	public Log addLog(Log log);
 
 }
