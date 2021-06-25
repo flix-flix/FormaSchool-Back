@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,11 @@ public class EmojiController implements CRUDController<Emoji> {
 	@Override
 	public CRUDService<Emoji> getGenericService() {
 		return service;
+	}
+	
+	@GetMapping("nameAlreadyUse/{id}/{name}")
+	public Boolean IsNameAlreadyUse(@PathVariable String id, @PathVariable String name) {
+		return this.service.IsNameAlreadyUse(id, name);
 	}
 
 	@GetMapping("createdEmojis/{teamId}")
@@ -59,9 +65,12 @@ public class EmojiController implements CRUDController<Emoji> {
 		String userId = authorization.split(" ")[1];
 		return this.service.addCreatedEmoji(emoji, userId);
 	}
-
-	@GetMapping("nameAlreadyUse/{id}/{name}")
-	public Boolean IsNameAlreadyUse(@PathVariable String id, @PathVariable String name) {
-		return this.service.IsNameAlreadyUse(id, name);
+	
+	@DeleteMapping("createdEmoji/{emojiId}")
+	public void deleteEmoji(@RequestHeader("Authorization") String authorization, @PathVariable String emojiId) {
+		String userId = authorization.split(" ")[1];
+		this.service.deleteEmoji(emojiId, userId);
 	}
+
+	
 }

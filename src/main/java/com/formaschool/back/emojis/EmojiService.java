@@ -19,5 +19,7 @@ public interface EmojiService extends CRUDService<Emoji> {
 	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
 	
 	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
+	
+	public void deleteEmoji(String emojiId, String idAddedBy);
 }
 

@@ -124,4 +124,15 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 				new Log(new User(idAddedBy), result.getTeam(), Type.UPDATE_EMOJI.ordinal(), LocalDateTime.now(), desc)
 				);
 	}
+
+	@Override
+	public void deleteEmoji(String emojiId, String idAddedBy) {
+		Emoji entity = this.repo.findById(emojiId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		String desc = "a supprimer l'emoji " + entity.getName();
+		this.logService.addLog(
+				new Log(new User(idAddedBy), entity.getTeam(), Type.DELETE_EMOJI.ordinal(), LocalDateTime.now(), desc)
+				);
+		this.repo.deleteById(emojiId);
+	}
 }
