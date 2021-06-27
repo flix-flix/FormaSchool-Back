@@ -40,6 +40,7 @@ public class Emoji {
 
 	@Transient
 	public String getPicture() {
-		return pictureFile.getPathWithFolder();
+	
+		return pictureFile!=null? pictureFile.getPathWithFolder():null;
 	}
 }

@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
-import com.formaschool.back.members.Member;
 import com.formaschool.back.permissions.PermissionService;
 import com.formaschool.back.rights.TeamSalonRights;
 import com.formaschool.back.roles.dto.DescriptionBoolean;
@@ -18,7 +17,7 @@ import com.formaschool.back.roles.dto.RoleWithDescription;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.Salon;
 import com.formaschool.back.salons.SalonService;
-import com.formaschool.back.teams.TeamService;
+import com.formaschool.back.teams.services.TeamService;
 
 public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleService {
 
@@ -27,7 +26,8 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	private SalonService salonService;
 	private PermissionService permissionService;
 
-	public RoleServiceImpl(RoleRepository repo,SalonService salonService, PermissionService permissionService, TeamService teamService, ObjectMapper mapper) {
+	public RoleServiceImpl(RoleRepository repo, SalonService salonService, PermissionService permissionService,
+			TeamService teamService, ObjectMapper mapper) {
 		super(repo, mapper);
 		this.teamService = teamService;
 		this.salonService = salonService;
@@ -35,8 +35,9 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		this.repo = repo;
 	}
 
+	@Override
 	public List<RoleWithoutRights> findAllWithoutRights() {
-		return repo.findAll().stream().map(role -> dto(role,RoleWithoutRights.class)).collect(Collectors.toList());
+		return repo.findAll().stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -47,15 +48,17 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		List<DescriptionBoolean> commonRights = initCommonRights(role);
 		return new RoleWithDescription(role.getId(), role.getName(), role.getColor(), rights, commonRights);
 	}
-	
+
 	/**
-	 * Init a List with description and boolean 
+	 * Init a List with description and boolean
+	 * 
 	 * @param role a role object from database
 	 * @return a list which contain description and boolean of rights
 	 */
 	public List<DescriptionBoolean> initRights(Role role) {
 		List<DescriptionBoolean> list = new ArrayList<DescriptionBoolean>();
-		list.add(new DescriptionBoolean("Permet de gérer une equipe, changer le nom et la description", role.getManageTeam()));
+		list.add(new DescriptionBoolean("Permet de gérer une equipe, changer le nom et la description",
+				role.getManageTeam()));
 		list.add(new DescriptionBoolean("Permet de créer et de supprimer un salon", role.getCreateDeleteSalon()));
 		list.add(new DescriptionBoolean("Permet de créer, update et supprimer un emoji", role.getManageEmoji()));
 		list.add(new DescriptionBoolean("Permet de voir les logs", role.getSeeLogs()));
@@ -63,21 +66,27 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		list.add(new DescriptionBoolean("Permet de changer tous les pseudos", role.getManagePseudo()));
 		return list;
 	}
+
 	/**
-	 * Init a List with description and boolean 
+	 * Init a List with description and boolean
+	 * 
 	 * @param role a role object from database
 	 * @return a list which contain description and boolean of commonRights
 	 */
 	public List<DescriptionBoolean> initCommonRights(Role role) {
 		List<DescriptionBoolean> list = new ArrayList<DescriptionBoolean>();
-		
-		list.add(new DescriptionBoolean("Permet de gérer les permissions", role.getCommonRights().getManagePermissions()));
+
+		list.add(new DescriptionBoolean("Permet de gérer les permissions",
+				role.getCommonRights().getManagePermissions()));
 		list.add(new DescriptionBoolean("Permet de changer le nom du salon", role.getCommonRights().getUpdateSalon()));
-		list.add(new DescriptionBoolean("Permet de supprimer les messages des autres", role.getCommonRights().getDeleteMsg()));
-		list.add(new DescriptionBoolean("Permet de tag les autres utilisateurs", role.getCommonRights().getTagSomeone()));
+		list.add(new DescriptionBoolean("Permet de supprimer les messages des autres",
+				role.getCommonRights().getDeleteMsg()));
+		list.add(new DescriptionBoolean("Permet de tag les autres utilisateurs",
+				role.getCommonRights().getTagSomeone()));
 		list.add(new DescriptionBoolean("Permet de voir le salon", role.getCommonRights().getSeeSalon()));
-		list.add(new DescriptionBoolean("Permet d'envoyer des messages",  role.getCommonRights().getSendMsg()));
-		list.add(new DescriptionBoolean("Permet d'ajouter des reactions sous les messages",  role.getCommonRights().getAddReaction()));
+		list.add(new DescriptionBoolean("Permet d'envoyer des messages", role.getCommonRights().getSendMsg()));
+		list.add(new DescriptionBoolean("Permet d'ajouter des reactions sous les messages",
+				role.getCommonRights().getAddReaction()));
 		return list;
 	}
 
@@ -91,7 +100,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		role.setName(roleDesc.getName());
 		return this.repo.save(role);
 	}
-	
+
 	public Role updateCommonRights(Role role, RoleWithDescription roleDesc) {
 		role.getCommonRights().setManagePermissions(roleDesc.getCommonRights().get(0).getValue());
 		role.getCommonRights().setUpdateSalon(roleDesc.getCommonRights().get(1).getValue());
@@ -102,7 +111,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		role.getCommonRights().setAddReaction(roleDesc.getCommonRights().get(6).getValue());
 		return role;
 	}
-	
+
 	public Role updateRights(Role role, RoleWithDescription roleDesc) {
 		role.setManageTeam(roleDesc.getRights().get(0).getValue());
 		role.setCreateDeleteSalon(roleDesc.getRights().get(1).getValue());
@@ -122,7 +131,7 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 		this.teamService.addRoleToTeam(teamId, role);
 		return role;
 	}
-	
+
 	@Override
 	public void deleteRole(String teamId, String roleId) {
 		Role role = this.get(roleId);
@@ -144,31 +153,30 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	}
 
 	@Override
-	public List<Role> findRoleMissingByMember(Member member) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<RoleWithoutRights> findRoleWithoutRightsInTeamWithoutPermission(String salonId) {
 		Salon salon = this.salonService.get(salonId);
 		List<RoleWithoutRights> roles = this.teamService.findRoleWithoutRightsByTeamId(salon.getTeam().getId());
 		return roles.stream()
-		.filter(role -> this.permissionService.findBySalonIdAndRoleId(salonId, role.getId())==null)
-		.collect(Collectors.toList());
+				.filter(role -> this.permissionService.findBySalonIdAndRoleId(salonId, role.getId()) == null)
+				.collect(Collectors.toList());
 	}
 
-	//@Override
-	//public List<Role> findRoleMissingByMember(Member member) {
-		//List<RoleWithoutRights> roles= this.teamService.findRoleWithoutRightsByTeamId(member.getTeam().getId()); 
-		//this.service.findRoleByTeamId();
-		//for(Role role : roles){
-			//member.role.contain(role);
-	//	}
-		/*for (RoleWithoutRights role : roles) {
-			member.getRoles().stream().filter(memberRole -> memberRole.getId()==role.getId());
-		}*/
+	@Override
+	public List<Role> findAllById(List<String> rolesId) {
+		return this.repo.findAllById(rolesId);
+	}
+
+	// @Override
+	// public List<Role> findRoleMissingByMember(Member member) {
+	// List<RoleWithoutRights> roles=
+	// this.teamService.findRoleWithoutRightsByTeamId(member.getTeam().getId());
+	// this.service.findRoleByTeamId();
+	// for(Role role : roles){
+	// member.role.contain(role);
+	// }
+	/*
+	 * for (RoleWithoutRights role : roles) {
+	 * member.getRoles().stream().filter(memberRole ->
+	 * memberRole.getId()==role.getId()); }
+	 */
 }
-
-	
-

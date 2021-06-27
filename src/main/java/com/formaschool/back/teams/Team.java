@@ -13,7 +13,6 @@ import com.formaschool.back.roles.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @AllArgsConstructor
@@ -24,7 +23,6 @@ public class Team {
 	@Id
 	private String id;
 
-	@NonNull
 	private String name;
 	private String desc;
 
@@ -34,7 +32,7 @@ public class Team {
 	@DBRef
 	private List<Role> roles;
 
-	public Team(@NonNull String name, String desc, FileModel pictureFile, List<Role> roles) {
+	public Team(String name, String desc, FileModel pictureFile, List<Role> roles) {
 		this.name = name;
 		this.desc = desc;
 		this.pictureFile = pictureFile;
@@ -48,6 +46,6 @@ public class Team {
 
 	@Transient
 	public String getPicture() {
-		return pictureFile!=null? pictureFile.getId():null;
+		return pictureFile != null ? pictureFile.getId() : null;
 	}
 }

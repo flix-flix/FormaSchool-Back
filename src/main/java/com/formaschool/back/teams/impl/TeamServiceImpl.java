@@ -1,6 +1,5 @@
-package com.formaschool.back.teams;
+package com.formaschool.back.teams.impl;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,32 +11,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
-import com.formaschool.back.logs.Log;
 import com.formaschool.back.logs.LogService;
-import com.formaschool.back.logs.Type;
-import com.formaschool.back.members.MemberService;
 import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.SalonService;
+import com.formaschool.back.teams.Team;
+import com.formaschool.back.teams.TeamRepository;
 import com.formaschool.back.teams.dto.TeamNameDescFile;
 import com.formaschool.back.teams.dto.TeamNameDescPict;
 import com.formaschool.back.teams.dto.TeamNameDescPictUpdate;
 import com.formaschool.back.teams.dto.TeamNamePict;
-import com.formaschool.back.users.User;
+import com.formaschool.back.teams.services.TeamService;
 
 public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamService {
 
 	private TeamRepository repo;
-	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
 	private LogService logService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, MemberService memberService,
-			SalonService salonService, FileService fileService, LogService logService) {
+	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService, FileService fileService,
+			LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
-		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
 		this.logService = logService;
@@ -50,7 +46,7 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	}
 
 	@Override
-	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto) {
+	public TeamNameDescPict updateTeamNameDescPic(TeamNameDescPictUpdate dto, String idAddedBy) {
 		Team team = this.repo.findById(dto.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		if (dto.getName() != null)
@@ -58,18 +54,9 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		if (dto.getDesc() != null)
 			team.setDesc(dto.getDesc());
 
-		// TODO
-		// if (dto.getPicture() != null)
-		// team.setPicture(dto.getPicture());
-
 		Team result = this.repo.save(team);
+		this.logService.updateTeamLog(result, idAddedBy);
 		return this.mapper.convertValue(result, TeamNameDescPict.class);
-	}
-
-	@Override
-	public List<TeamNamePict> findAllTeamOfUser(String userId) {
-		return memberService.findAllByUserId(userId).stream().map(member -> dto(member.getTeam(), TeamNamePict.class))
-				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -101,8 +88,8 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 	@Override
 	public List<TeamNamePict> findAllTeamNamePict() {
-		List<Team> teams = this.repo.findAll();
-		return teams.stream().map(team -> dto(team, TeamNamePict.class)).collect(Collectors.toList());
+		return this.repo.findAll().stream().filter(team -> team.getDesc() != null)
+				.map(team -> dto(team, TeamNamePict.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -113,15 +100,13 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	@Override
 	public Team saveWithFile(TeamNameDescFile team, String idAddedBy) {
 		Team entity;
-		if(team.getFile()!=null) {
+		if (team.getFile() != null) {
 			entity = new Team(team.getName(), team.getDesc(),
 					fileService.upload(Folder.TEAMS, team.getFilename(), team.getFile()), new ArrayList<>());
-		}
-		else {
+		} else {
 			entity = new Team(team.getName(), team.getDesc(), null, new ArrayList<>());
 		}
-		String desc = "a créer la team " + team.getName();
-		this.logService.addLog(new Log(new User(idAddedBy), null, Type.CREATE_TEAM.ordinal(), LocalDateTime.now(), desc));
+		this.logService.addTeamLog(entity, idAddedBy);
 		return repo.save(entity);
 	}
 }

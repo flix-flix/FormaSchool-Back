@@ -16,8 +16,10 @@ public interface EmojiService extends CRUDService<Emoji> {
 	
 	public Boolean IsNameAlreadyUse(String id, String name);
 	
-	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji);
+	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
 	
-	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji);
+	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
+	
+	public void deleteEmoji(String emojiId, String idAddedBy);
 }
 

@@ -1,5 +1,6 @@
 package com.formaschool.back.emojis;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,11 @@ import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
-import com.formaschool.back.teams.TeamService;
+import com.formaschool.back.logs.Log;
+import com.formaschool.back.logs.LogService;
+import com.formaschool.back.logs.Type;
+import com.formaschool.back.teams.services.TeamService;
+import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserService;
 
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
@@ -22,14 +27,16 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 
 	private TeamService teamService;
 	private UserService userService;
+	private LogService logService;
 
 	public EmojiServiceImpl(EmojiRepository repo, ObjectMapper mapper, LoggerFactory factory, TeamService teamService,
-			UserService userService) {
+			UserService userService, LogService logService) {
 		super(repo, mapper);
 		this.repo = repo;
 		LOGGER = factory.getElasticLogger("EmojiService");
 		this.userService = userService;
 		this.teamService = teamService;
+		this.logService = logService;
 	}
 
 	@Override
@@ -62,29 +69,36 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	}
 
 	@Override
-	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji) {
+	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
 		Emoji result = this.repo.findById(emoji.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		String oldname = result.getName();
 		result.setName(emoji.getName());
-
-		// TODO
-		// result.setPicture(emoji.getPicture());
 		this.repo.save(result);
+		this.logService.updateEmojiLog(result, oldname, idAddedBy);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 
 	@Override
-	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji) {
+	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy) {
 		Emoji result = new Emoji();
 		result.setName(emoji.getName());
-		// TODO
-		// result.setPicture(emoji.getPicture());
 		if (emoji.getTeamId() != null) {
 			result.setTeam(this.teamService.get(emoji.getTeamId()));
 		}
 		result.setUser(this.userService.get(emoji.getUser().getId()));
 		this.repo.save(result);
 		LOGGER.info("Create emoji: " + result);
+		this.logService.addEmojiLog(result, idAddedBy);
 		return dto(result, EmojiNamePictUserTeamId.class);
+	}
+
+
+	@Override
+	public void deleteEmoji(String emojiId, String idAddedBy) {
+		Emoji entity = this.repo.findById(emojiId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		this.logService.deleteEmojiLog(entity, idAddedBy);
+		this.repo.deleteById(emojiId);
 	}
 }

@@ -36,8 +36,10 @@ import com.formaschool.back.salons.SalonRepository;
 import com.formaschool.back.salons.SalonService;
 import com.formaschool.back.salons.SalonServiceImpl;
 import com.formaschool.back.teams.TeamRepository;
-import com.formaschool.back.teams.TeamService;
-import com.formaschool.back.teams.TeamServiceImpl;
+import com.formaschool.back.teams.impl.TeamMemberServiceImpl;
+import com.formaschool.back.teams.impl.TeamServiceImpl;
+import com.formaschool.back.teams.services.TeamMemberService;
+import com.formaschool.back.teams.services.TeamService;
 import com.formaschool.back.users.UserRepository;
 import com.formaschool.back.users.UserService;
 import com.formaschool.back.users.UserServiceImpl;
@@ -52,14 +54,14 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, MemberService member,
-			SalonService salonService, FileService fileService, LogService logService) {
-		return new TeamServiceImpl(repo, mapper, member, salonService, fileService, logService);
+	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
+			FileService fileService, LogService logService) {
+		return new TeamServiceImpl(repo, mapper, salonService, fileService, logService);
 	}
 
 	@Bean
-	public SalonService salonService(SalonRepository repo, ObjectMapper mapper) {
-		return new SalonServiceImpl(repo, mapper);
+	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService) {
+		return new SalonServiceImpl(repo, mapper, logService);
 	}
 
 	@Bean
@@ -70,14 +72,14 @@ public class ServiceConfiguration {
 
 	@Bean
 	public MemberService memberService(MemberRepository repo, PermissionService permissionService,
-			SalonService salonService, ObjectMapper mapper) {
-		return new MemberServiceImpl(repo, permissionService, salonService, mapper);
+			RoleService roleService, SalonService salonService, ObjectMapper mapper) {
+		return new MemberServiceImpl(repo, permissionService, salonService, roleService, mapper);
 	}
 
 	@Bean
 	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper, LoggerFactory logger) {
-		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService);
+			ObjectMapper mapper, LoggerFactory logger, LogService logService) {
+		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService, logService);
 	}
 
 	@Bean
@@ -109,5 +111,10 @@ public class ServiceConfiguration {
 	@Bean
 	public FileService fileService(FileRepository repo, ObjectMapper mapper) {
 		return new FileServiceImpl(repo, mapper);
+	}
+
+	@Bean
+	public TeamMemberService teamMemberService(ObjectMapper mapper, MemberService member) {
+		return new TeamMemberServiceImpl(mapper, member);
 	}
 }
