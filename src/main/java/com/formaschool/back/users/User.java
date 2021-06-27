@@ -25,18 +25,30 @@ public class User {
 	private String lastname;
 	private String password;
 	private String email;
+	//
+//	private int age;
+//	private int phone;
+	//
 	
 	@DBRef
 	private FileModel pictureFile;
 
 	private LocalDate creation;
 
+
 	public User(String firstname, String lastname, String password, String email, FileModel pictureFile,
+			//
+//			int age, int phone,
+			//
 			LocalDate creation) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.password = password;
 		this.email = email;
+		//
+//		this.age = age;
+//		this.phone = phone;
+		//
 		this.pictureFile = pictureFile;
 		this.creation = creation;
 	}
@@ -50,5 +62,6 @@ public class User {
 	public String getPicture() {
 		return pictureFile!=null? pictureFile.getId():null;
 	}
+
 
 }
