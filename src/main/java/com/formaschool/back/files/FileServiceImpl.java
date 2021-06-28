@@ -1,5 +1,7 @@
 package com.formaschool.back.files;
 
+import static com.formaschool.back._utils.Utils.opt;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;

@@ -1,22 +1,19 @@
 package com.formaschool.back._crud;
 
+import static com.formaschool.back._utils.Utils.opt;
+
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	private MongoRepository<T, String> repo;
-	protected ObjectMapper mapper;
 
 	public CRUDServiceImpl(MongoRepository<T, String> repo, ObjectMapper mapper) {
 		this.repo = repo;
-		this.mapper = mapper;
 	}
 
 	@Override
@@ -42,22 +39,5 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 	@Override
 	public void delete(String id) {
 		repo.deleteById(id);
-	}
-
-	// ====================================================================================================
-
-	/** Throw BAD_REQUEST if the Optional is empty */
-	protected T opt(Optional<T> opt) {
-		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
-	}
-
-	/** Map the entity into the DTO */
-	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
-		return mapper.convertValue(entity, cl);
-	}
-
-	/** Map the entity into the DTO */
-	protected <DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
-		return dto(opt(opt), cl);
 	}
 }

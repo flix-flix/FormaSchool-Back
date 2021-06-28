@@ -1,5 +1,8 @@
 package com.formaschool.back.teams.impl;
 
+import static com.formaschool.back._utils.Utils.dto;
+import static com.formaschool.back._utils.Utils.opt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,10 +42,19 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		this.logService = logService;
 	}
 
+	// ====================================================================================================
+
+	@Override
+	public Team findById(String teamId) {
+		return opt(repo.findById(teamId));
+	}
+
+	// ====================================================================================================
+
 	@Override
 	public TeamNameDescPict findTeamNameDescPicById(String id) {
 		Team team = this.repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return mapper.convertValue(team, TeamNameDescPict.class);
+		return dto(team, TeamNameDescPict.class);
 	}
 
 	@Override
@@ -56,12 +68,12 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 		Team result = this.repo.save(team);
 		this.logService.updateTeamLog(result, idAddedBy);
-		return this.mapper.convertValue(result, TeamNameDescPict.class);
+		return dto(result, TeamNameDescPict.class);
 	}
 
 	@Override
 	public TeamNamePict findTeamNamePictById(String id) {
-		return dtoOpt(repo.findById(id), TeamNamePict.class);
+		return dto(opt(repo.findById(id)), TeamNamePict.class);
 	}
 	// =============================================================================================
 

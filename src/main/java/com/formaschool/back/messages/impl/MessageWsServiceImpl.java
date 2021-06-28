@@ -1,24 +1,26 @@
-package com.formaschool.back.messages;
+package com.formaschool.back.messages.impl;
+
+import static com.formaschool.back._utils.Utils.dto;
+import static com.formaschool.back._utils.Utils.opt;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.members.MemberService;
+import com.formaschool.back.messages.Message;
+import com.formaschool.back.messages.MessageRepository;
 import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSendString;
 import com.formaschool.back.messages.dto.MessageWithReacts;
+import com.formaschool.back.messages.services.MessageWsService;
 import com.formaschool.back.reactions.ReactionService;
 import com.formaschool.back.salons.SalonService;
 
-public class MessageServiceImpl extends CRUDServiceImpl<Message> implements MessageService {
+public class MessageWsServiceImpl implements MessageWsService {
 
 	private MessageRepository repo;
 	private final Logger LOGGER;
@@ -28,11 +30,9 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	private FileService fileService;
 	private ReactionService reactService;
 
-	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, LoggerFactory factory,
-			MemberService memberService, SalonService salonService, FileService fileService,
-			ReactionService reactService) {
-		super(repo, mapper);
-
+	public MessageWsServiceImpl(MessageRepository repo, LoggerFactory factory, MemberService memberService,
+			SalonService salonService, FileService fileService, ReactionService reactService) {
+		this.repo = repo;
 		LOGGER = factory.getElasticLogger("MessageService");
 
 		this.repo = repo;
@@ -43,20 +43,6 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	}
 
 	// ====================================================================================================
-	// Service
-
-	@Override
-	public MessageWithReacts getMessageWithReacts(String msgId) {
-		return toMessageWithReacts(opt(repo.findById(msgId)));
-	}
-
-	@Override
-	public List<MessageWithReacts> getAllMessageWithReactsOfSalon(String salonId) {
-		return repo.findBySalonId(salonId).stream().map(msg -> toMessageWithReacts(msg)).collect(Collectors.toList());
-	}
-
-	// ====================================================================================================
-	// WebSocket
 
 	@Override
 	public MessageWithReacts sendMessage(MessageSendString msg) {

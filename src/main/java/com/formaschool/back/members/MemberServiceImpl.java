@@ -1,5 +1,8 @@
 package com.formaschool.back.members;
 
+import static com.formaschool.back._utils.Utils.dto;
+import static com.formaschool.back._utils.Utils.opt;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +11,7 @@ import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back.members.dto.MemberRoles;
 import com.formaschool.back.members.dto.MemberUpdateRoles;
 import com.formaschool.back.members.dto.MemberUserNamePict;
+import com.formaschool.back.members.dto.MemberUserPseudo;
 import com.formaschool.back.permissions.PermissionService;
 import com.formaschool.back.roles.RoleService;
 import com.formaschool.back.salons.Salon;
@@ -16,6 +20,7 @@ import com.formaschool.back.salons.SalonService;
 public class MemberServiceImpl extends CRUDServiceImpl<Member> implements MemberService {
 
 	private MemberRepository repo;
+
 	private PermissionService permissionService;
 	private SalonService salonService;
 	private RoleService roleService;
@@ -29,16 +34,27 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 		this.roleService = roleService;
 	}
 
+	// ====================================================================================================
+
 	@Override
 	public List<Member> findAllByUserId(String userId) {
 		return repo.findByUserId(userId);
 	}
 
+	// ====================================================================================================
+
 	@Override
-	public List<Member> findMembersByTeamId(String teamId) {
+	public List<Member> findByTeamId(String teamId) {
 		return this.repo.findMemberByTeamId(teamId);
 	}
 
+	@Override
+	public List<MemberUserPseudo> findMemberUserPseudoByTeamId(String teamId) {
+		return findByTeamId(teamId).stream().map(member -> dto(member, MemberUserPseudo.class))
+				.collect(Collectors.toList());
+	}
+
+	// ====================================================================================================
 	@Override
 	public List<MemberUserNamePict> findMembersInTeamWithoutPermissionForSalon(String salonId) {
 		Salon salon = this.salonService.get(salonId);
@@ -56,6 +72,11 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 		return dto(result, MemberRoles.class);
 	}
 
+	@Override
+	public List<Member> findAllPrivateByUserId(String userId) {
+		return repo.findByUserIdAndPrivTrue(userId);
+	}
+
 	/*
 	 * @Override public MemberRoles addRoleToMember(MemberRoleUpdate dto, String
 	 * roleId) { Member member = opt(repo.findById(dto.getId())); Role role =
@@ -67,5 +88,4 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	 * Member result = this.repo.save(member); return
 	 * this.mapper.convertValue(result, MemberRoles.class); }
 	 */
-
 }

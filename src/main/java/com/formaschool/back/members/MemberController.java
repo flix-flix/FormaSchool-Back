@@ -32,7 +32,7 @@ public class MemberController implements CRUDController<Member> {
 
 	@GetMapping("findByTeamId/{teamId}")
 	public List<Member> findMembersByTeamId(@PathVariable String teamId) {
-		return this.service.findMembersByTeamId(teamId);
+		return this.service.findByTeamId(teamId);
 	}
 
 	@GetMapping("withoutPermission/{salonId}")

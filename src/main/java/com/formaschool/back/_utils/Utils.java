@@ -22,9 +22,4 @@ public class Utils {
 	public static <E, DTO> DTO dto(E entity, Class<DTO> cl) {
 		return mapper.convertValue(entity, cl);
 	}
-
-	/** Map the entity into the DTO */
-	public static <T, DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
-		return dto(opt(opt), cl);
-	}
 }

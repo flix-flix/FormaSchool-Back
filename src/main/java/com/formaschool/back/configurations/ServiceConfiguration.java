@@ -18,11 +18,15 @@ import com.formaschool.back.members.MemberRepository;
 import com.formaschool.back.members.MemberService;
 import com.formaschool.back.members.MemberServiceImpl;
 import com.formaschool.back.messages.MessageRepository;
-import com.formaschool.back.messages.MessageService;
-import com.formaschool.back.messages.MessageServiceImpl;
+import com.formaschool.back.messages.impl.MessageServiceImpl;
+import com.formaschool.back.messages.impl.MessageWsServiceImpl;
+import com.formaschool.back.messages.services.MessageService;
+import com.formaschool.back.messages.services.MessageWsService;
 import com.formaschool.back.permissions.PermissionRepository;
 import com.formaschool.back.permissions.PermissionService;
 import com.formaschool.back.permissions.PermissionServiceImpl;
+import com.formaschool.back.priv.PrivateService;
+import com.formaschool.back.priv.PrivateServiceImpl;
 import com.formaschool.back.reactions.ReactionRepository;
 import com.formaschool.back.reactions.ReactionService;
 import com.formaschool.back.reactions.ReactionServiceImpl;
@@ -60,14 +64,14 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService) {
-		return new SalonServiceImpl(repo, mapper, logService);
+	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService,
+			MessageService message) {
+		return new SalonServiceImpl(repo, mapper, logService, message);
 	}
 
 	@Bean
-	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, LoggerFactory logger,
-			MemberService member, SalonService salon, FileService file, ReactionService react) {
-		return new MessageServiceImpl(repo, mapper, logger, member, salon, file, react);
+	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, ReactionService react) {
+		return new MessageServiceImpl(repo, mapper, react);
 	}
 
 	@Bean
@@ -116,5 +120,16 @@ public class ServiceConfiguration {
 	@Bean
 	public TeamMemberService teamMemberService(MemberService member) {
 		return new TeamMemberServiceImpl(member);
+	}
+
+	@Bean
+	public PrivateService privateService(MemberService member, TeamService team, SalonService salon) {
+		return new PrivateServiceImpl(member, team, salon);
+	}
+
+	@Bean
+	public MessageWsService messageWsService(MessageRepository repo, ObjectMapper mapper, LoggerFactory logger,
+			MemberService member, SalonService salon, FileService file, ReactionService react) {
+		return new MessageWsServiceImpl(repo, logger, member, salon, file, react);
 	}
 }

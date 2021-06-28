@@ -17,6 +17,8 @@ import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSendString;
 import com.formaschool.back.messages.dto.MessageWithReacts;
+import com.formaschool.back.messages.services.MessageService;
+import com.formaschool.back.messages.services.MessageWsService;
 
 @RestController
 @RequestMapping("messages")
@@ -24,6 +26,8 @@ import com.formaschool.back.messages.dto.MessageWithReacts;
 public class MessageController implements CRUDController<Message> {
 	@Autowired
 	private MessageService service;
+	@Autowired
+	private MessageWsService serviceWs;
 
 	@Override
 	public CRUDService<Message> getGenericService() {
@@ -47,18 +51,18 @@ public class MessageController implements CRUDController<Message> {
 	@MessageMapping("chat.send")
 	@SendTo("/topic/public")
 	public MessageWithReacts sendMsgWithFile(MessageSendString msg) {
-		return service.sendMessage(msg);
+		return serviceWs.sendMessage(msg);
 	}
 
 	@MessageMapping("chat.edit")
 	@SendTo("/topic/public")
 	public MessageWithReacts editMsgWithFile(MessageEdit msg) {
-		return service.editMessage(msg);
+		return serviceWs.editMessage(msg);
 	}
 
 	@MessageMapping("chat.delete")
 	@SendTo("/topic/public")
 	public MessageDelete sendMsgWithFile(String msgId) {
-		return service.deleteMessage(msgId);
+		return serviceWs.deleteMessage(msgId);
 	}
 }

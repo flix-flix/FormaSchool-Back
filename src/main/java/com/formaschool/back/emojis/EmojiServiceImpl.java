@@ -1,6 +1,7 @@
 package com.formaschool.back.emojis;
 
-import java.time.LocalDateTime;
+import static com.formaschool.back._utils.Utils.dto;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,11 +14,8 @@ import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logging.LoggerFactory;
-import com.formaschool.back.logs.Log;
 import com.formaschool.back.logs.LogService;
-import com.formaschool.back.logs.Type;
 import com.formaschool.back.teams.services.TeamService;
-import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserService;
 
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
@@ -43,7 +41,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId) {
 		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamId(teamId);
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
+			return dto(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -51,7 +49,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga() {
 		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
+			return dto(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -59,7 +57,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public List<EmojiNamePict> findAllEmojiOrga() {
 		List<Emoji> emojis = this.repo.findByUserNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePict.class);
+			return dto(emoji, EmojiNamePict.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -92,7 +90,6 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		this.logService.addEmojiLog(result, idAddedBy);
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
-
 
 	@Override
 	public void deleteEmoji(String emojiId, String idAddedBy) {

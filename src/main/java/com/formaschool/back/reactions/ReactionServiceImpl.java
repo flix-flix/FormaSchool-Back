@@ -1,5 +1,7 @@
 package com.formaschool.back.reactions;
 
+import static com.formaschool.back._utils.Utils.dto;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

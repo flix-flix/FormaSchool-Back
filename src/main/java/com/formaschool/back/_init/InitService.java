@@ -130,6 +130,9 @@ public class InitService {
 					"Chaque version est prévue pour être compatible avec la version antérieure. Google a promis de faire des mises à jour deux fois par année.",
 					teams[3]), };
 
+	// ====================================================================================================
+	// Private
+
 	private Team[] privTeams = new Team[] { //
 			new Team("m p 1", "mg priv 1", null, null), //
 			new Team("m p 2", "mg priv 2", null, null), //
@@ -153,7 +156,7 @@ public class InitService {
 			new Member(null, users[2], privTeams[2], null, true), //
 	};
 
-	// ========================###################################################"
+	// ====================================================================================================
 
 	private List<Role> role1() {
 		ArrayList<Role> role1 = new ArrayList<Role>();
