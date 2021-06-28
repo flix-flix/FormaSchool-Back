@@ -10,8 +10,8 @@ public class UserSettings {
 	private String firstname;
 	private String lastname;
 	private String email;
-	private int age;
-	private int phone;
+//	private int age;
+//	private int phone;
 	private String password;
 	private LocalDate creation;
 	private String picture;
