@@ -1,16 +1,13 @@
 package com.formaschool.back.salons;
 
-import static com.formaschool.back._utils.Utils.dto;
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.messages.services.MessageService;
 import com.formaschool.back.salons.dto.SalonMessages;
@@ -24,9 +21,8 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 	private LogService logService;
 	private MessageService messageService;
 
-	public SalonServiceImpl(SalonRepository repo, ObjectMapper mapper, LogService logService,
-			MessageService messageService) {
-		super(repo, mapper);
+	public SalonServiceImpl(SalonRepository repo, Utils utils, LogService logService, MessageService messageService) {
+		super(repo, utils);
 		this.repo = repo;
 		this.logService = logService;
 		this.messageService = messageService;

@@ -1,8 +1,5 @@
 package com.formaschool.back.users;
 
-import static com.formaschool.back._utils.Utils.dto;
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back._init.InitController;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logging.Logger;
-import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.members.MemberService;
@@ -45,11 +41,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	// ====================================================================================================
 
-	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory, MemberService memberService,
-			FileService fileService, LogService logService) {
-		super(repo, mapper);
+	public UserServiceImpl(UserRepository repo, Utils utils, MemberService memberService, FileService fileService,
+			LogService logService) {
+		super(repo, utils);
 		this.repo = repo;
-		LOGGER = factory.getElasticLogger("UserService");
+		LOGGER = utils.getLogger("UserService");
 		this.memberService = memberService;
 		this.fileService = fileService;
 		this.logService = logService;

@@ -1,13 +1,10 @@
 package com.formaschool.back.members;
 
-import static com.formaschool.back._utils.Utils.dto;
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.members.dto.MemberRoles;
 import com.formaschool.back.members.dto.MemberUpdateRoles;
 import com.formaschool.back.members.dto.MemberUserNamePict;
@@ -25,9 +22,9 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	private SalonService salonService;
 	private RoleService roleService;
 
-	public MemberServiceImpl(MemberRepository repo, PermissionService permissionService, SalonService salonService,
-			RoleService roleService, ObjectMapper mapper) {
-		super(repo, mapper);
+	public MemberServiceImpl(MemberRepository repo, Utils utils, PermissionService permissionService,
+			SalonService salonService, RoleService roleService) {
+		super(repo, utils);
 		this.repo = repo;
 		this.permissionService = permissionService;
 		this.salonService = salonService;

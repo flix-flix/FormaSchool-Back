@@ -1,7 +1,5 @@
 package com.formaschool.back.permissions;
 
-import static com.formaschool.back._utils.Utils.dto;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.permissions.dto.PermissionMemberUserRoleWithoutRights;
 import com.formaschool.back.permissions.dto.PermissionRights;
@@ -23,8 +21,8 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 
 	private PermissionRepository repository;
 
-	public PermissionServiceImpl(PermissionRepository repository, ObjectMapper mapper) {
-		super(repository, mapper);
+	public PermissionServiceImpl(PermissionRepository repository, Utils utils) {
+		super(repository, utils);
 		this.repository = repository;
 	}
 

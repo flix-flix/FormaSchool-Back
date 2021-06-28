@@ -1,8 +1,5 @@
 package com.formaschool.back.teams.impl;
 
-import static com.formaschool.back._utils.Utils.dto;
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logs.LogService;
@@ -33,9 +30,9 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	private FileService fileService;
 	private LogService logService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService, FileService fileService,
+	public TeamServiceImpl(TeamRepository repo, Utils utils, SalonService salonService, FileService fileService,
 			LogService logService) {
-		super(repo, mapper);
+		super(repo, utils);
 		this.repo = repo;
 		this.salonService = salonService;
 		this.fileService = fileService;

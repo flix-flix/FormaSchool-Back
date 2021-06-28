@@ -7,19 +7,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back.logging.Logger;
+import com.formaschool.back.logging.LoggerFactory;
 
 public class Utils {
 
 	@Autowired
-	private static ObjectMapper mapper;
+	private ObjectMapper mapper;
+	@Autowired
+	private LoggerFactory factory;
+
+	// ====================================================================================================
 
 	/** Throw BAD_REQUEST if the Optional is empty */
-	public static <T> T opt(Optional<T> opt) {
+	public <T> T opt(Optional<T> opt) {
 		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 	}
 
 	/** Map the entity into the DTO */
-	public static <E, DTO> DTO dto(E entity, Class<DTO> cl) {
+	public <E, DTO> DTO dto(E entity, Class<DTO> cl) {
 		return mapper.convertValue(entity, cl);
+	}
+
+	// ====================================================================================================
+
+	public Logger getLogger(String name) {
+		return factory.getElasticLogger(name);
 	}
 }

@@ -1,19 +1,16 @@
 package com.formaschool.back.emojis;
 
-import static com.formaschool.back._utils.Utils.dto;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
-import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.teams.services.TeamService;
 import com.formaschool.back.users.UserService;
@@ -27,11 +24,11 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	private UserService userService;
 	private LogService logService;
 
-	public EmojiServiceImpl(EmojiRepository repo, ObjectMapper mapper, LoggerFactory factory, TeamService teamService,
-			UserService userService, LogService logService) {
-		super(repo, mapper);
+	public EmojiServiceImpl(EmojiRepository repo, Utils utils, TeamService teamService, UserService userService,
+			LogService logService) {
+		super(repo, utils);
 		this.repo = repo;
-		LOGGER = factory.getElasticLogger("EmojiService");
+		LOGGER = utils.getLogger("EmojiService");
 		this.userService = userService;
 		this.teamService = teamService;
 		this.logService = logService;

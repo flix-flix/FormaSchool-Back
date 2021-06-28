@@ -1,12 +1,10 @@
 package com.formaschool.back.reactions;
 
-import static com.formaschool.back._utils.Utils.dto;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.members.dto.MemberUserPseudo;
 
@@ -14,8 +12,8 @@ public class ReactionServiceImpl extends CRUDServiceImpl<Reaction> implements Re
 
 	private ReactionRepository repo;
 
-	public ReactionServiceImpl(ReactionRepository repo, ObjectMapper mapper) {
-		super(repo, mapper);
+	public ReactionServiceImpl(ReactionRepository repo, Utils utils) {
+		super(repo, utils);
 		this.repo = repo;
 	}
 

@@ -1,20 +1,23 @@
 package com.formaschool.back._crud;
 
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back._utils.Utils;
 
 public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	private MongoRepository<T, String> repo;
+	private Utils utils;
 
-	public CRUDServiceImpl(MongoRepository<T, String> repo, ObjectMapper mapper) {
+	public CRUDServiceImpl(MongoRepository<T, String> repo, Utils utils) {
 		this.repo = repo;
+		this.utils = utils;
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public List<T> findAll() {
@@ -23,7 +26,7 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	@Override
 	public T get(String id) {
-		return opt(repo.findById(id));
+		return utils.opt(repo.findById(id));
 	}
 
 	@Override
@@ -39,5 +42,15 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 	@Override
 	public void delete(String id) {
 		repo.deleteById(id);
+	}
+
+	// ====================================================================================================
+
+	public T opt(Optional<T> opt) {
+		return utils.opt(opt);
+	}
+
+	public <E, DTO> DTO dto(E entity, Class<DTO> cl) {
+		return utils.dto(entity, cl);
 	}
 }

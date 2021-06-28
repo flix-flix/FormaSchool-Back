@@ -3,14 +3,13 @@ package com.formaschool.back.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.EmojiRepository;
 import com.formaschool.back.emojis.EmojiService;
 import com.formaschool.back.emojis.EmojiServiceImpl;
 import com.formaschool.back.files.FileRepository;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.FileServiceImpl;
-import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.logs.LogRepository;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.logs.LogServiceImpl;
@@ -52,74 +51,73 @@ import com.formaschool.back.users.UserServiceImpl;
 public class ServiceConfiguration {
 
 	@Bean
-	public UserService userService(UserRepository repo, MemberService memberService, ObjectMapper mapper,
-			LoggerFactory logger, FileService fileService, LogService logService) {
-		return new UserServiceImpl(repo, mapper, logger, memberService, fileService, logService);
-	}
-
-	@Bean
-	public TeamService teamService(TeamRepository repo, ObjectMapper mapper, SalonService salonService,
+	public UserService userService(UserRepository repo, MemberService memberService, Utils utils,
 			FileService fileService, LogService logService) {
-		return new TeamServiceImpl(repo, mapper, salonService, fileService, logService);
+		return new UserServiceImpl(repo, utils, memberService, fileService, logService);
 	}
 
 	@Bean
-	public SalonService salonService(SalonRepository repo, ObjectMapper mapper, LogService logService,
-			MessageService message) {
-		return new SalonServiceImpl(repo, mapper, logService, message);
+	public TeamService teamService(TeamRepository repo, Utils utils, SalonService salonService, FileService fileService,
+			LogService logService) {
+		return new TeamServiceImpl(repo, utils, salonService, fileService, logService);
 	}
 
 	@Bean
-	public MessageService msgService(MessageRepository repo, ObjectMapper mapper, ReactionService react) {
-		return new MessageServiceImpl(repo, mapper, react);
+	public SalonService salonService(SalonRepository repo, Utils utils, LogService logService, MessageService message) {
+		return new SalonServiceImpl(repo, utils, logService, message);
+	}
+
+	@Bean
+	public MessageService msgService(MessageRepository repo, Utils utils, ReactionService react) {
+		return new MessageServiceImpl(repo, utils, react);
 	}
 
 	@Bean
 	public MemberService memberService(MemberRepository repo, PermissionService permissionService,
-			RoleService roleService, SalonService salonService, ObjectMapper mapper) {
-		return new MemberServiceImpl(repo, permissionService, salonService, roleService, mapper);
+			RoleService roleService, SalonService salonService, Utils utils) {
+		return new MemberServiceImpl(repo, utils, permissionService, salonService, roleService);
 	}
 
 	@Bean
-	public EmojiService emojiService(EmojiRepository repo, TeamService teamService, UserService userService,
-			ObjectMapper mapper, LoggerFactory logger, LogService logService) {
-		return new EmojiServiceImpl(repo, mapper, logger, teamService, userService, logService);
+	public EmojiService emojiService(EmojiRepository repo, Utils utils, TeamService teamService,
+			UserService userService, LogService logService) {
+		return new EmojiServiceImpl(repo, utils, teamService, userService, logService);
 	}
 
 	@Bean
-	public LogService logService(LogRepository repository, ObjectMapper mapper) {
-		return new LogServiceImpl(repository, mapper);
+	public LogService logService(LogRepository repository, Utils utils) {
+		return new LogServiceImpl(repository, utils);
 	}
 
 	@Bean
-	public ReactionService reactionService(ReactionRepository repo, ObjectMapper mapper) {
-		return new ReactionServiceImpl(repo, mapper);
+	public ReactionService reactionService(ReactionRepository repo, Utils utils) {
+		return new ReactionServiceImpl(repo, utils);
 	}
 
 	@Bean
 	public RoleService roleService(RoleRepository repo, SalonService salonService, PermissionService permissionService,
-			TeamService teamService, ObjectMapper mapper) {
-		return new RoleServiceImpl(repo, salonService, permissionService, teamService, mapper);
+			TeamService teamService, Utils utils) {
+		return new RoleServiceImpl(repo, utils, salonService, permissionService, teamService);
 	}
 
 	@Bean
-	public PermissionService permissionService(PermissionRepository repo, ObjectMapper mapper) {
-		return new PermissionServiceImpl(repo, mapper);
+	public PermissionService permissionService(PermissionRepository repo, Utils utils) {
+		return new PermissionServiceImpl(repo, utils);
 	}
 
 	@Bean
-	public TeamSalonRightsService teamSalonRightsService(TeamSalonRightsRepository repo, ObjectMapper mapper) {
-		return new TeamSalonRightsServiceImpl(repo, mapper);
+	public TeamSalonRightsService teamSalonRightsService(TeamSalonRightsRepository repo, Utils utils) {
+		return new TeamSalonRightsServiceImpl(repo, utils);
 	}
 
 	@Bean
-	public FileService fileService(FileRepository repo, ObjectMapper mapper) {
-		return new FileServiceImpl(repo, mapper);
+	public FileService fileService(FileRepository repo, Utils utils) {
+		return new FileServiceImpl(repo, utils);
 	}
 
 	@Bean
-	public TeamMemberService teamMemberService(MemberService member) {
-		return new TeamMemberServiceImpl(member);
+	public TeamMemberService teamMemberService(Utils utils, MemberService member) {
+		return new TeamMemberServiceImpl(utils, member);
 	}
 
 	@Bean
@@ -128,8 +126,8 @@ public class ServiceConfiguration {
 	}
 
 	@Bean
-	public MessageWsService messageWsService(MessageRepository repo, ObjectMapper mapper, LoggerFactory logger,
-			MemberService member, SalonService salon, FileService file, ReactionService react) {
-		return new MessageWsServiceImpl(repo, logger, member, salon, file, react);
+	public MessageWsService messageWsService(MessageRepository repo, Utils utils, MemberService member,
+			SalonService salon, FileService file, ReactionService react) {
+		return new MessageWsServiceImpl(repo, utils, member, salon, file, react);
 	}
 }

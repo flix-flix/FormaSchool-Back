@@ -1,7 +1,5 @@
 package com.formaschool.back.files;
 
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
@@ -10,15 +8,15 @@ import java.util.Base64.Decoder;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 
 public class FileServiceImpl extends CRUDServiceImpl<FileModel> implements FileService {
 
 	private FileRepository repo;
 
-	public FileServiceImpl(FileRepository repo, ObjectMapper mapper) {
-		super(repo, mapper);
+	public FileServiceImpl(FileRepository repo, Utils utils) {
+		super(repo, utils);
 		this.repo = repo;
 	}
 

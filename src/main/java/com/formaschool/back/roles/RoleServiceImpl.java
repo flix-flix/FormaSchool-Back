@@ -1,7 +1,5 @@
 package com.formaschool.back.roles;
 
-import static com.formaschool.back._utils.Utils.dto;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.permissions.PermissionService;
 import com.formaschool.back.rights.TeamSalonRights;
 import com.formaschool.back.roles.dto.DescriptionBoolean;
@@ -28,9 +26,9 @@ public class RoleServiceImpl extends CRUDServiceImpl<Role> implements RoleServic
 	private SalonService salonService;
 	private PermissionService permissionService;
 
-	public RoleServiceImpl(RoleRepository repo, SalonService salonService, PermissionService permissionService,
-			TeamService teamService, ObjectMapper mapper) {
-		super(repo, mapper);
+	public RoleServiceImpl(RoleRepository repo, Utils utils, SalonService salonService,
+			PermissionService permissionService, TeamService teamService) {
+		super(repo, utils);
 		this.teamService = teamService;
 		this.salonService = salonService;
 		this.permissionService = permissionService;

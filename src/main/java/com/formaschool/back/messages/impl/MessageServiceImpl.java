@@ -1,13 +1,10 @@
 package com.formaschool.back.messages.impl;
 
-import static com.formaschool.back._utils.Utils.dto;
-import static com.formaschool.back._utils.Utils.opt;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.messages.Message;
 import com.formaschool.back.messages.MessageRepository;
 import com.formaschool.back.messages.dto.MessageWithReacts;
@@ -20,8 +17,8 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 
 	private ReactionService reactService;
 
-	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, ReactionService reactService) {
-		super(repo, mapper);
+	public MessageServiceImpl(MessageRepository repo, Utils utils, ReactionService reactService) {
+		super(repo, utils);
 
 		this.repo = repo;
 		this.reactService = reactService;

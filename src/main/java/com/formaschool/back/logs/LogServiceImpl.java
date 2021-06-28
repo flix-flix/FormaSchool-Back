@@ -1,13 +1,11 @@
 package com.formaschool.back.logs;
 
-import static com.formaschool.back._utils.Utils.dto;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.Emoji;
 import com.formaschool.back.logs.dto.LogWithoutId;
 import com.formaschool.back.salons.Salon;
@@ -18,8 +16,8 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 
 	private LogRepository repository;
 
-	public LogServiceImpl(LogRepository repository, ObjectMapper mapper) {
-		super(repository, mapper);
+	public LogServiceImpl(LogRepository repository, Utils utils) {
+		super(repository, utils);
 		this.repository = repository;
 	}
 
