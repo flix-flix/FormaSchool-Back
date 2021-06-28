@@ -156,6 +156,14 @@ public class InitService {
 			new Member(null, users[2], privTeams[2], null, true), //
 	};
 
+	private Message[] privMsgs = new Message[] { //
+			new Message(privMembers[0], privSalons[0], "Bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31), null),
+			new Message(privMembers[0], privSalons[0], "Bien ou bien ???", null,
+					LocalDateTime.of(2021, 4, 1, 17, 38, 04), null),
+			new Message(privMembers[1], privSalons[0], "Mal", null, LocalDateTime.of(2021, 4, 1, 17, 38, 25), null),
+
+			new Message(privMembers[0], privSalons[1], "Plop", null, LocalDateTime.of(2021, 4, 1, 17, 45, 56), null), };
+
 	// ====================================================================================================
 
 	private List<Role> role1() {
@@ -416,6 +424,7 @@ public class InitService {
 		Arrays.stream(privTeams).forEach(obj -> teamRepo.save(obj));
 		Arrays.stream(privSalons).forEach(obj -> salonRepo.save(obj));
 		Arrays.stream(privMembers).forEach(obj -> memberRepo.save(obj));
+		Arrays.stream(privMsgs).forEach(obj -> msgRepo.save(obj));
 
 		Arrays.stream(msgs).forEach(obj -> msgRepo.save(obj));
 		timeInfo("Before emojis");

@@ -22,8 +22,6 @@ public class PrivateController {
 	@GetMapping("ofUser/{userId}")
 	private List<Private> findAllPrivateOfUser(@PathVariable String userId) {
 		List<Private> x = service.findAllPrivateOfUser(userId);
-		System.out.println("--------");
-		System.out.println(x);
 		return x;
 	}
 }

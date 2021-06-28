@@ -22,13 +22,11 @@ public class PrivateServiceImpl implements PrivateService {
 
 	@Override
 	public List<Private> findAllPrivateOfUser(String userId) {
-		System.out.println(memberService.findAllByUserId(userId));
-
 		return memberService.findAllPrivateByUserId(userId).stream()
 				.map(member -> teamService.findById(member.getTeam().getId()))
 				.map(team -> new Private(memberService.findMemberUserPseudoByTeamId(team.getId()),
-						salonService
-								.getSalonWithMessages(salonService.findAllSalonOfTeam(team.getId()).get(0).getId())))
+						salonService.getSalonWithMessages(
+								salonService.findAllSalonNameOfTeam(team.getId()).get(0).getId())))
 				.collect(Collectors.toList());
 	}
 }

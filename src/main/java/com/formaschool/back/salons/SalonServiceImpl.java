@@ -28,6 +28,26 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 		this.messageService = messageService;
 	}
 
+	// ====================================================================================================
+	// Messages
+
+	@Override
+	public SalonMessages getSalonWithMessages(String salonId) {
+		Salon entity = opt(repo.findById(salonId));
+		SalonMessages dto = dto(entity, SalonMessages.class);
+		dto.setMessages(messageService.getAllMessageWithReactsOfSalon(salonId));
+		return dto;
+	}
+
+	@Override
+	public List<SalonName> findAllSalonNameOfTeam(String teamId) {
+		return repo.findByTeamId(teamId).stream().map(salon -> dto(salon, SalonName.class))
+				.collect(Collectors.toList());
+	}
+
+	// ====================================================================================================
+	// Params
+
 	@Override
 	public SalonNameDesc findById(String id) {
 		Salon salon = this.repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -47,22 +67,10 @@ public class SalonServiceImpl extends CRUDServiceImpl<Salon> implements SalonSer
 		return dto(result, SalonNameDesc.class);
 	}
 
-	@Override
-	public List<SalonName> findAllSalonNameOfTeam(String teamId) {
-		return repo.findByTeamId(teamId).stream().map(salon -> dto(salon, SalonName.class))
-				.collect(Collectors.toList());
-	}
+	// ====================================================================================================
 
 	@Override
 	public List<Salon> findAllSalonOfTeam(String teamId) {
 		return repo.findByTeamId(teamId);
-	}
-
-	@Override
-	public SalonMessages getSalonWithMessages(String salonId) {
-		Salon entity = opt(repo.findById(salonId));
-		SalonMessages dto = dto(entity, SalonMessages.class);
-		dto.setMessages(messageService.getAllMessageWithReactsOfSalon(salonId));
-		return dto;
 	}
 }
