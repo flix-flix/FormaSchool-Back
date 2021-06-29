@@ -136,13 +136,25 @@ public class InitService {
 	private Team[] privTeams = new Team[] { //
 			new Team("m p 1", "mg priv 1", null, null), //
 			new Team("m p 2", "mg priv 2", null, null), //
-			new Team("m p 3", "mg priv 3", null, null),//
+			new Team("m p 3", "mg priv 3", null, null), //
+
+			new Team("m p 4", "mg priv 4", null, null), //
+			new Team("m p 5", "mg priv 5", null, null), //
+
+			new Team("six", "g 6", null, null), //
+			new Team("seven", "g 7", null, null),//
 	};
 
 	private Salon[] privSalons = new Salon[] { //
-			new Salon("Geneneralllll 1", "plop plop plop !", privTeams[0]), //
-			new Salon("Geneneralllll 2", "plop plop plop !!", privTeams[1]), //
+			new Salon("Geneneralllll 1", "plop !", privTeams[0]), //
+			new Salon("Geneneralllll 2", "plop !!", privTeams[1]), //
+
 			new Salon("Geneneralllll 3", "plop plop plop !!!", privTeams[2]), //
+			new Salon("Geneneralllll 4", "plop 4 !!!!", privTeams[3]), //
+			new Salon("Geneneralllll 5", "plop 5 !!!!!", privTeams[4]), //
+
+			new Salon("Tout le monde", "six", privTeams[5]), //
+			new Salon("Group 3", "seven", privTeams[6]), //
 	};
 
 	private Member[] privMembers = new Member[] { //
@@ -154,15 +166,52 @@ public class InitService {
 
 			new Member(null, users[1], privTeams[2], null, true), //
 			new Member(null, users[2], privTeams[2], null, true), //
+
+			new Member(null, users[1], privTeams[3], null, true), //
+			new Member(null, users[3], privTeams[3], null, true), //
+
+			new Member(null, users[2], privTeams[4], null, true), //
+			new Member(null, users[3], privTeams[4], null, true), //
+
+			new Member(null, users[0], privTeams[5], null, true), //
+			new Member(null, users[1], privTeams[5], null, true), //
+			new Member(null, users[2], privTeams[5], null, true), //
+			new Member(null, users[3], privTeams[5], null, true), //
+
+			new Member(null, users[0], privTeams[6], null, true), //
+			new Member(null, users[2], privTeams[6], null, true), //
+			new Member(null, users[3], privTeams[6], null, true), //
 	};
 
 	private Message[] privMsgs = new Message[] { //
-			new Message(privMembers[0], privSalons[0], "Bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31), null),
-			new Message(privMembers[0], privSalons[0], "Bien ou bien ???", null,
-					LocalDateTime.of(2021, 4, 1, 17, 38, 04), null),
-			new Message(privMembers[1], privSalons[0], "Mal", null, LocalDateTime.of(2021, 4, 1, 17, 38, 25), null),
+			new Message(privMembers[0], privSalons[0], "Plop", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31), null),
+			new Message(privMembers[0], privSalons[0], ":pizza:", null, LocalDateTime.of(2021, 4, 1, 17, 38, 04), null),
+			new Message(privMembers[1], privSalons[0], "Plop !", null, LocalDateTime.of(2021, 4, 1, 17, 38, 25), null),
 
-			new Message(privMembers[0], privSalons[1], "Plop", null, LocalDateTime.of(2021, 4, 1, 17, 45, 56), null), };
+			new Message(privMembers[2], privSalons[1], "Wesh Luca :beer_mug:", null,
+					LocalDateTime.of(2021, 5, 4, 19, 01, 56), null),
+			new Message(privMembers[3], privSalons[1], "Wesh :beer_mug:", null,
+					LocalDateTime.of(2021, 5, 4, 19, 02, 06), null),
+
+			new Message(privMembers[4], privSalons[2], "Salut Luca", null, LocalDateTime.of(2021, 6, 3, 7, 45, 56),
+					null),
+
+			new Message(privMembers[6], privSalons[3], "Salut Bouchaïb", null, LocalDateTime.of(2021, 6, 2, 9, 37, 56),
+					null),
+
+			new Message(privMembers[9], privSalons[4], "Salut Luca", null, LocalDateTime.of(2021, 6, 17, 12, 12, 56),
+					null),
+
+			new Message(privMembers[10], privSalons[5], "Hello everyone", null, LocalDateTime.of(2021, 7, 2, 9, 11, 43),
+					null),
+			new Message(privMembers[11], privSalons[5], "Hello", null, LocalDateTime.of(2021, 7, 2, 9, 11, 43), null),
+			new Message(privMembers[12], privSalons[5], "Salut", null, LocalDateTime.of(2021, 7, 2, 9, 11, 43), null),
+			new Message(privMembers[13], privSalons[5], "Bonjour", null, LocalDateTime.of(2021, 7, 2, 9, 11, 43), null),
+
+			new Message(privMembers[14], privSalons[6], ":pizza:", null, LocalDateTime.of(2021, 7, 14, 21, 33, 43),
+					null),
+			new Message(privMembers[15], privSalons[6], ":beer_mug:", null, LocalDateTime.of(2021, 7, 14, 21, 34, 01),
+					null), };
 
 	// ====================================================================================================
 
