@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,8 +46,13 @@ public class MemberController implements CRUDController<Member> {
 	}
 
 	@PatchMapping("addRolesMember/{idMember}/{idRole}")
-	public MemberRoles updateRoleToMember(@PathVariable String idMember, @PathVariable String idRole) {
+	public MemberRoles addRoleToMember(@PathVariable String idMember, @PathVariable String idRole) {
 		return this.service.addRoleToMember(idMember, idRole);
+	}
+
+	@DeleteMapping("deleteRolesMember/{idMember}/{idRole}")
+	public void deleteRoleToMember(@PathVariable String idMember, @PathVariable String idRole) {
+		this.service.deleteRoleToMember(idMember, idRole);
 	}
 
 }

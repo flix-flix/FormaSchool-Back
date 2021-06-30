@@ -78,21 +78,17 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	}
 
 	@Override
+	public void deleteRoleToMember(String memberId, String roleId) {
+		Member entity = opt(repo.findById(memberId));
+		entity.setRoles(entity.getRoles().stream().filter(role -> role.getId() == roleId).collect(Collectors.toList()));
+		this.repo.save(entity);
+	}
+
+	@Override
 	public List<RoleWithoutRights> findRolesByMember(String idMember) {
 		Member entity = opt(repo.findById(idMember));
 		List<Role> roles = entity.getRoles();
 		return roles.stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
 	}
 
-	/*
-	 * @Override public MemberRoles addRoleToMember(MemberRoleUpdate dto, String
-	 * roleId) { Member member = opt(repo.findById(dto.getId())); Role role =
-	 * this.roleService.get(roleId); member.getRoles().add(role);
-	 * 
-	 * // TODO // if (dto.getPicture() != null) //
-	 * team.setPicture(dto.getPicture());
-	 * 
-	 * Member result = this.repo.save(member); return
-	 * this.mapper.convertValue(result, MemberRoles.class); }
-	 */
 }

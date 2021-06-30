@@ -18,9 +18,9 @@ public interface MemberService extends CRUDService<Member> {
 
 	public List<MemberUserNamePict> findMembersInTeamWithoutPermissionForSalon(String salonId);
 
-	// public MemberRoles addRoleToMember(MemberRoleUpdate dto, String roleId);
-
 	public MemberRoles addRoleToMember(String memberId, String roleId);
+
+	public void deleteRoleToMember(String memberId, String roleId);
 
 	// ========
 
