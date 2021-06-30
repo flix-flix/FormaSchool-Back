@@ -24,6 +24,8 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	private UserService userService;
 	private LogService logService;
 
+	private String json;
+
 	public EmojiServiceImpl(EmojiRepository repo, Utils utils, TeamService teamService, UserService userService,
 			LogService logService) {
 		super(repo, utils);
@@ -32,7 +34,11 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		this.userService = userService;
 		this.teamService = teamService;
 		this.logService = logService;
+
+		json = Utils.read("src/main/resources/static/emojis.json");
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId) {
@@ -94,5 +100,12 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		this.logService.deleteEmojiLog(entity, idAddedBy);
 		this.repo.deleteById(emojiId);
+	}
+
+	// ====================================================================================================
+
+	@Override
+	public String getEmojiJSON() {
+		return json;
 	}
 }

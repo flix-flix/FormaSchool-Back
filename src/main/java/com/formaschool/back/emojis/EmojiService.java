@@ -7,19 +7,23 @@ import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 
 public interface EmojiService extends CRUDService<Emoji> {
-	
-	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId);
-	
-	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga();
-	
-	public List<EmojiNamePict> findAllEmojiOrga();
-	
-	public Boolean IsNameAlreadyUse(String id, String name);
-	
-	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
-	
-	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
-	
-	public void deleteEmoji(String emojiId, String idAddedBy);
-}
 
+	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId);
+
+	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga();
+
+	public List<EmojiNamePict> findAllEmojiOrga();
+
+	public Boolean IsNameAlreadyUse(String id, String name);
+
+	public EmojiNamePictUserTeamId updateEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
+
+	public EmojiNamePictUserTeamId addCreatedEmoji(EmojiNamePictUserTeamId emoji, String idAddedBy);
+
+	public void deleteEmoji(String emojiId, String idAddedBy);
+
+	// ====================================================================================================
+
+	/** Returns the json description of all the default emojis */
+	public String getEmojiJSON();
+}
