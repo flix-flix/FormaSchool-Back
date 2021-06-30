@@ -6,11 +6,12 @@ import java.util.stream.Collectors;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back._utils.Utils;
 import com.formaschool.back.members.dto.MemberRoles;
-import com.formaschool.back.members.dto.MemberUpdateRoles;
 import com.formaschool.back.members.dto.MemberUserNamePict;
 import com.formaschool.back.members.dto.MemberUserPseudo;
 import com.formaschool.back.permissions.PermissionService;
+import com.formaschool.back.roles.Role;
 import com.formaschool.back.roles.RoleService;
+import com.formaschool.back.roles.dto.RoleWithoutRights;
 import com.formaschool.back.salons.Salon;
 import com.formaschool.back.salons.SalonService;
 
@@ -62,27 +63,32 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	}
 
 	@Override
-	public MemberRoles updateMemberRoles(MemberUpdateRoles dto) {
-		Member entity = opt(repo.findById(dto.getId()));
-		entity.setRoles(roleService.findAllById(dto.getRolesId()));
+	public List<Member> findAllPrivateByUserId(String userId) {
+		return repo.findByUserIdAndPrivTrue(userId);
+	}
+
+	@Override
+	public MemberRoles addRoleToMember(String memberId, String roleId) {
+		Member entity = opt(repo.findById(memberId));
+		List<Role> roles = entity.getRoles();
+		roles.add(new Role(roleId));
+		entity.setRoles(roles);
 		Member result = this.repo.save(entity);
 		return dto(result, MemberRoles.class);
 	}
 
 	@Override
-	public List<Member> findAllPrivateByUserId(String userId) {
-		return repo.findByUserIdAndPrivTrue(userId);
+	public void deleteRoleToMember(String memberId, String roleId) {
+		Member entity = opt(repo.findById(memberId));
+		entity.setRoles(entity.getRoles().stream().filter(role -> role.getId() == roleId).collect(Collectors.toList()));
+		this.repo.save(entity);
 	}
 
-	/*
-	 * @Override public MemberRoles addRoleToMember(MemberRoleUpdate dto, String
-	 * roleId) { Member member = opt(repo.findById(dto.getId())); Role role =
-	 * this.roleService.get(roleId); member.getRoles().add(role);
-	 * 
-	 * // TODO // if (dto.getPicture() != null) //
-	 * team.setPicture(dto.getPicture());
-	 * 
-	 * Member result = this.repo.save(member); return
-	 * this.mapper.convertValue(result, MemberRoles.class); }
-	 */
+	@Override
+	public List<RoleWithoutRights> findRolesByMember(String idMember) {
+		Member entity = opt(repo.findById(idMember));
+		List<Role> roles = entity.getRoles();
+		return roles.stream().map(role -> dto(role, RoleWithoutRights.class)).collect(Collectors.toList());
+	}
+
 }
