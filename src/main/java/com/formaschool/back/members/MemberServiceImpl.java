@@ -80,8 +80,11 @@ public class MemberServiceImpl extends CRUDServiceImpl<Member> implements Member
 	@Override
 	public void deleteRoleToMember(String memberId, String roleId) {
 		Member entity = opt(repo.findById(memberId));
-		entity.setRoles(entity.getRoles().stream().filter(role -> role.getId() == roleId).collect(Collectors.toList()));
+		System.out.println(repo.save(entity));
+		entity.setRoles(
+				entity.getRoles().stream().filter(role -> !role.getId().equals(roleId)).collect(Collectors.toList()));
 		this.repo.save(entity);
+		System.out.println(repo.save(entity));
 	}
 
 	@Override
