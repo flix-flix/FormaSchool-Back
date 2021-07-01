@@ -31,7 +31,9 @@ public class EmojiController implements CRUDController<Emoji> {
 	public CRUDService<Emoji> getGenericService() {
 		return service;
 	}
-	
+
+	// ====================================================================================================
+
 	@GetMapping("nameAlreadyUse/{id}/{name}")
 	public Boolean IsNameAlreadyUse(@PathVariable String id, @PathVariable String name) {
 		return this.service.IsNameAlreadyUse(id, name);
@@ -60,17 +62,22 @@ public class EmojiController implements CRUDController<Emoji> {
 	}
 
 	@PostMapping("createdEmojis")
-	public EmojiNamePictUserTeamId addCreatedEmoji(@RequestHeader("Authorization") String authorization, 
+	public EmojiNamePictUserTeamId addCreatedEmoji(@RequestHeader("Authorization") String authorization,
 			@RequestBody EmojiNamePictUserTeamId emoji) {
 		String userId = authorization.split(" ")[1];
 		return this.service.addCreatedEmoji(emoji, userId);
 	}
-	
+
 	@DeleteMapping("createdEmoji/{emojiId}")
 	public void deleteEmoji(@RequestHeader("Authorization") String authorization, @PathVariable String emojiId) {
 		String userId = authorization.split(" ")[1];
 		this.service.deleteEmoji(emojiId, userId);
 	}
 
-	
+	// ====================================================================================================
+
+	@GetMapping("json")
+	public String getJson() {
+		return service.getEmojiJSON();
+	}
 }
