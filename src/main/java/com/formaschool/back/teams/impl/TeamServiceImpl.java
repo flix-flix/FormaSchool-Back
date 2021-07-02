@@ -109,4 +109,14 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 		this.logService.addTeamLog(entity, idAddedBy);
 		return repo.save(entity);
 	}
+	
+// Delete Team
+	@Override
+	public void deleteTeamNameDescPict(String teamId, String idAddedBy) {
+		Team entity = this.repo.findById(teamId)
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+		this.logService.deleteTeamLog(entity, idAddedBy);
+		this.repo.deleteById(teamId);
+	}
+//
 }

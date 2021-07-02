@@ -35,4 +35,8 @@ public interface TeamService extends CRUDService<Team> {
 	public List<TeamNamePict> findAllTeamNamePict();
 
 	public Team findTeamIdBySalonId(String salonId);
+	
+	// Delete Team
+	public void deleteTeamNameDescPict(String teamId, String idAddedBy);
+	//
 }
