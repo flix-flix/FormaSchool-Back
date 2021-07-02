@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.VisibilityChecker;
 import com.formaschool.back._init.InitService;
+import com.formaschool.back._utils.Utils;
 
 @Configuration
 public class CommonsConfig {
@@ -24,5 +25,10 @@ public class CommonsConfig {
 	@Bean
 	public InitService init() {
 		return new InitService();
+	}
+
+	@Bean
+	public Utils utils() {
+		return new Utils();
 	}
 }

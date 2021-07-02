@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.formaschool.back._crud.CRUDController;
 import com.formaschool.back._crud.CRUDService;
+import com.formaschool.back.salons.dto.SalonMessages;
 import com.formaschool.back.salons.dto.SalonName;
 import com.formaschool.back.salons.dto.SalonNameDesc;
 import com.formaschool.back.salons.dto.SalonNameDescUpdate;
@@ -30,14 +31,24 @@ public class SalonController implements CRUDController<Salon> {
 		return service;
 	}
 
-	@GetMapping("salonDesc/{teamId}")
-	public SalonNameDesc findById(@PathVariable String teamId) {
-		return this.service.findById(teamId);
-	}
+	// ====================================================================================================
 
 	@GetMapping("ofTeam/{teamId}")
 	public List<SalonName> findAllSalonOfTeam(@PathVariable String teamId) {
 		return service.findAllSalonNameOfTeam(teamId);
+	}
+
+	@GetMapping("{salonId}")
+	public SalonMessages findSalonMessageById(@PathVariable String salonId) {
+		return service.getSalonWithMessages(salonId);
+	}
+
+	// ====================================================================================================
+	// Params
+
+	@GetMapping("salonDesc/{teamId}")
+	public SalonNameDesc findById(@PathVariable String teamId) {
+		return this.service.findById(teamId);
 	}
 
 	@PatchMapping("salonDesc")
@@ -46,4 +57,5 @@ public class SalonController implements CRUDController<Salon> {
 		String userId = authorization.split(" ")[1];
 		return this.service.updateSalonNameDesc(dto, userId);
 	}
+
 }

@@ -1,7 +1,6 @@
 package com.formaschool.back.users;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,19 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
 import com.formaschool.back._init.InitController;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logging.Logger;
-import com.formaschool.back.logging.LoggerFactory;
-import com.formaschool.back.logs.Log;
 import com.formaschool.back.logs.LogService;
-import com.formaschool.back.logs.Type;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.members.MemberService;
-import com.formaschool.back.teams.Team;
 import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
@@ -30,7 +25,6 @@ import com.formaschool.back.users.dto.UserLocalStorage;
 import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
 import com.formaschool.back.users.dto.UserSettings;
-
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
@@ -47,11 +41,11 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	// ====================================================================================================
 
-	public UserServiceImpl(UserRepository repo, ObjectMapper mapper, LoggerFactory factory, MemberService memberService,
-			FileService fileService, LogService logService) {
-		super(repo, mapper);
+	public UserServiceImpl(UserRepository repo, Utils utils, MemberService memberService, FileService fileService,
+			LogService logService) {
+		super(repo, utils);
 		this.repo = repo;
-		LOGGER = factory.getElasticLogger("UserService");
+		LOGGER = utils.getLogger("UserService");
 		this.memberService = memberService;
 		this.fileService = fileService;
 		this.logService = logService;
@@ -61,17 +55,17 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public UserName getUserNameById(String id) {
-		return dtoOpt(repo.findById(id), UserName.class);
+		return dto(opt(repo.findById(id)), UserName.class);
 	}
 
 	@Override
 	public UserNamePict getUserNamePictById(String id) {
-		return dtoOpt(repo.findById(id), UserNamePict.class);
+		return dto(opt(repo.findById(id)), UserNamePict.class);
 	}
 
 	@Override
 	public UserSettings getUserSettingsById(String id) {
-		return dtoOpt(repo.findById(id), UserSettings.class);
+		return dto(opt(repo.findById(id)), UserSettings.class);
 	}
 
 	@Override
@@ -92,14 +86,14 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 			user.setPassword(dto.getPassword());
 
 		User result = this.repo.save(user);
-		return this.mapper.convertValue(result, UserSettings.class);
+		return dto(result, UserSettings.class);
 	}
 
 	// userSettings Fin
 
 	@Override
 	public UserNamePict getDefaultUser() {
-		return dtoOpt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst(),
+		return dto(opt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst()),
 				UserNamePict.class);
 	}
 
@@ -112,7 +106,6 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		return this.repo.save(user);
 	}
 
-
 	@Override
 	public List<UserNamePict> getUserNotInTheTeam(String teamId) {
 		List<User> users = this.repo.findAll();
@@ -123,7 +116,7 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public List<User> getUserByTeamId(String teamId) {
-		List<Member> membersInTheTeam = this.memberService.findMembersByTeamId(teamId);
+		List<Member> membersInTheTeam = this.memberService.findByTeamId(teamId);
 		List<User> userIntheTeam = new ArrayList<User>();
 		for (Member member : membersInTheTeam) {
 			userIntheTeam.add(member.getUser());
@@ -181,6 +174,5 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		this.logService.addUserLog(user.getFirstname(), user.getLastname(), idAddedBy);
 		return repo.save(entity);
 	}
-	
 
 }

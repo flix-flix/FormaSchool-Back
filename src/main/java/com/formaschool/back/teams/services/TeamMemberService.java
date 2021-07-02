@@ -7,5 +7,4 @@ import com.formaschool.back.teams.dto.TeamNamePict;
 public interface TeamMemberService {
 
 	public List<TeamNamePict> findAllTeamOfUser(String id);
-
 }

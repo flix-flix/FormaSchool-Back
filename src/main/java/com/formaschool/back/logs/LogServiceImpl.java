@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.Emoji;
 import com.formaschool.back.logs.dto.LogWithoutId;
 import com.formaschool.back.salons.Salon;
@@ -16,22 +16,24 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 
 	private LogRepository repository;
 
-	public LogServiceImpl(LogRepository repository, ObjectMapper mapper) {
-		super(repository, mapper);
+	public LogServiceImpl(LogRepository repository, Utils utils) {
+		super(repository, utils);
 		this.repository = repository;
 	}
 
+	@Override
 	public List<LogWithoutId> findAdminLogsWithoutId() {
 		List<Log> logs = this.repository.findByTeamIdNull();
 		return logs.stream().map(log -> {
-			return this.mapper.convertValue(log, LogWithoutId.class);
+			return dto(log, LogWithoutId.class);
 		}).collect(Collectors.toList());
 	}
 
+	@Override
 	public List<LogWithoutId> findWithoutIdByTeam(String teamId) {
 		List<Log> logs = this.repository.findByTeamId(teamId);
 		return logs.stream().map(log -> {
-			return this.mapper.convertValue(log, LogWithoutId.class);
+			return dto(log, LogWithoutId.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -44,9 +46,8 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 
 	@Override
 	public void addUserLog(String firstname, String lastname, String idAddedBy) {
-		String desc = "a créer un utilisateur " + firstname+ lastname;
-		Log log = new Log(new User(idAddedBy), null, 
-				Type.CREATE_USER.ordinal(), LocalDateTime.now(), desc);
+		String desc = "a créer un utilisateur " + firstname + lastname;
+		Log log = new Log(new User(idAddedBy), null, Type.CREATE_USER.ordinal(), LocalDateTime.now(), desc);
 		this.repository.save(log);
 	}
 
@@ -59,7 +60,7 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 
 	@Override
 	public void updateTeamLog(Team team, String idAddedBy) {
-		String desc = "a changé le nom et/ou la description de l'equipe"; 
+		String desc = "a changé le nom et/ou la description de l'equipe";
 		Log log = new Log(new User(idAddedBy), team, Type.UPDATE_TEAM.ordinal(), LocalDateTime.now(), desc);
 		this.repository.save(log);
 	}
@@ -67,7 +68,7 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 	@Override
 	public void addEmojiLog(Emoji emoji, String idAddedBy) {
 		String desc = "a créer l'emoji " + emoji.getName();
-		Log log = new Log(new User(idAddedBy),emoji.getTeam(), Type.CREATE_EMOJI.ordinal(), LocalDateTime.now(), desc);
+		Log log = new Log(new User(idAddedBy), emoji.getTeam(), Type.CREATE_EMOJI.ordinal(), LocalDateTime.now(), desc);
 		this.repository.save(log);
 	}
 

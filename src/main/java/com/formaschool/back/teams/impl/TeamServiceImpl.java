@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logs.LogService;
@@ -30,19 +30,28 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 	private FileService fileService;
 	private LogService logService;
 
-	public TeamServiceImpl(TeamRepository repo, ObjectMapper mapper, SalonService salonService, FileService fileService,
+	public TeamServiceImpl(TeamRepository repo, Utils utils, SalonService salonService, FileService fileService,
 			LogService logService) {
-		super(repo, mapper);
+		super(repo, utils);
 		this.repo = repo;
 		this.salonService = salonService;
 		this.fileService = fileService;
 		this.logService = logService;
 	}
 
+	// ====================================================================================================
+
+	@Override
+	public Team findById(String teamId) {
+		return opt(repo.findById(teamId));
+	}
+
+	// ====================================================================================================
+
 	@Override
 	public TeamNameDescPict findTeamNameDescPicById(String id) {
 		Team team = this.repo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		return mapper.convertValue(team, TeamNameDescPict.class);
+		return dto(team, TeamNameDescPict.class);
 	}
 
 	@Override
@@ -56,12 +65,12 @@ public class TeamServiceImpl extends CRUDServiceImpl<Team> implements TeamServic
 
 		Team result = this.repo.save(team);
 		this.logService.updateTeamLog(result, idAddedBy);
-		return this.mapper.convertValue(result, TeamNameDescPict.class);
+		return dto(result, TeamNameDescPict.class);
 	}
 
 	@Override
 	public TeamNamePict findTeamNamePictById(String id) {
-		return dtoOpt(repo.findById(id), TeamNamePict.class);
+		return dto(opt(repo.findById(id)), TeamNamePict.class);
 	}
 	// =============================================================================================
 

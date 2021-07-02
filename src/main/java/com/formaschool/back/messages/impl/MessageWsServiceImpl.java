@@ -1,26 +1,26 @@
-package com.formaschool.back.messages;
+package com.formaschool.back.messages.impl;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.files.FileService;
 import com.formaschool.back.files.Folder;
 import com.formaschool.back.logging.Logger;
-import com.formaschool.back.logging.LoggerFactory;
 import com.formaschool.back.members.MemberService;
+import com.formaschool.back.messages.Message;
+import com.formaschool.back.messages.MessageRepository;
 import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSendString;
 import com.formaschool.back.messages.dto.MessageWithReacts;
+import com.formaschool.back.messages.services.MessageWsService;
 import com.formaschool.back.reactions.ReactionService;
 import com.formaschool.back.salons.SalonService;
 
-public class MessageServiceImpl extends CRUDServiceImpl<Message> implements MessageService {
+public class MessageWsServiceImpl implements MessageWsService {
 
 	private MessageRepository repo;
+	private Utils utils;
 	private final Logger LOGGER;
 
 	private MemberService memberService;
@@ -28,14 +28,12 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	private FileService fileService;
 	private ReactionService reactService;
 
-	public MessageServiceImpl(MessageRepository repo, ObjectMapper mapper, LoggerFactory factory,
-			MemberService memberService, SalonService salonService, FileService fileService,
-			ReactionService reactService) {
-		super(repo, mapper);
-
-		LOGGER = factory.getElasticLogger("MessageService");
-
+	public MessageWsServiceImpl(MessageRepository repo, Utils utils, MemberService memberService,
+			SalonService salonService, FileService fileService, ReactionService reactService) {
 		this.repo = repo;
+		LOGGER = utils.getLogger("MessageService");
+
+		this.utils = utils;
 		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
@@ -43,20 +41,6 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	}
 
 	// ====================================================================================================
-	// Service
-
-	@Override
-	public MessageWithReacts getMessageWithReacts(String msgId) {
-		return toMessageWithReacts(opt(repo.findById(msgId)));
-	}
-
-	@Override
-	public List<MessageWithReacts> getAllMessageWithReactsOfSalon(String salonId) {
-		return repo.findBySalonId(salonId).stream().map(msg -> toMessageWithReacts(msg)).collect(Collectors.toList());
-	}
-
-	// ====================================================================================================
-	// WebSocket
 
 	@Override
 	public MessageWithReacts sendMessage(MessageSendString msg) {
@@ -72,7 +56,7 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 
 	@Override
 	public MessageWithReacts editMessage(MessageEdit msg) {
-		Message entity = opt(repo.findById(msg.getId()));
+		Message entity = utils.opt(repo.findById(msg.getId()));
 		entity.setContent(msg.getContent());
 		return toMessageWithReacts(repo.save(entity));
 	}
@@ -80,7 +64,7 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	@Override
 	public MessageDelete deleteMessage(String msgId) {
 		// TODO Remove file, reactions, ...
-		Message entity = opt(repo.findById(msgId));
+		Message entity = utils.opt(repo.findById(msgId));
 		repo.deleteById(msgId);
 		LOGGER.warn("Delete message: " + entity);
 		return new MessageDelete(entity.getSalon().getId(), msgId);
@@ -89,7 +73,7 @@ public class MessageServiceImpl extends CRUDServiceImpl<Message> implements Mess
 	// ====================================================================================================
 
 	private MessageWithReacts toMessageWithReacts(Message entity) {
-		MessageWithReacts dto = dto(entity, MessageWithReacts.class);
+		MessageWithReacts dto = utils.dto(entity, MessageWithReacts.class);
 		dto.setReactions(reactService.getAllReactionsUsersOfMessage(entity.getId()));
 		dto.setSalonId(entity.getSalon().getId());
 		return dto;

@@ -9,10 +9,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Document
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class FileModel {
 
 	@Id

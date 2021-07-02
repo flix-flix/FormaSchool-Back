@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.permissions.dto.PermissionMemberUserRoleWithoutRights;
 import com.formaschool.back.permissions.dto.PermissionRights;
@@ -21,8 +21,8 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 
 	private PermissionRepository repository;
 
-	public PermissionServiceImpl(PermissionRepository repository, ObjectMapper mapper) {
-		super(repository, mapper);
+	public PermissionServiceImpl(PermissionRepository repository, Utils utils) {
+		super(repository, utils);
 		this.repository = repository;
 	}
 
@@ -37,8 +37,7 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 	@Override
 	public List<PermissionMemberUserRoleWithoutRights> findPermissionBySalonId(String salonId) {
 		List<Permission> permissions = this.repository.findBySalonId(salonId);
-		return permissions.stream()
-				.map(permission -> dto(permission,PermissionMemberUserRoleWithoutRights.class))
+		return permissions.stream().map(permission -> dto(permission, PermissionMemberUserRoleWithoutRights.class))
 				.collect(Collectors.toList());
 	}
 
@@ -48,7 +47,7 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		return new PermissionRights(permissionId, initCommonRights(permission));
 	}
-	
+
 	/**
 	 * Init a List with description and boolean
 	 * 
@@ -60,7 +59,8 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 
 		list.add(new DescriptionBoolean("Permet de gérer les permissions",
 				permission.getCommonRights().getManagePermissions()));
-		list.add(new DescriptionBoolean("Permet de changer le nom du salon", permission.getCommonRights().getUpdateSalon()));
+		list.add(new DescriptionBoolean("Permet de changer le nom du salon",
+				permission.getCommonRights().getUpdateSalon()));
 		list.add(new DescriptionBoolean("Permet de supprimer les messages des autres",
 				permission.getCommonRights().getDeleteMsg()));
 		list.add(new DescriptionBoolean("Permet de tag les autres utilisateurs",
@@ -79,7 +79,7 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 		this.repository.save(permission);
 		return permissionRights;
 	}
-	
+
 	public Permission getValueFromPermissionRights(Permission permission, PermissionRights permissionRights) {
 		permission.getCommonRights().setManagePermissions(permissionRights.getCommonRights().get(0).getValue());
 		permission.getCommonRights().setUpdateSalon(permissionRights.getCommonRights().get(1).getValue());
@@ -102,8 +102,8 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 	}
 
 	@Override
-	public PermissionMemberUserRoleWithoutRights  addFromRole(String salonId, String roleId) {
-		Salon salon = new Salon(salonId); 
+	public PermissionMemberUserRoleWithoutRights addFromRole(String salonId, String roleId) {
+		Salon salon = new Salon(salonId);
 		Role role = new Role(roleId);
 		TeamSalonRights tsr = new TeamSalonRights(true, true, true, true, true, true, true);
 		Permission permission = this.repository.save(new Permission(salon, null, role, tsr));
@@ -112,7 +112,7 @@ public class PermissionServiceImpl extends CRUDServiceImpl<Permission> implement
 
 	@Override
 	public PermissionMemberUserRoleWithoutRights addFromMember(String salonId, String memberId) {
-		Salon salon = new Salon(salonId); 
+		Salon salon = new Salon(salonId);
 		Member member = new Member(memberId);
 		TeamSalonRights tsr = new TeamSalonRights(true, true, true, true, true, true, true);
 		Permission permission = this.repository.save(new Permission(salon, member, null, tsr));

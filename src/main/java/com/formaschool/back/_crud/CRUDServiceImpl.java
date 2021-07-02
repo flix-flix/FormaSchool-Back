@@ -4,20 +4,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.formaschool.back._utils.Utils;
 
 public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	private MongoRepository<T, String> repo;
-	protected ObjectMapper mapper;
+	private Utils utils;
 
-	public CRUDServiceImpl(MongoRepository<T, String> repo, ObjectMapper mapper) {
+	public CRUDServiceImpl(MongoRepository<T, String> repo, Utils utils) {
 		this.repo = repo;
-		this.mapper = mapper;
+		this.utils = utils;
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public List<T> findAll() {
@@ -26,7 +26,7 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	@Override
 	public T get(String id) {
-		return opt(repo.findById(id));
+		return utils.opt(repo.findById(id));
 	}
 
 	@Override
@@ -46,18 +46,11 @@ public class CRUDServiceImpl<T> implements CRUDService<T> {
 
 	// ====================================================================================================
 
-	/** Throw BAD_REQUEST if the Optional is empty */
-	protected T opt(Optional<T> opt) {
-		return opt.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
+	public T opt(Optional<T> opt) {
+		return utils.opt(opt);
 	}
 
-	/** Map the entity into the DTO */
-	protected <E, DTO> DTO dto(E entity, Class<DTO> cl) {
-		return mapper.convertValue(entity, cl);
-	}
-
-	/** Map the entity into the DTO */
-	protected <DTO> DTO dtoOpt(Optional<T> opt, Class<DTO> cl) {
-		return dto(opt(opt), cl);
+	public <E, DTO> DTO dto(E entity, Class<DTO> cl) {
+		return utils.dto(entity, cl);
 	}
 }

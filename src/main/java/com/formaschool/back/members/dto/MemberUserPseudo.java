@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class MemberUserPseudo {
-	private UserNamePict user;
+	private String id;
 	private String pseudo;
+	private UserNamePict user;
 }

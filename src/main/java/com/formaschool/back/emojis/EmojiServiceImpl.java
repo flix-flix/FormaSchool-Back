@@ -1,23 +1,18 @@
 package com.formaschool.back.emojis;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.formaschool.back._crud.CRUDServiceImpl;
+import com.formaschool.back._utils.Utils;
 import com.formaschool.back.emojis.dto.EmojiNamePict;
 import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
-import com.formaschool.back.logging.LoggerFactory;
-import com.formaschool.back.logs.Log;
 import com.formaschool.back.logs.LogService;
-import com.formaschool.back.logs.Type;
 import com.formaschool.back.teams.services.TeamService;
-import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserService;
 
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
@@ -29,21 +24,27 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	private UserService userService;
 	private LogService logService;
 
-	public EmojiServiceImpl(EmojiRepository repo, ObjectMapper mapper, LoggerFactory factory, TeamService teamService,
-			UserService userService, LogService logService) {
-		super(repo, mapper);
+	private String json;
+
+	public EmojiServiceImpl(EmojiRepository repo, Utils utils, TeamService teamService, UserService userService,
+			LogService logService) {
+		super(repo, utils);
 		this.repo = repo;
-		LOGGER = factory.getElasticLogger("EmojiService");
+		LOGGER = utils.getLogger("EmojiService");
 		this.userService = userService;
 		this.teamService = teamService;
 		this.logService = logService;
+
+		json = Utils.read("src/main/resources/static/emojis.json");
 	}
+
+	// ====================================================================================================
 
 	@Override
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId) {
 		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamId(teamId);
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
+			return dto(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -51,7 +52,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga() {
 		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePictUserTeamId.class);
+			return dto(emoji, EmojiNamePictUserTeamId.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -59,7 +60,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	public List<EmojiNamePict> findAllEmojiOrga() {
 		List<Emoji> emojis = this.repo.findByUserNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
-			return this.mapper.convertValue(emoji, EmojiNamePict.class);
+			return dto(emoji, EmojiNamePict.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -93,12 +94,18 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		return dto(result, EmojiNamePictUserTeamId.class);
 	}
 
-
 	@Override
 	public void deleteEmoji(String emojiId, String idAddedBy) {
 		Emoji entity = this.repo.findById(emojiId)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id unknown"));
 		this.logService.deleteEmojiLog(entity, idAddedBy);
 		this.repo.deleteById(emojiId);
+	}
+
+	// ====================================================================================================
+
+	@Override
+	public String getEmojiJSON() {
+		return json;
 	}
 }
