@@ -85,4 +85,13 @@ public class LogServiceImpl extends CRUDServiceImpl<Log> implements LogService {
 		Log log = new Log(new User(idAddedBy), emoji.getTeam(), Type.DELETE_EMOJI.ordinal(), LocalDateTime.now(), desc);
 		this.repository.save(log);
 	}
+	
+// Delete Team
+	@Override
+	public void deleteTeamLog(Team team, String idAddedBy) {
+		String desc = "a supprimer la team " + team.getName();
+		Log log = new Log(new User(idAddedBy), team, Type.DELETE_TEAM.ordinal(), LocalDateTime.now(), desc);
+		this.repository.save(log);
+	}
+//
 }

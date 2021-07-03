@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,4 +80,12 @@ public class TeamController implements CRUDController<Team> {
 		String userId = authorization.split(" ")[1];
 		return this.service.updateTeamNameDescPic(dto, userId);
 	}
+// Delete Team
+	@DeleteMapping("teamNameDescPict/{teamId}")
+	public void deleteTeamNameDescPict (@RequestHeader("Authorization") String authorization,
+			@PathVariable String teamId){
+		String userId = authorization.split(" ")[1];
+		this.service.deleteTeamNameDescPict(teamId, userId);
+	}
+//
 }

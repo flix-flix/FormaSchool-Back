@@ -38,4 +38,8 @@ public interface LogService extends CRUDService<Log>{
 	
 	public void deleteEmojiLog(Emoji emoji, String idAddedBy);
 
+	// Delete Team
+	public void deleteTeamLog(Team entity, String idAddedBy);
+	//
+
 }
