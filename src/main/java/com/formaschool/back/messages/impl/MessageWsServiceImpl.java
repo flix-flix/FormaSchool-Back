@@ -75,6 +75,7 @@ public class MessageWsServiceImpl implements MessageWsService {
 	private MessageWithReacts toMessageWithReacts(Message entity) {
 		MessageWithReacts dto = utils.dto(entity, MessageWithReacts.class);
 		dto.setReactions(reactService.getAllReactionsUsersOfMessage(entity.getId()));
+		dto.setTeamId(entity.getSalon().getTeam().getId());
 		dto.setSalonId(entity.getSalon().getId());
 		return dto;
 	}

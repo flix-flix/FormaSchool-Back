@@ -13,6 +13,7 @@ import lombok.Data;
 public class MessageWithReacts {
 	private String id;
 	private MemberUserPseudo sender;
+	private String teamId;
 	private String salonId;
 
 	private String content;
