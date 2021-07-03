@@ -33,6 +33,7 @@ public class EmojiController implements CRUDController<Emoji> {
 	}
 
 	// ====================================================================================================
+	// Management
 
 	@GetMapping("nameAlreadyUse/{id}/{name}")
 	public Boolean IsNameAlreadyUse(@PathVariable String id, @PathVariable String name) {
@@ -47,11 +48,6 @@ public class EmojiController implements CRUDController<Emoji> {
 	@GetMapping("createdEmojisOrga")
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiOrga() {
 		return this.service.findAllCreatedEmojiOrga();
-	}
-
-	@GetMapping("emojisOrga")
-	public List<EmojiNamePict> findAllEmojiOrga() {
-		return this.service.findAllEmojiOrga();
 	}
 
 	@PatchMapping("createdEmojis")
@@ -75,9 +71,20 @@ public class EmojiController implements CRUDController<Emoji> {
 	}
 
 	// ====================================================================================================
+	// List
 
 	@GetMapping("json")
 	public String getJson() {
 		return service.getEmojiJSON();
+	}
+
+	@GetMapping("emojisOrga")
+	public List<EmojiNamePict> findAllEmojiOrga() {
+		return this.service.findAllEmojiOrga();
+	}
+
+	@GetMapping("emojisTeam/{teamId}")
+	public List<EmojiNamePict> findAllEmojiOrga(@PathVariable String teamId) {
+		return this.service.findAllEmojiTeam(teamId);
 	}
 }

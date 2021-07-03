@@ -39,6 +39,7 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	}
 
 	// ====================================================================================================
+	// Management
 
 	@Override
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId) {
@@ -53,14 +54,6 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 		List<Emoji> emojis = this.repo.findByUserNotNullAndTeamNull();
 		return emojis.stream().map(emoji -> {
 			return dto(emoji, EmojiNamePictUserTeamId.class);
-		}).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<EmojiNamePict> findAllEmojiOrga() {
-		List<Emoji> emojis = this.repo.findByUserNullAndTeamNull();
-		return emojis.stream().map(emoji -> {
-			return dto(emoji, EmojiNamePict.class);
 		}).collect(Collectors.toList());
 	}
 
@@ -103,9 +96,22 @@ public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiSer
 	}
 
 	// ====================================================================================================
+	// List
 
 	@Override
 	public String getEmojiJSON() {
 		return json;
+	}
+
+	@Override
+	public List<EmojiNamePict> findAllEmojiOrga() {
+		return this.repo.findByUserNotNullAndTeamNull().stream().map(emoji -> dto(emoji, EmojiNamePict.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<EmojiNamePict> findAllEmojiTeam(String teamId) {
+		return this.repo.findByUserNotNullAndTeamId(teamId).stream().map(emoji -> dto(emoji, EmojiNamePict.class))
+				.collect(Collectors.toList());
 	}
 }

@@ -8,11 +8,12 @@ import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 
 public interface EmojiService extends CRUDService<Emoji> {
 
+	// ====================================================================================================
+	// Management
+
 	public List<EmojiNamePictUserTeamId> findCreatedEmojiByTeamId(String teamId);
 
 	public List<EmojiNamePictUserTeamId> findAllCreatedEmojiOrga();
-
-	public List<EmojiNamePict> findAllEmojiOrga();
 
 	public Boolean IsNameAlreadyUse(String id, String name);
 
@@ -23,7 +24,12 @@ public interface EmojiService extends CRUDService<Emoji> {
 	public void deleteEmoji(String emojiId, String idAddedBy);
 
 	// ====================================================================================================
+	// List
 
 	/** Returns the json description of all the default emojis */
 	public String getEmojiJSON();
+
+	public List<EmojiNamePict> findAllEmojiOrga();
+
+	public List<EmojiNamePict> findAllEmojiTeam(String teamId);
 }
