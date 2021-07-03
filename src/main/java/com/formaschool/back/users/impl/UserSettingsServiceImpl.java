@@ -44,11 +44,11 @@ public class UserSettingsServiceImpl implements UserSettingsService {
 		if (dto.getEmail() != null)
 			user.setEmail(dto.getEmail());
 		// TODO Birth, phone
-//		if (dto.getAge() != 0)
-//			user.setAge(dto.getAge());
-//		if (dto.getPhone() != 0)
-//			user.setPhone(dto.getPhone());
-
+		if (dto.getBirth() != null)
+			user.setBirth(dto.getBirth());
+		if (dto.getPhone() != null)
+			user.setPhone(dto.getPhone());
+		
 		User result = this.repo.save(user);
 		return utils.dto(result, UserSettings.class);
 	}
