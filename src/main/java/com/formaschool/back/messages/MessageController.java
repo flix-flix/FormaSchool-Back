@@ -15,7 +15,7 @@ import com.formaschool.back._crud.CRUDController;
 import com.formaschool.back._crud.CRUDService;
 import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
-import com.formaschool.back.messages.dto.MessageSendString;
+import com.formaschool.back.messages.dto.MessageSend;
 import com.formaschool.back.messages.dto.MessageWithReacts;
 import com.formaschool.back.messages.services.MessageService;
 import com.formaschool.back.messages.services.MessageWsService;
@@ -50,7 +50,7 @@ public class MessageController implements CRUDController<Message> {
 
 	@MessageMapping("chat.send")
 	@SendTo("/topic/public")
-	public MessageWithReacts sendMsgWithFile(MessageSendString msg) {
+	public MessageWithReacts sendMsgWithFile(MessageSend msg) {
 		return serviceWs.sendMessage(msg);
 	}
 

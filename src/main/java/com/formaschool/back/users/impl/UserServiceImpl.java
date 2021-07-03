@@ -1,4 +1,4 @@
-package com.formaschool.back.users;
+package com.formaschool.back.users.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,13 +18,15 @@ import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.members.MemberService;
+import com.formaschool.back.users.User;
+import com.formaschool.back.users.UserRepository;
 import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
 import com.formaschool.back.users.dto.UserLocalStorage;
 import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
-import com.formaschool.back.users.dto.UserSettings;
+import com.formaschool.back.users.services.UserService;
 
 public class UserServiceImpl extends CRUDServiceImpl<User> implements UserService {
 
@@ -61,40 +63,6 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	@Override
 	public UserNamePict getUserNamePictById(String id) {
 		return dto(opt(repo.findById(id)), UserNamePict.class);
-	}
-
-	@Override
-	public UserSettings getUserSettingsById(String id) {
-		return dto(opt(repo.findById(id)), UserSettings.class);
-	}
-
-	@Override
-	public UserSettings updateuserSettings(UserSettings dto) {
-		User user = this.repo.findById(dto.getId())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-		if (dto.getFirstname() != null)
-			user.setFirstname(dto.getFirstname());
-		if (dto.getLastname() != null)
-			user.setLastname(dto.getLastname());
-		if (dto.getEmail() != null)
-			user.setEmail(dto.getEmail());
-//		if (dto.getAge() != 0)
-//			user.setAge(dto.getAge());
-//		if (dto.getPhone() != 0)
-//			user.setPhone(dto.getPhone());
-		if (dto.getPassword() != null)
-			user.setPassword(dto.getPassword());
-
-		User result = this.repo.save(user);
-		return dto(result, UserSettings.class);
-	}
-
-	// userSettings Fin
-
-	@Override
-	public UserNamePict getDefaultUser() {
-		return dto(opt(repo.findAll().stream().filter(user -> user.getFirstname().equals("Félix")).findFirst()),
-				UserNamePict.class);
 	}
 
 	@Override
@@ -163,13 +131,15 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 
 	@Override
 	public User saveWithFile(UserCreateWithFile user, String idAddedBy) {
+		// TODO BirthDate + Phone
 		User entity;
 		if (user.getFile() != null) {
 			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(),
-					fileService.upload(Folder.USERS, user.getFilename(), user.getFile()), LocalDate.now());
-		} else {
-			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(), null,
+					fileService.upload(Folder.USERS, user.getFilename(), user.getFile()), null, "0612345678",
 					LocalDate.now());
+		} else {
+			entity = new User(user.getFirstname(), user.getLastname(), user.getPassword(), user.getEmail(), null, null,
+					"0612345678", LocalDate.now());
 		}
 		this.logService.addUserLog(user.getFirstname(), user.getLastname(), idAddedBy);
 		return repo.save(entity);

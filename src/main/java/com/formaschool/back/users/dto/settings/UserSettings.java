@@ -1,4 +1,4 @@
-package com.formaschool.back.users.dto;
+package com.formaschool.back.users.dto.settings;
 
 import java.time.LocalDate;
 
@@ -6,13 +6,15 @@ import lombok.Data;
 
 @Data
 public class UserSettings {
+
 	private String id;
+
 	private String firstname;
 	private String lastname;
+	private LocalDate birth;
+
 	private String email;
-//	private int age;
-//	private int phone;
-	private String password;
-	private LocalDate creation;
+	private String phone;
+
 	private String picture;
 }

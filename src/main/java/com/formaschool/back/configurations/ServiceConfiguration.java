@@ -44,8 +44,10 @@ import com.formaschool.back.teams.impl.TeamServiceImpl;
 import com.formaschool.back.teams.services.TeamMemberService;
 import com.formaschool.back.teams.services.TeamService;
 import com.formaschool.back.users.UserRepository;
-import com.formaschool.back.users.UserService;
-import com.formaschool.back.users.UserServiceImpl;
+import com.formaschool.back.users.impl.UserServiceImpl;
+import com.formaschool.back.users.impl.UserSettingsServiceImpl;
+import com.formaschool.back.users.services.UserService;
+import com.formaschool.back.users.services.UserSettingsService;
 
 @Configuration
 public class ServiceConfiguration {
@@ -129,5 +131,10 @@ public class ServiceConfiguration {
 	public MessageWsService messageWsService(MessageRepository repo, Utils utils, MemberService member,
 			SalonService salon, FileService file, ReactionService react) {
 		return new MessageWsServiceImpl(repo, utils, member, salon, file, react);
+	}
+
+	@Bean
+	public UserSettingsService userService(UserRepository repo, Utils utils, FileService file) {
+		return new UserSettingsServiceImpl(repo, utils, file);
 	}
 }

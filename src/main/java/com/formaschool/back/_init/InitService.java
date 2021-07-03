@@ -82,10 +82,14 @@ public class InitService {
 	};
 
 	private User[] users = new User[] {
-			new User("Félix", "Burie", "123456", "felix@gmail.com", files[4], LocalDate.of(2021, 2, 20)),
-			new User("Jason", "Vennin", "azerty", "jason@gmail.com", files[5], LocalDate.of(2021, 2, 25)),
-			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", files[6], LocalDate.of(2021, 3, 7)),
-			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", files[7], LocalDate.of(2021, 3, 12)), };
+			new User("Félix", "Burie", "123456", "felix@gmail.com", files[4], LocalDate.of(1996, 7, 12), "0605040302",
+					LocalDate.of(2021, 2, 20)),
+			new User("Jason", "Vennin", "azerty", "jason@gmail.com", files[5], LocalDate.of(1970, 1, 1), "0606060606",
+					LocalDate.of(2021, 2, 25)),
+			new User("Luca", "Novelli", "jean-paul2", "JP@gmail.com", files[6], LocalDate.of(1970, 1, 1), "0654321098",
+					LocalDate.of(2021, 3, 7)),
+			new User("Bouchaib", "Faham", "mdp", "bf@gmail.com", files[7], LocalDate.of(1970, 1, 1), "0678901234",
+					LocalDate.of(2021, 3, 12)), };
 
 	private TeamSalonRights[] teamSalonRights = new TeamSalonRights[] {
 			new TeamSalonRights(true, true, true, true, true, true, true),
@@ -273,6 +277,7 @@ public class InitService {
 	// ====================================================================================================
 
 	private Message[] msgs = new Message[] {
+			// === IBM ===
 			new Message(members[2], salons[0], "Bien ou bien ?", null, LocalDateTime.of(2021, 4, 1, 17, 37, 31),
 					LocalDateTime.of(2021, 4, 1, 17, 37, 31)),
 			new Message(members[3], salons[0], "trkl", null, LocalDateTime.of(2021, 4, 1, 17, 43, 7),
@@ -340,7 +345,7 @@ public class InitService {
 			new Message(members[2], salons[4], "et celui pour l'*italique*", null,
 					LocalDateTime.of(2021, 4, 5, 7, 12, 35), LocalDateTime.of(2021, 4, 5, 7, 12, 35)),
 
-			// === ===
+			// === Semifir ===
 			new Message(members[1], salons[5],
 					"List<String> teams = new ArrayList<>(List.of(\"FormaSchool\", \"JDR\", \"Médicaments\", \"Tinder Jeux\"));",
 					null, LocalDateTime.of(2021, 4, 5, 7, 12, 35), LocalDateTime.of(2021, 4, 5, 7, 12, 35)),

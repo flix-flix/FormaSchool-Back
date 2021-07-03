@@ -1,7 +1,5 @@
 package com.formaschool.back.messages.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +11,6 @@ public class MessageSend {
 	private String salonId;
 
 	private String content;
-	private MultipartFile file;
+	private String file;
+	private String fileName;
 }

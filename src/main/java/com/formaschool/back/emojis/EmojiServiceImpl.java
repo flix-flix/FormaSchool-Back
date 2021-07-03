@@ -13,7 +13,7 @@ import com.formaschool.back.emojis.dto.EmojiNamePictUserTeamId;
 import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.teams.services.TeamService;
-import com.formaschool.back.users.UserService;
+import com.formaschool.back.users.services.UserService;
 
 public class EmojiServiceImpl extends CRUDServiceImpl<Emoji> implements EmojiService {
 

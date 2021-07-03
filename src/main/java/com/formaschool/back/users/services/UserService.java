@@ -1,15 +1,15 @@
-package com.formaschool.back.users;
+package com.formaschool.back.users.services;
 
 import java.util.List;
 
 import com.formaschool.back._crud.CRUDService;
+import com.formaschool.back.users.User;
 import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
 import com.formaschool.back.users.dto.UserLocalStorage;
 import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
-import com.formaschool.back.users.dto.UserSettings;
 
 public interface UserService extends CRUDService<User> {
 
@@ -27,15 +27,5 @@ public interface UserService extends CRUDService<User> {
 
 	// ====================================================================================================
 
-	// TODO [Remove]
-	public UserNamePict getDefaultUser();
-
 	public UserLocalStorage connect(UserConnect connect);
-
-	// ====================================================================================================
-	// userSettings
-
-	public UserSettings getUserSettingsById(String id);
-
-	public UserSettings updateuserSettings(UserSettings dto);
 }

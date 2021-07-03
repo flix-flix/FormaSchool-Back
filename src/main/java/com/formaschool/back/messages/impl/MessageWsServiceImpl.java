@@ -11,7 +11,7 @@ import com.formaschool.back.messages.Message;
 import com.formaschool.back.messages.MessageRepository;
 import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
-import com.formaschool.back.messages.dto.MessageSendString;
+import com.formaschool.back.messages.dto.MessageSend;
 import com.formaschool.back.messages.dto.MessageWithReacts;
 import com.formaschool.back.messages.services.MessageWsService;
 import com.formaschool.back.reactions.ReactionService;
@@ -43,7 +43,7 @@ public class MessageWsServiceImpl implements MessageWsService {
 	// ====================================================================================================
 
 	@Override
-	public MessageWithReacts sendMessage(MessageSendString msg) {
+	public MessageWithReacts sendMessage(MessageSend msg) {
 		Message entity = new Message(memberService.get(msg.getMemberId()), salonService.get(msg.getSalonId()),
 				msg.getContent(), fileService.upload(Folder.SHARED_FILES, msg.getFileName(), msg.getFile()),
 				LocalDateTime.now(), null);
