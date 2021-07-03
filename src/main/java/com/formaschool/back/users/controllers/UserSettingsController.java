@@ -25,8 +25,9 @@ public class UserSettingsController {
 		return service.getSettingsById(id);
 	}
 
-	@PatchMapping("{id}")
+	@PatchMapping()
 	public UserSettings updateuserSettings(@RequestBody UserSettings dto) {
+		System.out.println(dto);
 		return this.service.updateSettings(dto);
 	}
 }
