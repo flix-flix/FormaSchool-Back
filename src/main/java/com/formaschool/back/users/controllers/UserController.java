@@ -19,7 +19,6 @@ import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
 import com.formaschool.back.users.dto.UserLocalStorage;
-import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
 import com.formaschool.back.users.services.UserService;
 
@@ -39,11 +38,6 @@ public class UserController implements CRUDController<User> {
 	@GetMapping("userNotInTheTeam/{teamId}")
 	public List<UserNamePict> getUserNotInTheTeam(@PathVariable String teamId) {
 		return this.service.getUserNotInTheTeam(teamId);
-	}
-
-	@GetMapping("name/{id}")
-	public UserName getName(@PathVariable String id) {
-		return service.getUserNameById(id);
 	}
 
 	@GetMapping("namePict/{id}")

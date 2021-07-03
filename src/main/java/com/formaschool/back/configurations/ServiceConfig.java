@@ -17,7 +17,7 @@ import com.formaschool.back.teams.impl.TeamServiceImpl;
 import com.formaschool.back.teams.services.TeamService;
 
 @Configuration
-public class ServiceConfiguration {
+public class ServiceConfig {
 
 	@Bean
 	public TeamService teamService(TeamRepository repo, Utils utils, SalonService salonService, FileService fileService,

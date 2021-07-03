@@ -8,12 +8,9 @@ import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
 import com.formaschool.back.users.dto.UserLocalStorage;
-import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
 
 public interface UserService extends CRUDService<User> {
-
-	public UserName getUserNameById(String id);
 
 	public UserNamePict getUserNamePictById(String id);
 

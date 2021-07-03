@@ -1,7 +1,5 @@
 package com.formaschool.back.rights;
 
-
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeamSalonRights {
-	
 
 	private Boolean managePermissions;
 	private Boolean updateSalon;
@@ -18,7 +15,6 @@ public class TeamSalonRights {
 	private Boolean tagSomeone;
 	private Boolean seeSalon;
 	private Boolean sendMsg;
-	/** Allow to add reaction under a msg*/
+	/** Allow to add reaction under a msg */
 	private Boolean addReaction;
-	
 }

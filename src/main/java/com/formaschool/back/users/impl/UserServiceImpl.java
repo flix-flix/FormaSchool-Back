@@ -18,13 +18,13 @@ import com.formaschool.back.logging.Logger;
 import com.formaschool.back.logs.LogService;
 import com.formaschool.back.members.Member;
 import com.formaschool.back.members.MemberService;
+import com.formaschool.back.members.dto.MemberDTO;
 import com.formaschool.back.users.User;
 import com.formaschool.back.users.UserRepository;
 import com.formaschool.back.users.dto.UserConnect;
 import com.formaschool.back.users.dto.UserCreate;
 import com.formaschool.back.users.dto.UserCreateWithFile;
 import com.formaschool.back.users.dto.UserLocalStorage;
-import com.formaschool.back.users.dto.UserName;
 import com.formaschool.back.users.dto.UserNamePict;
 import com.formaschool.back.users.services.UserService;
 
@@ -54,11 +54,6 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 	}
 
 	// ====================================================================================================
-
-	@Override
-	public UserName getUserNameById(String id) {
-		return dto(opt(repo.findById(id)), UserName.class);
-	}
 
 	@Override
 	public UserNamePict getUserNamePictById(String id) {
@@ -104,7 +99,8 @@ public class UserServiceImpl extends CRUDServiceImpl<User> implements UserServic
 		LOGGER.info("User connect: " + connect.getEmail());
 
 		UserLocalStorage dto = dto(entity, UserLocalStorage.class);
-		dto.setMembers(memberService.findAllByUserId(entity.getId()));
+		dto.setMembers(memberService.findAllByUserId(entity.getId()).stream()
+				.map(member -> dto(member, MemberDTO.class)).collect(Collectors.toList()));
 		return dto;
 	}
 

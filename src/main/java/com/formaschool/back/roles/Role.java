@@ -41,7 +41,6 @@ public class Role {
 
 	public Role(String name, String color, TeamSalonRights commonRights, Boolean manageTeam, Boolean createDeleteSalon,
 			Boolean manageEmoji, Boolean seeLogs, Boolean changePseudo, Boolean managePseudo) {
-		super();
 		this.name = name;
 		this.color = color;
 		this.commonRights = commonRights;
@@ -54,7 +53,6 @@ public class Role {
 	}
 
 	public Role(String id) {
-		super();
 		this.id = id;
 	}
 }
