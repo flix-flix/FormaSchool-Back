@@ -30,7 +30,7 @@ public class Reaction {
 
 	public Reaction(Message msg, Member member, Emoji emoji) {
 		this.message = msg;
-		this.emoji = emoji;
 		this.member = member;
+		this.emoji = emoji;
 	}
 }

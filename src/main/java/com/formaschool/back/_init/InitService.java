@@ -256,8 +256,8 @@ public class InitService {
 					"emojis/" + file.getName()))
 			.toArray(FileModel[]::new);
 
-	private Emoji[] emojis = Arrays.stream(emojiFiles).map(file -> new Emoji(null, null, file.getId(), file))
-			.toArray(Emoji[]::new);
+	private Emoji[] emojis = Arrays.stream(emojiFiles)
+			.map(file -> new Emoji(file.getId(), null, null, file.getId(), file)).toArray(Emoji[]::new);
 
 	private Map<String, Emoji> _emojis = Arrays.stream(emojis)
 			.collect(Collectors.toMap(emoji -> emoji.getPictureFile().getId(), Function.identity()));
