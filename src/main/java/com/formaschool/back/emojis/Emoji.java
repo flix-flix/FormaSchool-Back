@@ -38,9 +38,12 @@ public class Emoji {
 		this.pictureFile = pictureFile;
 	}
 
+	public Emoji(String id) {
+		this.id = id;
+	}
+
 	@Transient
 	public String getPicture() {
-	
-		return pictureFile!=null? pictureFile.getPathWithFolder():null;
+		return pictureFile == null ? null : pictureFile.getPathWithFolder();
 	}
 }

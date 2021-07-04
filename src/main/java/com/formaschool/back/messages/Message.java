@@ -44,4 +44,8 @@ public class Message {
 		this.send = send;
 		this.edit = edit;
 	}
+
+	public Message(String id) {
+		this.id = id;
+	}
 }

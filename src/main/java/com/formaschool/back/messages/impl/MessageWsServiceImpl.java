@@ -13,31 +13,31 @@ import com.formaschool.back.messages.dto.MessageDelete;
 import com.formaschool.back.messages.dto.MessageEdit;
 import com.formaschool.back.messages.dto.MessageSend;
 import com.formaschool.back.messages.dto.MessageWithReacts;
+import com.formaschool.back.messages.services.MessageBackService;
 import com.formaschool.back.messages.services.MessageWsService;
-import com.formaschool.back.reactions.ReactionService;
 import com.formaschool.back.salons.SalonService;
 
 public class MessageWsServiceImpl implements MessageWsService {
 
 	private MessageRepository repo;
+	private MessageBackService back;
 	private Utils utils;
 	private final Logger LOGGER;
 
 	private MemberService memberService;
 	private SalonService salonService;
 	private FileService fileService;
-	private ReactionService reactService;
 
 	public MessageWsServiceImpl(MessageRepository repo, Utils utils, MemberService memberService,
-			SalonService salonService, FileService fileService, ReactionService reactService) {
+			SalonService salonService, FileService fileService, MessageBackService back) {
 		this.repo = repo;
+		this.back = back;
 		LOGGER = utils.getLogger("MessageService");
 
 		this.utils = utils;
 		this.memberService = memberService;
 		this.salonService = salonService;
 		this.fileService = fileService;
-		this.reactService = reactService;
 	}
 
 	// ====================================================================================================
@@ -51,14 +51,14 @@ public class MessageWsServiceImpl implements MessageWsService {
 		LOGGER.info("Send message: " + entity);
 		if (entity.getFile() != null)
 			LOGGER.info("Send File: " + entity.getFile().getName());
-		return toMessageWithReacts(entity);
+		return back.toMessageWithReacts(entity);
 	}
 
 	@Override
 	public MessageWithReacts editMessage(MessageEdit msg) {
 		Message entity = utils.opt(repo.findById(msg.getId()));
 		entity.setContent(msg.getContent());
-		return toMessageWithReacts(repo.save(entity));
+		return back.toMessageWithReacts(repo.save(entity));
 	}
 
 	@Override
@@ -68,15 +68,5 @@ public class MessageWsServiceImpl implements MessageWsService {
 		repo.deleteById(msgId);
 		LOGGER.warn("Delete message: " + entity);
 		return new MessageDelete(entity.getSalon().getId(), msgId);
-	}
-
-	// ====================================================================================================
-
-	private MessageWithReacts toMessageWithReacts(Message entity) {
-		MessageWithReacts dto = utils.dto(entity, MessageWithReacts.class);
-		dto.setReactions(reactService.getAllReactionsUsersOfMessage(entity.getId()));
-		dto.setTeamId(entity.getSalon().getTeam().getId());
-		dto.setSalonId(entity.getSalon().getId());
-		return dto;
 	}
 }

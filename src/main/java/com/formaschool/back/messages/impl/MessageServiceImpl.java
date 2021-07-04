@@ -8,41 +8,31 @@ import com.formaschool.back._utils.Utils;
 import com.formaschool.back.messages.Message;
 import com.formaschool.back.messages.MessageRepository;
 import com.formaschool.back.messages.dto.MessageWithReacts;
+import com.formaschool.back.messages.services.MessageBackService;
 import com.formaschool.back.messages.services.MessageService;
-import com.formaschool.back.reactions.ReactionService;
 
 public class MessageServiceImpl extends CRUDServiceImpl<Message> implements MessageService {
 
 	private MessageRepository repo;
+	private MessageBackService back;
 
-	private ReactionService reactService;
-
-	public MessageServiceImpl(MessageRepository repo, Utils utils, ReactionService reactService) {
+	public MessageServiceImpl(MessageRepository repo, Utils utils, MessageBackService back) {
 		super(repo, utils);
 
 		this.repo = repo;
-		this.reactService = reactService;
+		this.back = back;
 	}
 
 	// ====================================================================================================
 
 	@Override
 	public MessageWithReacts getMessageWithReacts(String msgId) {
-		return toMessageWithReacts(opt(repo.findById(msgId)));
+		return back.toMessageWithReacts(opt(repo.findById(msgId)));
 	}
 
 	@Override
 	public List<MessageWithReacts> getAllMessageWithReactsOfSalon(String salonId) {
-		return repo.findBySalonId(salonId).stream().map(msg -> toMessageWithReacts(msg)).collect(Collectors.toList());
-	}
-
-	// ====================================================================================================
-
-	private MessageWithReacts toMessageWithReacts(Message entity) {
-		MessageWithReacts dto = dto(entity, MessageWithReacts.class);
-		dto.setReactions(reactService.getAllReactionsUsersOfMessage(entity.getId()));
-		dto.setTeamId(entity.getSalon().getTeam().getId());
-		dto.setSalonId(entity.getSalon().getId());
-		return dto;
+		return repo.findBySalonId(salonId).stream().map(msg -> back.toMessageWithReacts(msg))
+				.collect(Collectors.toList());
 	}
 }

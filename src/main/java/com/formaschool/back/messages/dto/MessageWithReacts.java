@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.formaschool.back.files.FileModel;
 import com.formaschool.back.members.dto.MemberUserPseudo;
-import com.formaschool.back.reactions.ReactionUsers;
+import com.formaschool.back.reactions.dto.ReactionUsers;
 
 import lombok.Data;
 

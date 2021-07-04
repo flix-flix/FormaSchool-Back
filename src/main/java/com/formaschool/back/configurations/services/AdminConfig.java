@@ -1,4 +1,4 @@
-package com.formaschool.back.configurations;
+package com.formaschool.back.configurations.services;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +32,15 @@ public class AdminConfig {
 	}
 
 	@Bean
+	public EmojiService emojiService(EmojiRepository repo, Utils utils, TeamService teamService,
+			UserService userService, LogService logService) {
+		return new EmojiServiceImpl(repo, utils, teamService, userService, logService);
+	}
+
+	// ====================================================================================================
+	// Rights
+
+	@Bean
 	public RoleService roleService(RoleRepository repo, SalonService salonService, PermissionService permissionService,
 			TeamService teamService, Utils utils) {
 		return new RoleServiceImpl(repo, utils, salonService, permissionService, teamService);
@@ -45,11 +54,5 @@ public class AdminConfig {
 	@Bean
 	public TeamSalonRightsService teamSalonRightsService(TeamSalonRightsRepository repo, Utils utils) {
 		return new TeamSalonRightsServiceImpl(repo, utils);
-	}
-
-	@Bean
-	public EmojiService emojiService(EmojiRepository repo, Utils utils, TeamService teamService,
-			UserService userService, LogService logService) {
-		return new EmojiServiceImpl(repo, utils, teamService, userService, logService);
 	}
 }

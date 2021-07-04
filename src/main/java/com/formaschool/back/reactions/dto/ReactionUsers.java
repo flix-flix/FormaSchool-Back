@@ -1,4 +1,4 @@
-package com.formaschool.back.reactions;
+package com.formaschool.back.reactions.dto;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.formaschool.back.configurations;
+package com.formaschool.back.configurations.services;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

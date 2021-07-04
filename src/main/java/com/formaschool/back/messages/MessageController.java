@@ -35,6 +35,7 @@ public class MessageController implements CRUDController<Message> {
 	}
 
 	// ====================================================================================================
+	// REST
 
 	@GetMapping("withReacts/{msgId}")
 	public MessageWithReacts getMessageWithReactions(@PathVariable String msgId) {
@@ -47,21 +48,22 @@ public class MessageController implements CRUDController<Message> {
 	}
 
 	// ====================================================================================================
+	// WebSocket
 
 	@MessageMapping("chat.send")
-	@SendTo("/topic/public")
+	@SendTo("/msg/public")
 	public MessageWithReacts sendMsgWithFile(MessageSend msg) {
 		return serviceWs.sendMessage(msg);
 	}
 
 	@MessageMapping("chat.edit")
-	@SendTo("/topic/public")
+	@SendTo("/msg/public")
 	public MessageWithReacts editMsgWithFile(MessageEdit msg) {
 		return serviceWs.editMessage(msg);
 	}
 
 	@MessageMapping("chat.delete")
-	@SendTo("/topic/public")
+	@SendTo("/msg/public")
 	public MessageDelete sendMsgWithFile(String msgId) {
 		return serviceWs.deleteMessage(msgId);
 	}
