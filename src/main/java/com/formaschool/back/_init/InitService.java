@@ -309,7 +309,7 @@ public class InitService {
 					LocalDateTime.of(2021, 4, 28, 7, 54, 11)),
 			new Message(members[0], salons[0], "**Distanciation               <->               Sociale**", null,
 					LocalDateTime.of(2021, 5, 5, 23, 1, 7), LocalDateTime.of(2021, 5, 5, 23, 1, 7)),
-			new Message(members[1], salons[0], ":victory_hand: :rl: **>** :m2i: :victory_hand:", null,
+			new Message(members[1], salons[0], ":rl: **+** :m2i: **=** :heart:", null,
 					LocalDateTime.of(2021, 5, 5, 23, 1, 7), LocalDateTime.of(2021, 5, 5, 23, 1, 7)),
 
 			new Message(members[0], salons[1], ":beer_mug: :wine_glass: :cocktail_glass:", null,
@@ -325,7 +325,7 @@ public class InitService {
 					"    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum bibendum augue. Praesent egestas leo in pede. Praesent blandit odio eu enim. Pellentesque sed dui ut augue blandit sodales. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam nibh. Mauris ac mauris sed pede pellentesque fermentum. Maecenas adipiscing ante non diam sodales hendrerit.\n"
 							+ "    Ut velit mauris, egestas sed, gravida nec, ornare ut, mi. Aenean ut orci vel massa suscipit pulvinar. Nulla sollicitudin. Fusce varius, ligula non tempus aliquam, nunc turpis ullamcorper nibh, in tempus sapien eros vitae ligula. Pellentesque rhoncus nunc et augue. Integer id felis. Curabitur aliquet pellentesque diam. Integer quis metus vitae elit lobortis egestas. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi vel erat non mauris convallis vehicula. Nulla et sapien. Integer tortor tellus, aliquam faucibus, convallis id, congue eu, quam. Mauris ullamcorper felis vitae erat. Proin feugiat, augue non elementum posuere, metus purus iaculis lectus, et tristique ligula justo vitae magna.\n"
 							+ "    Aliquam convallis sollicitudin purus. Praesent aliquam, enim at fermentum mollis, ligula massa adipiscing nisl, ac euismod nibh nisl eu lectus. Fusce vulputate sem at sapien. Vivamus leo. Aliquam euismod libero eu enim. Nulla nec felis sed leo placerat imperdiet. Aenean suscipit nulla in justo. Suspendisse cursus rutrum augue. Nulla tincidunt tincidunt mi. Curabitur iaculis, lorem vel rhoncus faucibus, felis magna fermentum augue, et ultricies lacus lorem varius purus. Curabitur eu amet.",
-					null, LocalDateTime.of(2021, 9, 10, 22, 11, 0), LocalDateTime.of(2021, 9, 10, 22, 11, 0)),
+					null, LocalDateTime.of(2021, 9, 10, 22, 11, 12), null),
 
 			// === Pole Emploi ===
 			new Message(members[0], salons[3], "Bonjour", null, LocalDateTime.of(2021, 1, 5, 7, 7, 35),
@@ -355,6 +355,7 @@ public class InitService {
 					LocalDateTime.of(2021, 4, 5, 7, 13, 36), LocalDateTime.of(2021, 4, 5, 7, 13, 36)),
 			new Message(members[2], salons[5], "teams.stream().forEach(System.out::println);", null,
 					LocalDateTime.of(2021, 4, 5, 7, 13, 37), LocalDateTime.of(2021, 4, 5, 7, 13, 37)),
+
 			new Message(members[2], salons[6], "**SELECT** * **FROM** Teams", null,
 					LocalDateTime.of(2021, 4, 5, 23, 51, 35), LocalDateTime.of(2021, 4, 5, 23, 51, 35)),
 			new Message(members[1], salons[6], "**DROP DATABASE** FormaSchool", null,
@@ -370,10 +371,15 @@ public class InitService {
 					"GROUP .. .... ....\n" + //
 					"ORDER BY .. ... ..```Voili voila :)", null, LocalDateTime.of(2021, 4, 5, 23, 51, 36),
 					LocalDateTime.of(2021, 4, 5, 23, 51, 36)),
-			new Message(members[3], salons[7], "**@Input()** team", null, LocalDateTime.of(2021, 4, 5, 7, 1, 35),
-					LocalDateTime.of(2021, 4, 5, 7, 1, 35)),
+
+			new Message(members[3], salons[7], "**@Input()** team", null, LocalDateTime.of(2021, 4, 5, 7, 1, 35), null),
 			new Message(members[2], salons[7], "**routerLink**=\"/404\"", null, LocalDateTime.of(2021, 4, 5, 12, 2, 36),
-					LocalDateTime.of(2021, 4, 5, 12, 2, 36)) };
+					null),
+			new Message(members[0], salons[7], "<script> alert(\"hello\"); </script>", null,
+					LocalDateTime.of(2021, 7, 4, 19, 26, 36), null),
+			new Message(members[1], salons[7], "<h1> titre </h1>", null, LocalDateTime.of(2021, 7, 4, 19, 26, 40),
+					null),
+			new Message(members[1], salons[7], "&gt;", null, LocalDateTime.of(2021, 7, 4, 19, 27, 20), null), };
 
 	private Reaction[] reactions = new Reaction[] { //
 			new Reaction(msgs[0], members[0], _emojis.get("bagel")), //
